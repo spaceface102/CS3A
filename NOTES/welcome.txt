@@ -1,0 +1,9 @@
+- Book: Problem Solving with C++, 10th edition, 2018 by Walter Savitch
+- Have to use hypergrade auto grader
+- Working together is core to this class
+- Contact professor through CANVAS INBOX
+    a) will respond within 24 hours
+- In general all assignments can be submitted up to three days late
+    a) one day = 20% penalty
+    b) two days = 50% penalty
+    c) three days = 70% penalty

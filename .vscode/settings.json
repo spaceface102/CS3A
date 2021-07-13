@@ -1,0 +1,28 @@
+{
+    "files.associations": {
+        "iostream": "cpp"
+    },
+    "cSpell.ignoreWords": [
+        "hypergrade",
+        "savitch"
+    ],
+    "cSpell.words": [
+        "BBOARD",
+        "Pbody",
+        "Phow",
+        "Pmanufacturer",
+        "Ppart",
+        "Psecond",
+        "Pthird",
+        "Pwinner",
+        "athr",
+        "cmonth",
+        "codelab",
+        "ispalindrome",
+        "numberof",
+        "sbjct",
+        "stod",
+        "stoi",
+        "vect"
+    ]
+}

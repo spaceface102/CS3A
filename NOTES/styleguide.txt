@@ -1,0 +1,34 @@
+- variables are always lowercase
+- constants are always UPPERCASE
+- always indent blocks of code
+
+-- Commenting your code
+1) Before int main(void)
+    a) use comments to describe program
+2) Data Table
+    a) states the use of variables and constants
+    b) states how a values is obtained/used
+3) Other comments should be used throughout code
+    a) Describe what each section is doing
+        i) input -> processing -> output
+    b) complicated parts of code; be descriptive 
+
+
+-- Header
+    a) first lines in source code
+    b) contains the author's names
+    c) Lab number and name of Lab
+    d) Section (Which day does class meet, and course code)
+    e) Due Date
+
+
+-- Data Tables
+    a) states the use of the identifer and how it is used
+    b) comments should be lined up (use tabs)
+    c) all identifers should have their own line and data type
+
+
+-- Other Notes
+    a) do not initialize variables in the deceleration section
+        i) int count; \n count = 0; //all good
+        ii) int count = 0; //NOPE

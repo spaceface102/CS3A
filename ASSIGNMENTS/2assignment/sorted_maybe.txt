@@ -1,0 +1,33 @@
+Student Grade Summary
+---------------------
+
+
+ENGLISH CLASS
+
+Student Name                         Test Avg     Grade
+----------------------------------------------------------------
+Dipwart, Marvin                         86.50       B
+Kirk, James T.                          79.60       C
+Polinski, Axelrod                       61.90       D
+
+Class Average                           76.00       C
+----------------------------------------------------------------
+HISTORY CLASS
+
+Student Name                         Test Avg     Grade
+----------------------------------------------------------------
+Park, Nick                              58.80       F
+Schmuckatelli, Joe                      84.90       B
+
+Class Average                           71.85       C
+----------------------------------------------------------------
+MATH CLASS
+
+Student Name                         Test Avg     Grade
+----------------------------------------------------------------
+Bunny, Bugs                             95.70       A
+Crack Corn, Jimmy                       68.30       D
+Phebus, Billy Joe Bob                   80.50       B
+
+Class Average                           81.50       B
+----------------------------------------------------------------
