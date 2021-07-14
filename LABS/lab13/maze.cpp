@@ -91,7 +91,8 @@ int main(void)
     map[0][entrance] = !IS_WALL;
     map[ROWS-1][exit] = !IS_WALL;
 
-    Minotaur(map, entrance, 1); 
+    map[1][entrance] = !IS_WALL;    //make sure that starting point is cleared out
+    Minotaur(map, entrance, 1);     //start inside the borders of the map
     DisplayMap(map, "\u25A0", " ");
 }
 
