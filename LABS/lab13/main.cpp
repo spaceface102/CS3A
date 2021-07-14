@@ -17,7 +17,7 @@ bool RangeCheck(int x, int y);
 void DisplayMap(bool map[ROWS][COLS], const char *wall_char,
                 const char *blank_char);
 
-int main()
+int main(void)
 {
     #if DEBUG
     srand(333);
@@ -64,7 +64,7 @@ void DisplayMap(bool map[ROWS][COLS], const char *wall_char, const char *blank_c
         std::cout << std::setw(2) << i;
         #endif
         for (int j = 0; j < COLS; j++)
-            std::cout << ( (map[i][j]) ? wall_char : blank_char) << " ";
+            std::cout << ((map[i][j]) ? wall_char : blank_char) << " ";
         std::cout << "\n";
     }
 }
@@ -97,7 +97,8 @@ void Minotaur(bool map[ROWS][COLS], int x, int y)
                     break;
             }
         }
-    } while (!(trackDirection[0] && trackDirection[1] && trackDirection[2] && trackDirection[3]));
+    } while (!(trackDirection[0] && trackDirection[1] && trackDirection[2]
+             && trackDirection[3]));
    
     return; //have no more direction to go to!.
 }
