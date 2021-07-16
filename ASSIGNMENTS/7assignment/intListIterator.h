@@ -1,12 +1,11 @@
 #ifndef INTLIST_ITERATOR_CLASS_H
 #define INTLIST_ITERATOR_CLASS_H
 
-#include "intList.h"
-
+#include "intNode.h"
 class IntListIterator
 {
 private:
-    IntNode *current;
+    IntNode* current;
 
 public:
     /*****************************

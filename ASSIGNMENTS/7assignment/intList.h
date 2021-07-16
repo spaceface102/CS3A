@@ -1,13 +1,8 @@
 #ifndef INTLIST_CLASS_H
 #define INTLIST_CLASS_H
 
+#include "intNode.h"
 #include "intListIterator.h"
-struct IntNode
-{
-    int data;
-    IntNode* next;
-    IntNode(int data) : data(data), next(nullptr) {}
-};
 
 class IntList
 {
@@ -33,6 +28,7 @@ public:
     int length(void) const;
     int sum(void) const;
     void reverseDisplay() const;
+
     /*************
     ** MUTATORS **
     *************/

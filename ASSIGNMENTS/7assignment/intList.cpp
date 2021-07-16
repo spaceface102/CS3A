@@ -249,13 +249,20 @@ void IntList::pop_front(void)
 {   
     IntNode *pastHead;  //PROC - store the current head node that
                         //will be deleted.
-
-    if (head == nullptr)
-        return; //do nothing
-    
-    pastHead = head;
-    head = head->next;
-    delete pastHead;
+                        
+    //no node or single node. (nothing will happen
+    //if we use delete on NULL, delete checks for that)
+    if (head == tail)
+    {
+        delete head;
+        head = tail = nullptr;
+    }
+    else
+    {
+        pastHead = head;
+        head = head->next;
+        delete pastHead;
+    }
 }
 //EOF
 
@@ -453,6 +460,13 @@ IntList& IntList::operator=(const IntList &that)
         //calling object's list must have been smaller
         if (current == nullptr)
         {
+            //current object has no nodes
+            if (head == nullptr)
+            {
+                head = tail = new IntNode(current_that->data);
+                current_that = current_that->next;
+            }
+
             //continue moving forward from where left off
             while (current_that != nullptr)
             {
