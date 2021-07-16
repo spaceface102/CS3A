@@ -39,6 +39,7 @@ public:
     void select_sort(void);
     void insert_sorted(int value);
     void remove_duplicates(void);
+    IntList& operator=(const IntList &list);
 
 private:
     /**************
@@ -47,7 +48,9 @@ private:
     int RecursiveLength(const IntNode* node) const;
     int RecursiveSum(const IntNode* node) const;
     void RecursiveReverseDisplay(const IntNode* node) const;
-
+    void ClearIntList(void);
+    void RemoveNodesStartingAt(IntNode *node);
+    void RemoveNodesAfter(IntNode *node);
 };
 
 #endif //INTLIST_CLASS_H

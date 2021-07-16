@@ -43,19 +43,7 @@ IntList::IntList(void) : head(nullptr), tail(nullptr) {}
 ****************************************************************/
 IntList::~IntList(void)
 {
-    IntNode *future;   //PROC - Store node address for next loop
-    IntNode *current;  //PROC - Delete the current node
-    
-    future = head;
-    while (future != nullptr)
-    {
-        current = future;
-        future = future->next;
-        delete current;
-    }
-
-    head = nullptr;
-    tail = nullptr;
+    ClearIntList();
 }
 //EOF
 
@@ -140,14 +128,16 @@ int IntList::RecursiveLength(const IntNode* node) const
 
 int IntList::sum(void) const
 {
+    if (head == nullptr)    //empty list, return sum as -1
+        return -1;
     return RecursiveSum(head);
 }
 //EOF
 
 int IntList::RecursiveSum(const IntNode* node) const
 {
-    if (node == nullptr)
-        return 0;
+    if (node == tail)
+        return tail->data;
     
     return node->data + RecursiveSum(node->next);
 }
@@ -155,6 +145,8 @@ int IntList::RecursiveSum(const IntNode* node) const
 
 void IntList::reverseDisplay(void) const
 {
+    if (head == nullptr)    //list with no nodes, do nothing
+        return;
     RecursiveReverseDisplay(head);
 }
 //EOF
@@ -421,5 +413,138 @@ void IntList::remove_duplicates(void)
         }
         subHead = subHead->next;
     }
+}
+//EOF
+
+IntList& IntList::operator=(const IntList &that)
+{
+    IntNode *current_that;  //PROC - track node from "that"
+    IntNode *current;       //PROC - track node from calling obj.
+
+    //avoid case were same object is on both
+    //sides of the "=" operator.
+    if (this == &that)
+        return *this;       //just return the calling object
+    
+    current = head;
+    current_that = that.head;
+    while (current_that != nullptr && current != nullptr)
+    {   //change the values of existing nodes, don't
+        //allocate more memory if you don't need to.
+        current->data = current->data;
+        current = current->next;
+        current_that = current_that->next;
+    }
+
+    if (current != current_that)    //lists are not the same size.
+    {
+        //calling object's list must have been smaller
+        if (current == nullptr)
+        {
+            //continue moving forward from where left off
+            while (current_that != nullptr)
+            {
+                tail->next = new IntNode(current_that->data);
+                tail = tail->next;
+                current_that = current_that->next;
+            }
+        }
+        //calling object's list must have been larger than of "that"
+        else if (current_that == nullptr)
+            /* remove the node that current is pointing at
+             * the end of the main while loop, both current
+             * and current_that are set to the next node.
+             * Therefore the node that current points to here
+             * must be the next node. 
+             * The only case where this is not true is if 
+             * even before going through the while loop,
+             * current_that is set to NULL, therefore passed
+             * in list is an empty list. Therefore current
+             * must be head, and will result in removing
+             * all the nodes
+             * In the case both current and current_that
+             * are NULL, since both are empty list, then
+             * the outer if statement wouldn't be true, 
+             * and therefore we wouldn't be here.*/
+
+            RemoveNodesStartingAt(current);
+    }
+    //else both the lists must have had the same amount of nodes
+
+    return *this;
+}
+//EOF
+
+void IntList::ClearIntList()
+{
+    IntNode *future;   //PROC - Store node address for next loop
+    IntNode *current;  //PROC - Delete the current node
+    
+    future = head;
+    while (future != nullptr)
+    {
+        current = future;
+        future = future->next;
+        delete current;
+    }
+
+    head = nullptr;
+    tail = nullptr;
+}
+//EOF
+
+void IntList::RemoveNodesStartingAt(IntNode *node)
+{
+    IntNode *future;    //PROC - store the next node
+    IntNode *current;   //PROC - track the current node
+
+    //since singly linked list, all cases are expensive
+    //and have to traverse the full list, other than 
+    //when the passed node is NULL. This is just do 
+    //to how a singly linked list works.
+
+    if (node == head)
+        ClearIntList();
+    else if (node == nullptr)
+        return;
+    else if (node == tail)
+    {
+        //list only has one node
+        if (head == tail)   //protect again current->next == NULL in while
+        {
+            delete head;
+            head = tail = nullptr;  //now list has no nodes
+        }
+
+        //list at least has two nodes
+        current = head;
+        while (current->next != tail) //look ahead to set tail to current later
+            current = current->next;
+        delete tail;
+        tail = current;
+        tail->next = nullptr;
+    }
+    else //node passed in is neither the head, or the tail, or NULL
+    {
+        current = head;
+        while (current->next != node)
+            current = current->next;
+        tail = current; //tail is set to the node right before
+        tail->next = nullptr;
+
+        future = node;
+        while (future != nullptr)
+        {
+            current = future;
+            future = future->next;
+            delete current;
+        }
+    }
+}
+//EOF
+
+void IntList::RemoveNodesAfter(IntNode *node)
+{
+    RemoveNodesStartingAt(node->next);
 }
 //EOF
