@@ -17,15 +17,14 @@ public:
     /*************
     ** MUTATORS **
     *************/
-    //I would probably declare as operator++() as const, 
-    //but following assignment specifications
     IntListIterator operator++(void);
 
     /**************
     ** ACCESSORS **
     **************/
-    //I would probably declare as operator*() as const, 
-    //but following assignment specifications
+    //I would probably make another version that
+    //is declared as a const method, and I would
+    //make this return an int&
     int operator*(void);
     bool operator==(const IntListIterator& right) const;
     bool operator!=(const IntListIterator& right) const;

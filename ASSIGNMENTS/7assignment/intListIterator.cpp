@@ -14,7 +14,8 @@ int IntListIterator::operator*(void)
 
 IntListIterator IntListIterator::operator++(void)
 {
-    return IntListIterator(current->next);
+    current = current->next;
+    return *this;
 }
 //EOF
 

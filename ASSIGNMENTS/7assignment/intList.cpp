@@ -47,6 +47,28 @@ IntList::~IntList(void)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method Constructor: Class IntList
+ *  //COPY CONSTRUCTOR
+ * --------------------------------------------------------------
+ * This is the overloaded copy constructor. It will copy all
+ * the nodes of the passed in linked list, in the exact same 
+ * order. The new object does not share any memory with the
+ * passed in object.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The passed in IntList object can be in any stage, no
+ *      node list, one node, list or more.
+ * 
+ *  POST-CONDITIONS
+ *      If the passed in list is empty (no nodes), the new
+ *      object's head and tail are both set to NULL. Else
+ *      will traverse through the list, and make new nodes.
+ *      All new memory is allocated on the heap, so deleting
+ *      or modifying this new object will not have any affect
+ *      on the object being used to make a copy out of.
+****************************************************************/
 IntList::IntList(const IntList& that)
 {
     IntNode *current_that;  //PROC - track node from "that"
@@ -62,7 +84,7 @@ IntList::IntList(const IntList& that)
         //and will not run the while loop
         current_that = current_that->next;
         while (current_that != NULL)
-        {
+        {   //don't use push_back to avoid checks if list is empty
             tail->next = new IntNode(current_that->data);
             tail = tail->next;
             current_that = current_that->next;
@@ -99,36 +121,124 @@ void IntList::display(void) const
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method begin: Class IntList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ * Return an IntListIterator object that holds the a pointer
+ * to the node head is currently point to.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The calling list can be of any size, and even empty.
+ *  POST-CONDITIONS
+ *      If the size of the list is 0; aka there are no nodes in
+ *      the list, IntListIterator will be pointing to NULL. If
+ *      you try to dereference that, you are likely to get
+ *      an error.
+****************************************************************/
 IntListIterator IntList::begin(void)
 {
     return IntListIterator(head);
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method end: Class IntList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ * Return an IntListIterator object that holds the a pointer to
+ * NULL.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The calling list can be of any size, and even empty.
+ *  POST-CONDITIONS
+ *      IntListIterator will be pointing to NULL. If
+ *      you try to dereference that, you are likely to get
+ *      an error (probably a seg fault).
+****************************************************************/
 IntListIterator IntList::end(void)
 {
     return IntListIterator(nullptr);
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method front: Class IntList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ * Return the value of associated with the head of the list.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call on a list of at least length 1 (at least one
+ *      node).
+ *  POST-CONDITIONS
+ *      Assuming the calling object at least has one active node
+ *      a copy of the value at the head will be returned. 
+****************************************************************/
 int IntList::front(void) const
 {
     return head->data;
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method back: Class IntList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ * Return the value of associated with the tail of the list.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call on a list of at least length 1 (at least one
+ *      node).
+ *  POST-CONDITIONS
+ *      Assuming the calling object at least has one active node
+ *      a copy of the value at the tail will be returned. 
+****************************************************************/
 int IntList::back(void) const
 {
     return tail->data;
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method length: Class IntList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ * Return the number of nodes in the singly linked list.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object can have a linked list of any size; it
+ *      can be empty
+ *  POST-CONDITIONS
+ *      If the linked list is empty, will return 0, else'
+ *      each node will be counted as 1.
+****************************************************************/
 int IntList::length(void) const
 {
     return RecursiveLength(head);
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method RecursiveLength: Class IntList
+ *  //PRIVATE
+ * --------------------------------------------------------------
+ * Recursively traverse through the linked list, incrementing
+ * the return value by one until reaching/hitting NULL.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The passed in the IntNode* should be a valid pointer
+ *      to an already existing node.
+ *  POST-CONDITIONS
+ *      If the linked list is empty, will return 0, else
+ *      each node will be counted as 1.
+****************************************************************/
 int IntList::RecursiveLength(const IntNode* node) const
 {
     if (node == nullptr)
@@ -138,39 +248,101 @@ int IntList::RecursiveLength(const IntNode* node) const
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method sum: Class IntList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ * Return the sum of all the nodes in the linked list. If
+ * object has no nodes associated with it, will return
+ * largest possible negative number (0x80000000). Did this to
+ * make it obvious when sum is trying to be run an empty list.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object should at least have one node.
+ *  POST-CONDITIONS
+ *      The linked list is not modified. Will always traverse
+ *      through the whole linked list.
+****************************************************************/
 int IntList::sum(void) const
 {
-    if (head == nullptr)    //empty list, return sum as -1
-        return -1;
+    if (head == nullptr)    //empty list, return sum as 0x80000000
+        return 0x80000000;
     return RecursiveSum(head);
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method RecursiveSum: Class IntList
+ *  //PRIVATE
+ * --------------------------------------------------------------
+ * Recursively traverse through the linked list, incrementing
+ * the return value by the node's data value.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The passed in the IntNode* should be a valid pointer
+ *      to an already existing node. The linked list must
+ *      at least have one node.
+ *  POST-CONDITIONS
+ *      The function will not modify any node, just get the
+ *      value at the node.
+ *      If passed in "node" points to NULL, will return 0.
+****************************************************************/
 int IntList::RecursiveSum(const IntNode* node) const
 {
-    if (node == tail)
-        return tail->data;
+    if (node == nullptr)
+        return 0;
     
     return node->data + RecursiveSum(node->next);
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method reverseDisplay: Class IntList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ *  Display the data in each node in reverse order.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object should at least have one node.
+ *  POST-CONDITIONS
+ *      If the linked list is empty, the function will
+ *      simply not do anything.
+****************************************************************/
 void IntList::reverseDisplay(void) const
 {
-    if (head == nullptr)    //list with no nodes, do nothing
-        return;
-    RecursiveReverseDisplay(head);
+    if (head != nullptr)
+    {
+        RecursiveReverseDisplay(head->next);
+        std::cout << head->data;
+    }
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method RecursiveReverseDisplay: Class IntList
+ *  //PRIVATE
+ * --------------------------------------------------------------
+ * Recursively traverse through the linked list until reaching
+ * NULL, in which case start going up the stack frames and
+ * printing the data associated with each node.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The passed in node should either be a valid node in 
+ *      the calling object's linked list, or NULL
+ *  POST-CONDITIONS
+ *      The function will not modify any node, just get the
+ *      value at the node. If the passed in node is NULL, 
+ *      function will immediately return.
+****************************************************************/
 void IntList::RecursiveReverseDisplay(const IntNode* node) const
 {
-    if (node == tail)
-    {
-        std::cout << node->data; //make sure dont have trailing " "
+    if (node == nullptr) //have reached the end of the linked list
         return;
-    }
-    
+
     RecursiveReverseDisplay(node->next);
     std::cout << node->data << " ";
 }
@@ -249,7 +421,7 @@ void IntList::pop_front(void)
 {   
     IntNode *pastHead;  //PROC - store the current head node that
                         //will be deleted.
-                        
+
     //no node or single node. (nothing will happen
     //if we use delete on NULL, delete checks for that)
     if (head == tail)
@@ -435,8 +607,32 @@ void IntList::remove_duplicates(void)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method operator=: Class IntList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ *  Overload of the "=" operator. Do a deep copy of the passed
+ *  in object. 
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Both the calling list and the passed in list can be
+ *      empty, with no nodes, or any amount of nodes.
+ *  POST-CONDITIONS
+ *      The length of the calling object's linked list is
+ *      assured to be changed if the passed in "that" linked
+ *      list a different size. The only time the size will
+ *      not change is the two linked list are of the exact same
+ *      length. The calling object's memory associated with
+ *      the linked list is automatically cleaned up or expanded
+ *      according to the the size of "that".
+****************************************************************/
 IntList& IntList::operator=(const IntList &that)
 {
+    //In a future revision, consider replacing the
+    //RemoveNodesStartingAt() func with RemoveNodesAfter()
+    //func, to increase efficiency, and reduce the amount
+    //of list traversals I have to do.
     IntNode *current_that;  //PROC - track node from "that"
     IntNode *current;       //PROC - track node from calling obj.
 
@@ -500,6 +696,18 @@ IntList& IntList::operator=(const IntList &that)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method ClearIntList: Class IntList
+ *  //PRIVATE
+ * --------------------------------------------------------------
+ *  Free all the memory related with the object's linked list.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object can be of any size. No nodes, or many nodes.
+ *  POST-CONDITIONS
+ *      The head and tail pointers are set to NULL.
+****************************************************************/
 void IntList::ClearIntList()
 {
     IntNode *future;   //PROC - Store node address for next loop
@@ -515,6 +723,28 @@ void IntList::ClearIntList()
 
     head = nullptr;
     tail = nullptr;
+}
+//EOF
+
+void IntList::RemoveNodesAfter(IntNode *node)
+{
+    IntNode *future;    //PROC - store the next node
+    IntNode *current;   //PROC - track the current node
+
+    if (node == nullptr)    //don't do anything.
+        return;
+
+    delete tail;
+    tail = node;
+    tail->next = nullptr;
+
+    future = node->next;
+    while (future != nullptr)
+    {
+        current = future;
+        future = future->next;
+        delete current;
+    }
 }
 //EOF
 
@@ -540,12 +770,14 @@ void IntList::RemoveNodesStartingAt(IntNode *node)
         {
             delete head;
             head = tail = nullptr;  //now list has no nodes
+            return;
         }
 
         //list at least has two nodes
         current = head;
         while (current->next != tail) //look ahead to set tail to current later
             current = current->next;
+
         delete tail;
         tail = current;
         tail->next = nullptr;
@@ -566,11 +798,5 @@ void IntList::RemoveNodesStartingAt(IntNode *node)
             delete current;
         }
     }
-}
-//EOF
-
-void IntList::RemoveNodesAfter(IntNode *node)
-{
-    RemoveNodesStartingAt(node->next);
 }
 //EOF

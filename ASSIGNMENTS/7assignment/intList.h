@@ -48,8 +48,8 @@ private:
     int RecursiveSum(const IntNode* node) const;
     void RecursiveReverseDisplay(const IntNode* node) const;
     void ClearIntList(void);
-    void RemoveNodesStartingAt(IntNode *node);
     void RemoveNodesAfter(IntNode *node);
+    void RemoveNodesStartingAt(IntNode *node);
 };
 
 #endif //INTLIST_CLASS_H

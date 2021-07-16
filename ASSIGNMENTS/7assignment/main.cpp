@@ -38,7 +38,7 @@ int main(void)
 
     //fill each list in listarray with values
     for (int i = 0; i < 4; i++)
-        FillIntList(listarray[i], 42, 1000);
+        FillIntList(listarray[i], 25, 500);
     
     //see what happens with the overloaded "=" operator
     std::cout << "listarray[2] originally: ";
@@ -68,11 +68,31 @@ int main(void)
     std::cout << "Displaying listarray[1]:\n";
     listarray[1].display(); std::cout << "\n";
 
-    for (IntListIterator i = listarray[0].begin(); i != listarray[0].end(); ++i)
-    {
-        if (rand()%2)
-        {
-        }
-    }
+    std::cout << "Displaying listarray[0] using IntListIterator:\n";
+    for (IntListIterator i = listarray[0].begin();i != listarray[0].end(); ++i)
+        std::cout << *i << " ";
+    std::cout << "\n\n";
+
+    //Testing front, back, length, sum, reverseDisplay
+    std::cout << "Displaying listarray[3]:\n";
+    listarray[3].display(); std::cout << "\n";
+
+    std::cout
+    << "The following methods will all be performed on lisarray[3]\n"
+    << "Testing front():  " << listarray[3].front() << "\n"
+    << "Testing back():   " << listarray[3].back() << "\n"
+    << "Testing length(): " << listarray[3].length() << "\n"
+    << "Testing sum():    " << listarray[3].sum() << "\n"
+    << "Testing reverseDisplay():\n";
+    listarray[3].reverseDisplay(); std::cout << "\n\n";
+
+    std::cout 
+    << "The follwing methods will all be perform on emptylist\n"
+    << "Testing length(): " << emptylist.length() << "\n"
+    << "Testing sum():    " << emptylist.sum() << " (Expected value "
+    << "is " << (int)0x80000000 << ")\n"
+    << "Testing reverseDisplay():\n";
+    emptylist.reverseDisplay(); std::cout << "\n";
+
     return 0;
 }
