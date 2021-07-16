@@ -59,6 +59,29 @@ IntList::~IntList(void)
 }
 //EOF
 
+IntList::IntList(const IntList& that)
+{
+    IntNode *current_that;  //PROC - track node from "that"
+
+    if (that.head == nullptr)   //empty IntList passed in
+        head = tail = nullptr;
+    else    //"that" has at least one node
+    {
+        current_that = that.head;
+        head = tail = new IntNode(current_that->data);  //init list
+        
+        //if that has only has one node, next is NULL
+        //and will not run the while loop
+        current_that = current_that->next;
+        while (current_that != NULL)
+        {
+            tail->next = new IntNode(current_that->data);
+            tail = tail->next;
+            current_that = current_that->next;
+        }
+    }
+}
+
 /****************************************************************
  * 
  *  Method display: Class IntList

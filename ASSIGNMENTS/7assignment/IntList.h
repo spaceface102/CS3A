@@ -20,12 +20,12 @@ public:
     *****************************/
     IntList(void);
     ~IntList(void);
-
+    IntList(const IntList& that);
     /**************
     ** ACCESSORS **
     **************/
     void display(void) const;
-
+    
     /*************
     ** MUTATORS **
     *************/
