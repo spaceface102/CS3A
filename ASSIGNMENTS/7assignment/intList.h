@@ -39,11 +39,11 @@ public:
     void select_sort(void);
     void insert_sorted(int value);
     void remove_duplicates(void);
-    IntList& operator=(const IntList &list);
+    IntList& operator=(const IntList& list);
 
 private:
     /**************
-    ** ACCESSORS **
+    **  HELPERS  **
     **************/
     int RecursiveLength(const IntNode* node) const;
     int RecursiveSum(const IntNode* node) const;
