@@ -49,7 +49,6 @@ private:
     void RecursiveReverseDisplay(const IntNode* node) const;
     void ClearIntList(void);
     void RemoveNodesAfter(IntNode *node);
-    void RemoveNodesStartingAt(IntNode *node);
 };
 
 #endif //INTLIST_CLASS_H

@@ -629,68 +629,90 @@ void IntList::remove_duplicates(void)
 ****************************************************************/
 IntList& IntList::operator=(const IntList &that)
 {
-    //In a future revision, consider replacing the
-    //RemoveNodesStartingAt() func with RemoveNodesAfter()
-    //func, to increase efficiency, and reduce the amount
-    //of list traversals I have to do.
     IntNode *current_that;  //PROC - track node from "that"
     IntNode *current;       //PROC - track node from calling obj.
+    IntNode *nodeBeforeTail;//PROC - track node right before tail in obj
 
     //avoid case were same object is on both
     //sides of the "=" operator.
     if (this == &that)
         return *this;       //just return the calling object
     
+    if (that.head == nullptr)   //passed in list is empty
+    {
+        ClearIntList(); //clear out the current object.
+        return *this;
+    }
+
+    //current object has no nodes or one node
+    //and "that" also at least has one node.
+    if (head == tail)
+    {
+        current_that = that.head;
+        if (head == nullptr) //no nodes
+            head = tail = new IntNode(current_that->data);
+        else //already has one node
+            head->data = current_that->data;
+
+        //get the rest of the nodes filled up
+        current_that = current_that->next;
+        while (current_that != nullptr)
+        {
+            tail->next = new IntNode(current_that->data);
+            tail = tail->next;
+            current_that = current_that->next;
+        }
+        return *this;
+    }
+
+    //not self referential, passed in IntList has at least a node
+    //and the current object has least has two nodes.
     current = head;
     current_that = that.head;
-    while (current_that != nullptr && current != nullptr)
-    {   //change the values of existing nodes, don't
-        //allocate more memory if you don't need to.
-        current->data = current->data;
+    while (current->next != tail && current_that != that.tail)
+    {
+        current->data = current_that->data;
         current = current->next;
         current_that = current_that->next;
     }
 
-    if (current != current_that)    //lists are not the same size.
-    {
-        //calling object's list must have been smaller
-        if (current == nullptr)
-        {
-            //current object has no nodes
-            if (head == nullptr)
-            {
-                head = tail = new IntNode(current_that->data);
-                current_that = current_that->next;
-            }
 
-            //continue moving forward from where left off
-            while (current_that != nullptr)
-            {
-                tail->next = new IntNode(current_that->data);
-                tail = tail->next;
-                current_that = current_that->next;
-            }
-        }
-        //calling object's list must have been larger than of "that"
-        else if (current_that == nullptr)
-            /* remove the node that current is pointing at
-             * the end of the main while loop, both current
-             * and current_that are set to the next node.
-             * Therefore the node that current points to here
-             * must be the next node. 
-             * The only case where this is not true is if 
-             * even before going through the while loop,
-             * current_that is set to NULL, therefore passed
-             * in list is an empty list. Therefore current
-             * must be head, and will result in removing
-             * all the nodes
-             * In the case both current and current_that
-             * are NULL, since both are empty list, then
-             * the outer if statement wouldn't be true, 
-             * and therefore we wouldn't be here.*/
-            RemoveNodesStartingAt(current);
+    if (current_that == that.tail)
+    {   
+        //current->next is not necessarily pointing to the tail node
+        //but it may. The crucial thing is that we only have one more
+        //node left in "that". Set current's data attribute,
+        //and remove every node after current, and set current as
+        //the new tail for the object.
+
+        current->data = current_that->data;
+        RemoveNodesAfter(current);  //this func sets the new tail.
     }
-    //else both the lists must have had the same amount of nodes
+    else 
+    {
+        //must be that current->next == tail && current_that != that.tail
+        //remember, in order to exit the while loop, current->next or 
+        //current_that must point to their respective tails... since
+        //current_that is not the tail, then current->next must be!
+        //update the node before tail
+
+        current->data = current_that->data;
+        current_that = current_that->next;
+        //after previous, current_that might now point to that.tail
+
+        //remember, current->next is tail; just modifying tail
+        tail->data = current_that->data; 
+        current_that = current_that->next;
+        //after previous, current_that might now point to NULL
+
+        //add more nodes while "that" has more nodes to offer.
+        while (current_that != nullptr)
+        {
+            tail->next = new IntNode(current_that->data);
+            tail = tail->next;
+            current_that = current_that->next;
+        }
+    }
 
     return *this;
 }
@@ -731,72 +753,19 @@ void IntList::RemoveNodesAfter(IntNode *node)
     IntNode *future;    //PROC - store the next node
     IntNode *current;   //PROC - track the current node
 
-    if (node == nullptr)    //don't do anything.
+    if (node == nullptr || node == tail) //don't do anything.
         return;
 
-    delete tail;
-    tail = node;
-    tail->next = nullptr;
-
-    future = node->next;
-    while (future != nullptr)
+    future = node->next;    //avoid deleteing passed in node.
+    while (future != tail)
     {
         current = future;
         future = future->next;
         delete current;
     }
-}
-//EOF
 
-void IntList::RemoveNodesStartingAt(IntNode *node)
-{
-    IntNode *future;    //PROC - store the next node
-    IntNode *current;   //PROC - track the current node
-
-    //since singly linked list, all cases are expensive
-    //and have to traverse the full list, other than 
-    //when the passed node is NULL. This is just do 
-    //to how a singly linked list works, and have to
-    //often be at the previous node.
-
-    if (node == head)
-        ClearIntList();
-    else if (node == nullptr)
-        return;
-    else if (node == tail)
-    {
-        //list only has one node
-        if (head == tail)   //protect again current->next == NULL in while
-        {
-            delete head;
-            head = tail = nullptr;  //now list has no nodes
-            return;
-        }
-
-        //list at least has two nodes
-        current = head;
-        while (current->next != tail) //look ahead to set tail to current later
-            current = current->next;
-
-        delete tail;
-        tail = current;
-        tail->next = nullptr;
-    }
-    else //node passed in is neither the head, or the tail, or NULL
-    {
-        current = head;
-        while (current->next != node)
-            current = current->next;
-        tail = current; //tail is set to the node right before
-        tail->next = nullptr;
-
-        future = node;
-        while (future != nullptr)
-        {
-            current = future;
-            future = future->next;
-            delete current;
-        }
-    }
+    delete tail;
+    tail = node;
+    tail->next = nullptr;
 }
 //EOF
