@@ -81,6 +81,7 @@ IntList::IntList(const IntList& that)
         }
     }
 }
+//EOF
 
 /****************************************************************
  * 
@@ -107,6 +108,67 @@ void IntList::display(void) const
     }
     if (tail != nullptr)
         std::cout << tail->data;
+}
+//EOF
+
+int IntList::front(void) const
+{
+    return head->data;
+}
+//EOF
+
+int IntList::back(void) const
+{
+    return tail->data;
+}
+//EOF
+
+int IntList::length(void) const
+{
+    return RecursiveLength(head);
+}
+//EOF
+
+int IntList::RecursiveLength(const IntNode* node) const
+{
+    if (node == nullptr)
+        return 0;
+    
+    return 1 + RecursiveLength(node->next);
+}
+//EOF
+
+int IntList::sum(void) const
+{
+    return RecursiveSum(head);
+}
+//EOF
+
+int IntList::RecursiveSum(const IntNode* node) const
+{
+    if (node == nullptr)
+        return 0;
+    
+    return node->data + RecursiveSum(node->next);
+}
+//EOF
+
+void IntList::reverseDisplay(void) const
+{
+    RecursiveReverseDisplay(head);
+}
+//EOF
+
+void IntList::RecursiveReverseDisplay(const IntNode* node) const
+{
+    if (node == tail)
+    {
+        std::cout << node->data; //make sure dont have trailing " "
+        return;
+    }
+    
+    RecursiveReverseDisplay(node->next);
+    std::cout << node->data << " ";
 }
 //EOF
 

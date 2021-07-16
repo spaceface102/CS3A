@@ -1,5 +1,5 @@
-#ifndef INTLIST_H
-#define INTLIST_H
+#ifndef INTLIST_CLASS_H
+#define INTLIST_CLASS_H
 
 struct IntNode
 {
@@ -25,7 +25,11 @@ public:
     ** ACCESSORS **
     **************/
     void display(void) const;
-    
+    int front(void) const;
+    int back(void) const;
+    int length(void) const;
+    int sum(void) const;
+    void reverseDisplay() const;
     /*************
     ** MUTATORS **
     *************/
@@ -35,9 +39,18 @@ public:
     void select_sort(void);
     void insert_sorted(int value);
     void remove_duplicates(void);
+
+private:
+    /**************
+    ** ACCESSORS **
+    **************/
+    int RecursiveLength(const IntNode* node) const;
+    int RecursiveSum(const IntNode* node) const;
+    void RecursiveReverseDisplay(const IntNode* node) const;
+
 };
 
-#endif //INTLIST_H
+#endif //INTLIST_CLASS_H
 
 /********************************************************************
  * IntListClass
