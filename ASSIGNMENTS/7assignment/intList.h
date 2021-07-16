@@ -1,6 +1,7 @@
 #ifndef INTLIST_CLASS_H
 #define INTLIST_CLASS_H
 
+#include "intListIterator.h"
 struct IntNode
 {
     int data;
@@ -25,6 +26,8 @@ public:
     ** ACCESSORS **
     **************/
     void display(void) const;
+    IntListIterator begin(void);
+    IntListIterator end(void);
     int front(void) const;
     int back(void) const;
     int length(void) const;

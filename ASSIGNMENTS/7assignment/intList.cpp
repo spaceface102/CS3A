@@ -5,7 +5,7 @@
  * SECTION          : 71206
  * DUE DATE         : 7/12/2021
 ****************************************************************/
-#include "IntList.h"
+#include "intList.h"
 #include <iostream>
 
 /****************************************************************
@@ -96,6 +96,18 @@ void IntList::display(void) const
     }
     if (tail != nullptr)
         std::cout << tail->data;
+}
+//EOF
+
+IntListIterator IntList::begin(void)
+{
+    return IntListIterator(head);
+}
+//EOF
+
+IntListIterator IntList::end(void)
+{
+    return IntListIterator(nullptr);
 }
 //EOF
 
@@ -466,7 +478,6 @@ IntList& IntList::operator=(const IntList &that)
              * are NULL, since both are empty list, then
              * the outer if statement wouldn't be true, 
              * and therefore we wouldn't be here.*/
-
             RemoveNodesStartingAt(current);
     }
     //else both the lists must have had the same amount of nodes
@@ -501,7 +512,8 @@ void IntList::RemoveNodesStartingAt(IntNode *node)
     //since singly linked list, all cases are expensive
     //and have to traverse the full list, other than 
     //when the passed node is NULL. This is just do 
-    //to how a singly linked list works.
+    //to how a singly linked list works, and have to
+    //often be at the previous node.
 
     if (node == head)
         ClearIntList();

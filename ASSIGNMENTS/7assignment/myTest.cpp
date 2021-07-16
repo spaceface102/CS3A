@@ -1,5 +1,5 @@
 #include <iostream>
-#include "IntList.h"
+#include "intList.h"
 #include <cstdlib>
 #include <ctime>
 
