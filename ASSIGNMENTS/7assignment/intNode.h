@@ -8,4 +8,4 @@ struct IntNode
     IntNode(int data) : data(data), next(nullptr) {}
 };
 
-#endif
+#endif //INTNODE_STRUCT_H
