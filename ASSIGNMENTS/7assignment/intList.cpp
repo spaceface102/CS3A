@@ -1,9 +1,9 @@
 /****************************************************************
  * AUTHOR           : Osbaldo Gonzalez Jr.
- * ASSIGNMENT 06    : IntList
+ * ASSIGNMENT 06    : IntList Recursive && IntListIterator
  * CLASS            : CS 3A
  * SECTION          : 71206
- * DUE DATE         : 7/12/2021
+ * DUE DATE         : 7/15/2021
 ****************************************************************/
 #include "intList.h"
 #include <iostream>
@@ -631,7 +631,6 @@ IntList& IntList::operator=(const IntList &that)
 {
     IntNode *current_that;  //PROC - track node from "that"
     IntNode *current;       //PROC - track node from calling obj.
-    IntNode *nodeBeforeTail;//PROC - track node right before tail in obj
 
     //avoid case were same object is on both
     //sides of the "=" operator.
@@ -748,11 +747,36 @@ void IntList::ClearIntList()
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method RemoveNodesAfter: Class IntList
+ *  //PRIVATE
+ * --------------------------------------------------------------
+ *  Free all the nodes after the node passed in. Set the node
+ *  passed in as the new tail.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The passed in node must be part of the object's 
+ *      list. Conforming with that condition, the passed in
+ *      node pointer can point to anything inside the list, 
+ *      including the head, tail, and nullptr.
+ *      The calling object's list can have any number
+ *      of nodes.
+ *  POST-CONDITIONS
+ *      A new tail is set as the current node. All
+ *      the nodes after the passed in node are deleted.
+ *      In the case where the object's list is just one
+ *      node big, or the node pointer passed in is NULL
+ *      then nothing is done.
+****************************************************************/
 void IntList::RemoveNodesAfter(IntNode *node)
 {
     IntNode *future;    //PROC - store the next node
     IntNode *current;   //PROC - track the current node
 
+    //checking if node == tail also ensures if the
+    //current list is only one node, and if head
+    //is passed in, won't do anything.
     if (node == nullptr || node == tail) //don't do anything.
         return;
 

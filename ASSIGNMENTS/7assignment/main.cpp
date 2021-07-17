@@ -1,33 +1,48 @@
+/****************************************************************
+ * AUTHOR           : Osbaldo Gonzalez Jr.
+ * ASSIGNMENT 06    : IntList Recursive && IntListIterator
+ * CLASS            : CS 3A
+ * SECTION          : 71206
+ * DUE DATE         : 7/15/2021
+****************************************************************/
+
 #include "intList.h"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 
-void FillIntList(IntList& list, int numPasses, int maxValue)
-{
-    for (int i = 0; i < numPasses; i++)
-    {
-        switch (rand()%3)
-        {
-            case 0:
-                list.push_back((rand()%maxValue)+1);
-                break;
-            case 1:
-                list.push_front((rand()%maxValue)+1);
-                break;
-            case 2:
-                list.pop_front();
-                break;
-        }
-    }
-}
+/*****************************************************************************
+ * 
+ *   IntList && IntListIterator tester
+ *______________________________________________________________________________
+ *   This program acts to test the IntList class and the IntListIterator
+ *   class. It is put through its paces.
+ *______________________________________________________________________________
+ *  INPUT:
+ *      none
+ *  OUTPUT:
+ *      IntList emptylist   //PROC - a list
+ *      IntList temp        //PROC - a list
+ *      IntList sorted      //PROC - a list
+ *      IntList listarray   //PROC - a list
+*****************************************************************************/
+
+/*****************************************************************************
+ * FillIntList
+ *  Just a convince function to fill in a list randomly. Can either
+ *  push_front, push_back, or pop_front. Takes in a list by reference,
+ *  the number of passes to try to add elements, and a max value for 
+ *  the random number inserted.
+*****************************************************************************/
+static void FillIntList(IntList& list, int numPasses, int maxValue);
 
 int main(void)
 {
-    IntList emptylist;
-    IntList temp;
-    IntList listarray[4];
-    time_t currentTime;
+    IntList emptylist;      //PROC - just keep an empty list around
+    IntList temp;           //PROC - used for temp storage of other lists
+    IntList sorted;         //PROC - a sorted list
+    IntList listarray[4];   //PROC - 4 sorted lists to play with
+    time_t currentTime;     //PROC - number used to seed srand.
     
     currentTime = time(NULL);
     srand(currentTime);  //seed random number generator
@@ -41,8 +56,8 @@ int main(void)
         FillIntList(listarray[i], 25, 500);
     
     //see what happens with the overloaded "=" operator
-    std::cout << "listarray[2] originally: ";
-    listarray[2].display(); std::cout << "\n";
+    std::cout << "listarray[2] originally:\n";
+    listarray[2].display(); std::cout << "\n\n";
     
     std::cout << "\nCopying listarray[2] into temp variable....\n";
     temp = listarray[2];
@@ -59,24 +74,64 @@ int main(void)
     temp.display(); std::cout << "\n";
     std::cout << "Displaying listarray[2] again\n";
     listarray[2].display(); std::cout << "\n";
-    
+
+    std::cout << "Modifying listarray[2].\n";
+    listarray[2].push_back(rand()%100);
+    std::cout << "Displaying temp again:\n";
+    temp.display(); std::cout << "\n";
+    std::cout << "Displaying listarray[2] again\n";
+    listarray[2].display(); std::cout << "\n\n";
+
+    listarray[2] = temp;
+    std::cout << "Executing: listarray[2] = temp\n";
+    std::cout << "Displaying temp again:\n";
+    temp.display(); std::cout << "\n";
+    std::cout << "Displaying listarray[2] again\n";
+    listarray[2].display(); std::cout << "\n";
     std::cout << "\n";
 
     //Testing iterator
     std::cout << "Displaying listarray[0]:\n";
     listarray[0].display(); std::cout << "\n";
-    std::cout << "Displaying listarray[1]:\n";
-    listarray[1].display(); std::cout << "\n";
-
     std::cout << "Displaying listarray[0] using IntListIterator:\n";
     for (IntListIterator i = listarray[0].begin();i != listarray[0].end(); ++i)
         std::cout << *i << " ";
     std::cout << "\n\n";
 
+    std::cout << "Displaying emptylist:\n";
+    emptylist.display(); std::cout << "\n";
+    std::cout << "Displaying emptylist using IntListIterator:\n";
+    for (IntListIterator i = emptylist.begin(); i != emptylist.end(); ++i)
+        std::cout << *i << " ";
+    std::cout << "\n\n";
+
+    FillIntList(sorted, 15, 100);
+    sorted.select_sort();
+    std::cout << "Displaying sorted:\n";
+    sorted.display(); std::cout << "\n";
+    std::cout << "Changing sorted list, while using IntListIterator.\n";
+    std::cout << "Will insert a number sorted if rand()%2 == 1\n";
+    for (IntListIterator i = sorted.begin(); i != sorted.end(); ++i)
+    {
+        std::cout << *i << " ";
+        if (rand()%2)
+            sorted.insert_sorted(rand()%100);
+    }
+    std::cout << "\nDisplaying sorted after:\n";
+    sorted.display(); std::cout << "\n";
+    std::cout 
+    << "Should be usually different, as when inserting a\n"
+    << "random number, it might go ahead or behind\n"
+    << "the node that IntListIterator is pointing too, the point\n"
+    << "is to see that still, we don't access any memory we are\n"
+    << "not supposed to, and end iterating correctly\n\n";
+
     //Testing front, back, length, sum, reverseDisplay
     std::cout << "Displaying listarray[3]:\n";
     listarray[3].display(); std::cout << "\n";
 
+    if (listarray[3].length() == 0)
+        listarray[3].push_back(rand()%100);
     std::cout
     << "The following methods will all be performed on lisarray[3]\n"
     << "Testing front():  " << listarray[3].front() << "\n"
@@ -86,13 +141,155 @@ int main(void)
     << "Testing reverseDisplay():\n";
     listarray[3].reverseDisplay(); std::cout << "\n\n";
 
+    //note testing front or back since its a emptylist,
+    //and I made the decision 
     std::cout 
     << "The follwing methods will all be perform on emptylist\n"
     << "Testing length(): " << emptylist.length() << "\n"
     << "Testing sum():    " << emptylist.sum() << " (Expected value "
     << "is " << (int)0x80000000 << ")\n"
     << "Testing reverseDisplay():\n";
-    emptylist.reverseDisplay(); std::cout << "\n";
+    emptylist.reverseDisplay(); std::cout << "\n\n";
 
+
+    IntList acopy(listarray[1]);    //TEST - copy constructor
+    std::cout << "Testing the copy constructor\n";
+    std::cout << "Displaying copy of listarray[1]\n";
+    acopy.display(); std::cout << "\n";
+    std::cout << "Displaying listarray[1]\n";
+    listarray[1].display(); std::cout << "\n\n";
+
+    std::cout << "Modifying the copied list\n";
+    acopy.push_back(rand()%100);
+    acopy.push_front(rand()%100);
+    std::cout << "Done pushing back and pushing front rand values!\n";
+    std::cout << "Displaying copy of listarray[1]\n";
+    acopy.display(); std::cout << "\n";
+    std::cout << "Displaying listarray[1]\n";
+    listarray[1].display(); std::cout << "\n\n";
+
+    std::cout << "Modifying listarray[1]:\n";
+    listarray[1].push_back(rand()%10000);
+    listarray[1].push_front(rand()%10000);
+    std::cout << "Done pushing back and pushing front rand values!\n";
+    std::cout << "Displaying copy of listarray[1]\n";
+    acopy.display(); std::cout << "\n";
+    std::cout << "Displaying listarray[1]\n";
+    listarray[1].display(); std::cout << "\n";
+    std::cout << "\n";
+
+
+
+    std::cout << "\n\nFor old times sake, lets see\n"
+              << "that we didn't break anything\n";
+    //OLD TEST FROM THE PREVIOUS ASSIGNMENT
+    using namespace std;
+    IntList L1, L2;
+    
+    cout << "Testing display function on empty List\n";
+    L1.display();
+    
+    cout << "\nTesting display function on one item List\n";
+    L1.push_front(100);
+    L1.display();
+    cout << endl;
+    
+    cout << "\nTesting display function on two item List\n";
+    L1.push_front(200);
+    L1.display();
+    cout << endl;
+    
+    cout << "\nTesting push_front function (by calling it 10 times)\n";
+    for (int i = 0; i < 10; i++){
+        L1.push_front(i);
+    }
+    
+    cout << "Testing display function on list with several items\n";
+    L1.display();
+    cout << endl;
+    
+    cout << "\nTesting the pop_front function\n";
+    for (int i = 0; i < 5; i++){
+        L1.pop_front();
+    }
+    
+    cout << "Testing display function after calling pop_front 5 times\n";
+    L1.display();
+    cout << endl;
+    
+    //void push_back( int value )
+    //void select_sort()
+    //void insert_sorted( int value )
+    //void remove_duplicates()
+    
+    cout << "\nTesting push_back function (by calling it 10 times)\n";
+    for (int i = 0; i < 10; i++){
+        L1.push_back(rand()%10);
+    }
+    
+    L1.display();
+    cout << endl;
+    
+    cout << "\nTesting select_sort() function\n";
+    L1.select_sort();
+    L1.display();
+    cout << endl;
+    
+    cout << "\nTesting push_back function (by calling it 10 times)\n";
+    for (int i = 0; i < 10; i++){
+        L1.insert_sorted(rand()%10);
+        cout << endl;
+        L1.display();
+    }
+    
+    cout << "\nTesting remove_duplicates() function\n";
+    L1.remove_duplicates();
+    L1.display();
+    cout << endl;
+    
+    cout << "\nTesting push_back() and push_front() function\n";
+    for (int i = 0; i < 10; i++){
+        L2.push_front(i);
+        L2.push_back(i);
+    }
+    
+    cout << endl;
+    L2.display();
+    cout << endl;
     return 0;
+}
+
+/****************************************************************
+ * 
+ *  FUNCTION: FillIntList()
+ *  //Static function
+ * --------------------------------------------------------------
+ *  Fill in a list randomly. Randomly chosen to push_back, or
+ *  push_front, or pop_front
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Can be a filled or empty list.
+ *  POST-CONDITIONS
+ *      The final list is possible to not have any elements if
+ *      you get unlucky and all the cases are just pop_front.
+ *      The more passes, the more you are assured to have
+ *      a list of length > 0.
+****************************************************************/
+static void FillIntList(IntList& list, int numPasses, int maxValue)
+{
+    for (int i = 0; i < numPasses; i++)
+    {
+        switch (rand()%3)
+        {
+            case 0:
+                list.push_back(rand()%(maxValue+1));
+                break;
+            case 1:
+                list.push_front(rand()%(maxValue+1));
+                break;
+            case 2:
+                list.pop_front();
+                break;
+        }
+    }
 }
