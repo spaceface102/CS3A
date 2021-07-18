@@ -373,6 +373,18 @@ DoublyLinkedList& DoublyLinkedList::operator=(const DoublyLinkedList& that)
 }
 //EOF
 
+IntNode* DoublyLinkedList::getNext(IntNode* node) const
+{
+    return node->next;
+}
+//EOF
+
+IntNode* DoublyLinkedList::getPrev(IntNode* node) const
+{
+    return node->prev;
+}
+//EOF
+
 void DoublyLinkedList::ClearDoublyLinkedList(void)
 {
     while (head != tail)
