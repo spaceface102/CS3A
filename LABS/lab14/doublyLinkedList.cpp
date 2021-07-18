@@ -116,15 +116,172 @@ int DoublyLinkedList::length(void) const
 
 void DoublyLinkedList::push_front(int value)
 {
-    if (head == nullptr)
+    if (head == nullptr)    //empty list
         head = tail = new IntNode(value);
     else
     {
         head->prev = new IntNode(value);
         head->prev->next = head;
         head = head->prev;
+    }
+}
+//EOF
+
+void DoublyLinkedList::push_back(int value)
+{
+    if (head == nullptr)    //empty list
+        head = tail = new IntNode(value);
+    else
+    {
+        tail->next = new IntNode(value);
+        tail->next->prev = tail;
+        tail = tail->next;
+    }
+}
+//EOF
+
+void DoublyLinkedList::pop_front(void)
+{
+    //no node or single node. (nothing will happen
+    //if we use delete on NULL, delete checks for that)
+    if (head == tail)
+    {
+        delete head;
+        head = tail = nullptr;
+    }
+    else
+    {
+        head = head->next;
+        delete head->prev;
         head->prev = nullptr;
     }
 }
 //EOF
 
+void DoublyLinkedList::pop_back(void)
+{
+    //no node or single node. (nothing will happen
+    //if we use delete on NULL, delete checks for that)
+    if (head == tail)
+    {
+        delete tail;
+        head = tail = nullptr;
+    }
+    else
+    {
+        tail = tail->prev;
+        delete tail->next;
+        tail->next = nullptr;
+    }
+}
+//EOF
+
+void DoublyLinkedList::select_sort(void)
+{
+    IntNode *subHead;   //PROC - head of the sub array
+    IntNode *current;   //PROC - the current node we are inspecting
+    IntNode *minNode;   //PROC - keep track of the minimum value node
+    int swap;           //PROC - used to swap data
+
+    subHead = head;
+    while (subHead != tail)
+    {
+        minNode = subHead;
+        current = subHead->next;
+        while (current != nullptr)
+        {
+            if (current->data < minNode->data)
+                minNode = current;
+            current = current->next;
+        }
+        swap = subHead->data;
+        subHead->data = minNode->data;
+        minNode->data = swap;
+
+        subHead = subHead->next;
+    }
+}
+//EOF
+
+void DoublyLinkedList::insert_sorted(int value)
+{
+    IntNode **current;          //PROC - track the current node indirectly
+    IntNode *previousOldNode;   //PROC - store the prev node of next node
+
+    if (head == nullptr)    //list doesn't have any nodes yet.
+    {
+        //one single node is automatically sorted
+        head = tail = new IntNode(value);
+        return;
+    }
+
+    if (value >= tail->data)
+    {
+        tail->next = new IntNode(value);
+        tail->next->prev = tail;
+        tail = tail->next;
+        return;
+    }
+
+    //For sure not touching the tail node due to prev if block
+    current = &head;
+    while (value > (*current)->data)
+        current = &((*current)->next);
+    
+    //*current node's data is greater or equal to value
+    //just always put the new node as the previous node
+    //remember, other than for head, current is pointing
+    //to the next pointer of a node.
+    previousOldNode = (*current)->prev;
+    (*current)->prev = new IntNode(value);
+    (*current)->prev->next = *current;
+    (*current)->prev->prev = previousOldNode;
+    *current = (*current)->prev;
+    //use of indirect pointer to avoid special case for
+    //chaning head.
+}
+//EOF
+
+bool DoublyLinkedList::remove(int value)
+{
+    IntNode **current;   //PROC - track the current node indirectly
+    IntNode *removeNode; //PROC - temp while rewiring linked list
+    bool removedValue;   //PROC - return value, true if a value is removed
+
+    removedValue = false;
+    current = &head;
+    while (*current != tail)
+    {
+        if ((*current)->data == value)
+        {
+            //at most most removeNode = tail->prev
+            removedValue = true;
+            removeNode = *current;
+            (*current)->next->prev = (*current)->prev;
+            *current = (*current)->next;
+            delete removeNode;
+        }
+        else
+            current = &((*current)->next);
+    }
+
+    if (tail == head)
+    {
+        if (tail != nullptr && tail->data == value)
+        {   //single node with specified value
+            removedValue = true;
+            delete tail;
+            head = tail = nullptr;
+        }
+    }
+    else //linked list at least has two nodes.
+    {
+        removedValue = true;
+        tail = tail->prev;
+        delete tail->next;
+        tail->next = nullptr;
+    }
+
+    return removedValue;
+}
+//EOF

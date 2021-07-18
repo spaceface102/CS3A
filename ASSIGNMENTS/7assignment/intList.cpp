@@ -501,6 +501,12 @@ void IntList::insert_sorted(int value)
     IntNode **current;  //PROC - indirect_pointer to a node.
     IntNode *aNode;     //PROC - pointer to the new inserted node.
 
+    if (head == nullptr)    //list doesn't have any nodes yet.
+    {
+        head = tail = new IntNode(value);
+        return;
+    }
+
     //avoid having to traverse through the whole
     //list. List is sorted, therefore tail will have
     //the biggest value: if tail->data is less than
