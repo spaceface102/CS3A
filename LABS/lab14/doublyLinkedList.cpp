@@ -37,7 +37,7 @@ DoublyLinkedList::DoublyLinkedList(const DoublyLinkedList& that)
 
 DoublyLinkedList::~DoublyLinkedList(void)
 {
-
+    ClearDoublyLinkedList();
 }
 //EOF
 
@@ -285,3 +285,102 @@ bool DoublyLinkedList::remove(int value)
     return removedValue;
 }
 //EOF
+
+DoublyLinkedList& DoublyLinkedList::operator=(const DoublyLinkedList& that)
+{
+    IntNode *current_that;  //PROC - track node from "that"
+    IntNode *current;       //PROC - track node from calling obj.
+    IntNode *newTail;       //PROC - in the event calling obj.'s list is bigger
+
+    //avoid case were same object is on both
+    //sides of the "=" operator.
+    if (this == &that)
+        return *this;       //just return the calling object
+    
+    //passed in list is empty
+    if (that.head == nullptr)
+    {
+        ClearDoublyLinkedList();
+        return *this;
+    }
+
+    //current object has no nodes or one node
+    //and "that" also at least has one node
+    if (head == tail)
+    {
+        current_that = that.head;
+        if (head == nullptr)
+            head = tail = new IntNode(current_that->data);
+        else
+            head->data = current_that->data;
+        
+        current_that = current_that->next;
+        while (current_that != nullptr)
+        {
+            tail->next = new IntNode(current_that->data);
+            tail->next->prev = tail;
+            tail = tail->next;
+            current_that = current_that->next;
+        }
+        return *this;
+    }
+
+    //not self referential, passed in IntList has at least a node
+    //and the current object has least has two nodes.
+    current = head;
+    current_that = that.head;
+    while (current != nullptr && current_that != nullptr)
+    {
+        current->data = current_that->data;
+        current = current->next;
+        current_that = current_that->next;
+    }
+
+    //each list must have NOT been the same size.
+    if (current != current_that)
+    {
+        //calling object's list is smaller, need to expand
+        if (current == nullptr)
+        {
+            while (current_that != nullptr)
+            {
+                tail->next = new IntNode(current_that->data);
+                tail->next->prev = tail;
+                tail = tail->next;
+                current_that = current_that->next;
+            }
+        }
+        else //current_that must be nullptr
+        {
+            //since we are assured by now the calling object has at
+            //least two nodes, and the passed in linked list "that"
+            //has at least one node, current at most is eq. to tail.
+            //current->prev would therefore be head at most.
+            newTail = current->prev;
+            while (current != tail)
+            {
+                current = current->next;
+                delete current->prev;
+            }
+            delete tail;
+            tail = newTail;
+            tail->next = nullptr;
+        }
+    }
+    //else both list were of the exact same size.
+
+    return *this;
+}
+//EOF
+
+void DoublyLinkedList::ClearDoublyLinkedList(void)
+{
+    while (head != tail)
+    {
+        head = head->next;
+        delete head->prev;
+    }
+
+    delete tail;
+    head = tail = nullptr;
+}

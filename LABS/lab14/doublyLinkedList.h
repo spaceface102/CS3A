@@ -45,6 +45,7 @@ private:
     **************/
     IntNode* getPrev(IntNode* node) const;
     IntNode* getNext(IntNode* node) const;
+    void ClearDoublyLinkedList(void);
 };
 
 #endif //DOUBLY_LINKED_LIST_CLASS_H
