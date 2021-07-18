@@ -1,0 +1,4 @@
+#ifndef PERSON_DATA_CLASS_H
+#define PERSON_DATA_CLASS_H
+
+#endif //PERSON_DATA_CLASS_H
