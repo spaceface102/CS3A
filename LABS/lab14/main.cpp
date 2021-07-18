@@ -165,10 +165,9 @@ int main(void)
     std::cout << "Testing display():\n";
     emptylist.display();
     std::cout << "\n\n";
-
-
+    
     DoublyLinkedList acopy(listarray[1]);    //TEST - copy constructor
-    std::cout << "Testing the copy constructor\n";
+    std::cout << "\nTesting the copy constructor\n";
     std::cout << "Displaying copy of listarray[1]\n";
     acopy.display(); std::cout << "\n";
     std::cout << "Displaying listarray[1]\n";
@@ -241,6 +240,20 @@ int main(void)
     std::cout << "Done!\n";
     emptylist.display();
     std::cout << "\n\n";
+
+    //Misc
+    std::cout << "\nTesting insert sorted on empty list\n";
+    std::cout << "Display emptylist\n";
+    emptylist.display(false); //display reverse just cuz
+    emptylist.insert_sorted(42);
+    std::cout << "\nDisplay emptylist after inserting sorted 42\n";
+    emptylist.display(false);
+    std::cout << "\nOne more!";
+    emptylist.insert_sorted(rand()%100);
+    std::cout << "\nInserted rand value between 0 and 99\n";
+    emptylist.display();
+
+    std::cout << "\nTesting Complete!\n";
     return 0;
 }
 
