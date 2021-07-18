@@ -672,7 +672,7 @@ IntNode* DoublyLinkedList::getNext(IntNode* node) const
  *  POST-CONDITIONS
  *      The passed in node will not be modified.
  *      If node address is invalid, unexpected results.
-****************************************************************
+****************************************************************/
 IntNode* DoublyLinkedList::getPrev(IntNode* node) const
 {
     return node->prev;

@@ -235,8 +235,6 @@ int main(void)
     copy.display();
     std::cout << "\n\n";
 
-
-
     std::cout << "Final remove test. (on empty list)\n";
     emptylist.display();
     emptylist.remove(0); //avoid calling front since no nodes in empty list
