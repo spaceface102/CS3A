@@ -274,7 +274,7 @@ bool DoublyLinkedList::remove(int value)
             head = tail = nullptr;
         }
     }
-    else //linked list at least has two nodes.
+    else if (tail->data == value) //linked list at least has two nodes.
     {
         removedValue = true;
         tail = tail->prev;

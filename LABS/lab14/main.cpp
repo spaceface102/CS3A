@@ -1,9 +1,9 @@
 /****************************************************************
  * AUTHOR           : Osbaldo Gonzalez Jr.
- * ASSIGNMENT 06    : IntList Recursive && IntListIterator
+ * ASSIGNMENT 06    : Doubly linked IntList
  * CLASS            : CS 3A
  * SECTION          : 71206
- * DUE DATE         : 7/15/2021
+ * DUE DATE         : 7/16/2021
 ****************************************************************/
 
 #include "doublyLinkedList.h"
@@ -13,7 +13,7 @@
 
 /*****************************************************************************
  * 
- *   IntList && IntListIterator tester
+ *   DoublyLinkedList && IntListIterator tester
  *______________________________________________________________________________
  *   This program acts to test the IntList class and the IntListIterator
  *   class. It is put through its paces.
@@ -21,10 +21,10 @@
  *  INPUT:
  *      none
  *  OUTPUT:
- *      IntList emptylist   //PROC - a list
- *      IntList temp        //PROC - a list
- *      IntList sorted      //PROC - a list
- *      IntList listarray   //PROC - a list
+ *      DoublyLinkedList temp        //PROC - a list
+ *      DoublyLinkedList emptylist   //PROC - a list
+ *      DoublyLinkedList sorted      //PROC - a list
+ *      DoublyLinkedList listarray   //PROC - a list
 *****************************************************************************/
 
 /*****************************************************************************
@@ -98,14 +98,26 @@ int main(void)
         std::cout << *i << " ";
     std::cout << "\n\n";
 
-    std::cout << "Displaying emptylist:\n";
+    int length = listarray[0].length();
+    IntListIterator iterator = listarray[0].begin();
+    std::cout << "Display list up to mid point\n";
+    for (int i = 0; i < length/2; i++, ++iterator)
+        std::cout << *iterator << " ";
+    std::cout << "\nDisplay list from midpoint to begining. (operator--)\n";
+    --iterator;
+    for (int i = length/2; i > 0; i--, --iterator)
+        std::cout << *iterator << " ";
+    std::cout << "\nDisplaying listarray[0] reversed:\n";
+    listarray[0].display(false); std::cout << "\n";
+
+    std::cout << "\n\nDisplaying emptylist:\n";
     emptylist.display(); std::cout << "\n";
     std::cout << "Displaying emptylist using IntListIterator:\n";
     for (IntListIterator i = emptylist.begin(); i != emptylist.end(); ++i)
         std::cout << *i << " ";
     std::cout << "\n\n";
 
-    FillIntList(sorted, 15, 100);
+    FillIntList(sorted, 20, 100);
     sorted.select_sort();
     std::cout << "Displaying sorted:\n";
     sorted.display(); std::cout << "\n";
@@ -138,7 +150,10 @@ int main(void)
     << "Testing back():   " << listarray[3].back() << "\n"
     << "Testing length(): " << listarray[3].length() << "\n"
     << "Testing display(false):\n";
-    listarray[3].display(false); std::cout << "\n\n";
+    listarray[3].display(false); 
+    std::cout << "Testing display():\n";
+    listarray[3].display();
+    std::cout << "\n\n";
 
     //note testing front or back since its a emptylist,
     //and I made the decision 
@@ -146,7 +161,10 @@ int main(void)
     << "The follwing methods will all be perform on emptylist\n"
     << "Testing length(): " << emptylist.length() << "\n"
     << "Testing display(false):\n";
-    emptylist.display(false); std::cout << "\n\n";
+    emptylist.display(false); 
+    std::cout << "Testing display():\n";
+    emptylist.display();
+    std::cout << "\n\n";
 
 
     DoublyLinkedList acopy(listarray[1]);    //TEST - copy constructor
@@ -173,8 +191,58 @@ int main(void)
     acopy.display(); std::cout << "\n";
     std::cout << "Displaying listarray[1]\n";
     listarray[1].display(); std::cout << "\n";
-    std::cout << "\n";
+    std::cout << "\n\n";
 
+    //Test remove function
+    DoublyLinkedList testRemove, copy;
+    std::cout << "Testing remove method\n";
+    for (int i = 0; i < 10; i++)
+        testRemove.push_back(42);
+    
+    copy = testRemove;
+    std::cout << "List before using remove:\n";
+    listarray[0].display();
+    listarray[0].remove(listarray[0].front());
+    std::cout << "\nRemoving all values equal to that of the first node\n";
+    std::cout << "Done!\n";
+    listarray[0].display();
+    std::cout << "\n\n";
+    
+    std::cout << "List before using remove:\n";
+    testRemove.display();
+    testRemove.remove(testRemove.front());
+    std::cout << "\nRemoving all values equal to that of the first node\n";
+    std::cout << "Done!\n";
+    testRemove.display();
+    std::cout << "\n\n";
+
+    copy.push_front(90);
+    std::cout << "List before using remove:\n";
+    copy.display();
+    copy.remove(copy.front());
+    std::cout << "\nRemoving all values equal to that of the first node\n";
+    std::cout << "Done!\n";
+    copy.display();
+    std::cout << "\n\n";
+
+    copy.pop_front(); //undo push_front(90)
+    copy.push_back(90);
+    std::cout << "List before using remove:\n";
+    copy.display();
+    copy.remove(copy.front());
+    std::cout << "\nRemoving all values equal to that of the first node\n";
+    std::cout << "Done!\n";
+    copy.display();
+    std::cout << "\n\n";
+
+
+
+    std::cout << "Final remove test. (on empty list)\n";
+    emptylist.display();
+    emptylist.remove(0); //avoid calling front since no nodes in empty list
+    std::cout << "Done!\n";
+    emptylist.display();
+    std::cout << "\n\n";
     return 0;
 }
 
@@ -214,4 +282,5 @@ static void FillIntList(DoublyLinkedList& list, int numPasses, int maxValue)
                 break;
         }
     }
+    list.push_back(rand()%(maxValue+1)); //ensure at least one value
 }
