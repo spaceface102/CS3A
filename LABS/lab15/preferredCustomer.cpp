@@ -97,7 +97,7 @@ void PreferredCustomer::congratsDiscountLevel(double prevDiscount)
 
 void PreferredCustomer::yourSavingsToday(double amount)
 {   
-    std::string mailingDecision;
+    static std::string mailingDecision;    //PROC - get decision mailinglist
 
     std::cout
     << "Your savings today\n"
@@ -105,29 +105,32 @@ void PreferredCustomer::yourSavingsToday(double amount)
     << "You payed:            $" << amount*(1-discountLevel) << "\n"
     << "Thats a savings of:   $" << amount*discountLevel << "\n";
 
-    std::cout
-    << "\n\nWould you like to even more?\n"
-    << "Subscribe to our maling list today!\n"
-    << "Be the first to know when we have flash sales!\n"
-    << "Would you like to be part of the mailing list?\n"
-    << "Y/N: ";
-
-    std::cin >> mailingDecision;
-    if (mailingDecision == "y" || mailingDecision == "Y")
+    if (!getMailingListStatus())
     {
         std::cout
-        << "You will be getting a booklet with all sorts of info\n"
-        << "mailed to you house bi-weekly!\n"
-        << getAddress() << " " << getCity() << " " << getZip() << "\n";
+        << "\n\nWould you like to even more?\n"
+        << "Subscribe to our maling list today!\n"
+        << "Be the first to know when we have flash sales!\n"
+        << "Would you like to be part of the mailing list?\n"
+        << "Y/N: ";
 
-        updateMailingListStatus(true);
-    }
-    else
-    {
-        std::cout
-        << "Thank you!\n"
-        << "Hope you continue shoping with us!\n";
-        //by default mailing list status is false.
+        std::cin >> mailingDecision;
+        if (mailingDecision == "y" || mailingDecision == "Y")
+        {
+            std::cout
+            << "You will be getting a booklet with all sorts of info\n"
+            << "mailed to you house bi-weekly!\n"
+            << getAddress() << " " << getCity() << " " << getZip() << "\n";
+
+            updateMailingListStatus(true);
+        }
+        else
+        {
+            std::cout
+            << "Thank you!\n"
+            << "Hope you continue shoping with us!\n";
+            //by default mailing list status is false.
+        }
     }
 }
 //EOF

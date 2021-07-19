@@ -18,11 +18,11 @@ public:
     ** MUTATORS **
     *************/
     void setLastName(const std::string& _lastName);
-    void setFirstName(const std::string& _lastName);
+    void setFirstName(const std::string& _firstName);
     void setAddress(const std::string& _address);
-    void setCity(const std::string& _address);
-    void setState(const std::string& _address);
-    void setPhone(const std::string& _address);
+    void setCity(const std::string& _city);
+    void setState(const std::string& _state);
+    void setPhone(const std::string& _phone);
     void setZip(int _zip);
 
     /**************

@@ -25,6 +25,7 @@ public:
     **************/
     double getPurchasesAmount(void) const;
     double getDiscountLevel(void) const;
+    
 private:
     /**************
     **  HELPERS  **
