@@ -35,6 +35,10 @@ public:
     {
         std::cout << "STUPID\n";
     }
+    void test()
+    {
+        std::cout << "I am lazy!\n";
+    }
 };
 
 class Sky
@@ -54,7 +58,7 @@ protected:
 class Ground : public dumb, private Sky
 {
 public:
-    Ground() : type_(3)
+    Ground()
     {
         std::cout << "Default Ground.\n";
     }
@@ -71,7 +75,7 @@ public:
 
 int main(void)
 {
-    Ground test(42);
-    test.test();
+    stupid yuh;
+    yuh.test();
     return 0;
 }
