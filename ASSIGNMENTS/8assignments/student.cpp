@@ -398,6 +398,7 @@ const Student& Student::setStudentFromFile(std::istream& in)
     std::string firstName;  //PROC - get first name from file
     std::string lastName;   //PROC - get last name from file
     int pushbackchar;       //PROC - just to push last character
+    
     in 
     >> firstName >> lastName >> studentId >> phoneNumber
     >> age >> gender >> standing_str >> gpa;

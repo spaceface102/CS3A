@@ -15,8 +15,8 @@ public:
     void print(std::ostream& out = std::cout) const override;
 
 private:
-    const int gradMonth;            //PROC - grad month for current year
-    const int gradDay;              //PROC - grad day for current year
+    int gradMonth;            //PROC - grad month for current year
+    int gradDay;              //PROC - grad day for current year
     double totalScoreAssignments;   //PROC - assignment scores, total
     bool javaKnowledge;             //PROC - yes or no question for constructor
     Date projectedGraduation;       //PROC - based on current class standing
