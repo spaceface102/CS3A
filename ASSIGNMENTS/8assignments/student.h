@@ -10,8 +10,9 @@ public:
     enum class ClassStanding {FRESHMAN = 0, SOPHMORE, JUNIOR, SENIOR};
 
     Student(void);
-    Student(std::string name, uint64_t studentId, std::string phoneNumber,
-    uint64_t age, std::string gender, ClassStanding standing, double GPA);
+    Student(std::string name, uint64_t studentId,
+        std::string phoneNumber, uint64_t age, std::string gender,
+        ClassStanding standing, double gpa);
 
     const std::string& getName(void) const;
     uint64_t getStudentID(void) const;
@@ -22,12 +23,12 @@ public:
     double getGPA(void) const;
 
     void setName(const std::string& Aname);
-    void setStudentID(uint64_t Aid);
+    void setStudentID(uint64_t An_id);
     void setPhoneNumber(const std::string& Aphone);
-    void setAge(uint64_t Anage);
+    void setAge(uint64_t An_age);
     void setGender(const std::string& Agender);
     void setClassStanding(ClassStanding Astanding);
-    void setGPA(double AGPA);
+    void setGPA(double Agpa);
 
 private:
     std::string name;
@@ -36,7 +37,7 @@ private:
     uint64_t age;
     std::string gender;
     ClassStanding standing;
-    double GPA;
+    double gpa;
 
 };
 

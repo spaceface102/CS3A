@@ -26,7 +26,7 @@ Student::Student(void)
 :
 name("No Name"), studentId(0), phoneNumber("No Phone"), age(0),
 gender("No gender"), standing(Student::ClassStanding::FRESHMAN),
-GPA(0.0) 
+gpa(0.0) 
 {}
 //EOF
 
@@ -52,10 +52,10 @@ GPA(0.0)
  *      or mutators.
 ****************************************************************/
 Student::Student(std::string name, uint64_t studentId, std::string phoneNumber,
-uint64_t age, std::string gender, ClassStanding standing, double GPA)
+uint64_t age, std::string gender, ClassStanding standing, double gpa)
 :
 name(name), studentId(studentId), phoneNumber(phoneNumber), age(age),
-gender(gender), standing(standing), GPA(GPA)
+gender(gender), standing(standing), gpa(gpa)
 {}
 //EOF
 
@@ -79,6 +79,25 @@ const std::string& Student::getName(void) const
 
 /****************************************************************
  * 
+ *  Method setName: Class Student
+ *  //PUBLIC MUTATOR
+ * --------------------------------------------------------------
+ *  Set a new name for the calling Student object
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call method on an object.
+ *      Passed in arg of type std::string
+ * 
+ *  POST-CONDITIONS
+ *      No return type, we are just changing the private
+ *      name field for the Student object.
+****************************************************************/
+void Student::setName(const std::string& Aname)
+    {name = Aname;}
+//EOF
+
+/****************************************************************
+ * 
  *  Method getStudentID: Class Student
  *  //PUBLIC ACCESSOR
  * --------------------------------------------------------------
@@ -93,6 +112,25 @@ const std::string& Student::getName(void) const
 ****************************************************************/
 uint64_t Student::getStudentID(void) const
     {return studentId;}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method setStudentID: Class Student
+ *  //PUBLIC MUTATOR
+ * --------------------------------------------------------------
+ *  Set a new ID for the calling Student object
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call method on an object.
+ *      Passed in arg of type uint64_t
+ * 
+ *  POST-CONDITIONS
+ *      No return type, we are just changing the private
+ *      ID field for the Student object.
+****************************************************************/
+void Student::setStudentID(uint64_t An_id)
+    {studentId = An_id;}
 //EOF
 
 /****************************************************************
@@ -115,6 +153,25 @@ const std::string& Student::getPhoneNumber(void) const
 
 /****************************************************************
  * 
+ *  Method setPhoneNumber: Class Student
+ *  //PUBLIC MUTATOR
+ * --------------------------------------------------------------
+ *  Set a new phone number for the calling Student object
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call method on an object.
+ *      Passed in arg of type std::string
+ * 
+ *  POST-CONDITIONS
+ *      No return type, we are just changing the private
+ *      phoneNumber field for the Student object.
+****************************************************************/
+void Student::setPhoneNumber(const std::string& Aphone)
+    {phoneNumber = Aphone;}
+//EOF
+
+/****************************************************************
+ * 
  *  Method getAge: Class Student
  *  //PUBLIC ACCESSOR
  * --------------------------------------------------------------
@@ -133,6 +190,25 @@ uint64_t Student::getAge(void) const
 
 /****************************************************************
  * 
+ *  Method setAge: Class Student
+ *  //PUBLIC MUTATOR
+ * --------------------------------------------------------------
+ *  Set a new age for the calling Student object
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call method on an object.
+ *      Passed in arg of type uint64_t
+ * 
+ *  POST-CONDITIONS
+ *      No return type, we are just changing the private
+ *      age field for the Student object.
+****************************************************************/
+void Student::setAge(uint64_t An_age)
+    {age = An_age;}
+//EOF
+
+/****************************************************************
+ * 
  *  Method getGender: Class Student
  *  //PUBLIC ACCESSOR
  * --------------------------------------------------------------
@@ -147,6 +223,26 @@ uint64_t Student::getAge(void) const
 ****************************************************************/
 const std::string& Student::getGender(void) const
     {return gender;}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method setGender: Class Student
+ *  //PUBLIC MUTATOR
+ * --------------------------------------------------------------
+ *  Set a new gender for the calling Student object
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call method on an object.
+ *      Passed in arg of type std::string
+ * 
+ *  POST-CONDITIONS
+ *      No return type, we are just changing the private
+ *      gender field for the Student object.
+****************************************************************/
+void Student::setGender(const std::string& Agender)
+    {gender = Agender;}
+//EOF
 
 /****************************************************************
  * 
@@ -172,6 +268,25 @@ const std::string& Student::getClassStanding(void) const
 
 /****************************************************************
  * 
+ *  Method setClassStanding: Class Student
+ *  //PUBLIC MUTATOR
+ * --------------------------------------------------------------
+ *  Set a new class standing for the calling Student object
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call method on an object.
+ *      Passed in arg of type Student::ClassStanding
+ * 
+ *  POST-CONDITIONS
+ *      No return type, we are just changing the private
+ *      standing (class standing) field for the Student object.
+****************************************************************/
+void Student::setClassStanding(ClassStanding Astanding)
+    {standing = Astanding;}
+//EOF
+
+/****************************************************************
+ * 
  *  Method getGPA: Class Student
  *  //PUBLIC ACCESSOR
  * --------------------------------------------------------------
@@ -185,4 +300,24 @@ const std::string& Student::getClassStanding(void) const
  *      the object's GPA using this method.
 ****************************************************************/
 double Student::getGPA(void) const
-    {return GPA;}
+    {return gpa;}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method setGPA: Class Student
+ *  //PUBLIC MUTATOR
+ * --------------------------------------------------------------
+ *  Set a new gpa for the calling Student object
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call method on an object.
+ *      Passed in arg of type double
+ * 
+ *  POST-CONDITIONS
+ *      No return type, we are just changing the private
+ *      gpa field for the Student object.
+****************************************************************/
+void Student::setGPA(double AGPA)
+    {gpa = AGPA;}
+//EOF
