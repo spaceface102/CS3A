@@ -8,7 +8,8 @@
 class Student
 {
 public:
-    enum class ClassStanding {FRESHMAN = 0, SOPHMORE, JUNIOR, SENIOR};
+    enum class ClassStanding 
+    {FRESHMAN = 0, SOPHMORE, JUNIOR, SENIOR, INVALID};
 
     Student(void);
     Student(std::string name, uint64_t studentId,
@@ -31,6 +32,7 @@ public:
     void setGender(const std::string& Agender);
     void setClassStanding(ClassStanding Astanding);
     void setGPA(double Agpa);
+    virtual void setStudentFromFile(std::istream& in = std::cin);
 
 private:
     std::string name;
@@ -39,6 +41,7 @@ private:
     uint64_t age;
     std::string gender;
     ClassStanding standing;
+    std::string standing_str;
     double gpa;
 
 };

@@ -8,6 +8,8 @@
 
 #include "student.h"
 #include <iostream>
+#include <cctype>
+
 /****************************************************************
  * 
  *  Method Constructor: Class Student
@@ -27,7 +29,7 @@ Student::Student(void)
 :
 name("No Name"), studentId(0), phoneNumber("No Phone"), age(0),
 gender("No gender"), standing(Student::ClassStanding::FRESHMAN),
-gpa(0.0) 
+standing_str("Freshman"), gpa(0.0)
 {}
 //EOF
 
@@ -57,7 +59,13 @@ uint64_t age, std::string gender, ClassStanding standing, double gpa)
 :
 name(name), studentId(studentId), phoneNumber(phoneNumber), age(age),
 gender(gender), standing(standing), gpa(gpa)
-{}
+{
+    static const std::string CLASS_STANDING_TABLE[5] = 
+    {"Freshman", "Sophmore", "Junior", "Senior", "Invalid"};
+
+    standing_str = 
+    CLASS_STANDING_TABLE[static_cast<int>(standing)];
+}
 //EOF
 
 /****************************************************************
@@ -261,10 +269,7 @@ void Student::setGender(const std::string& Agender)
 ****************************************************************/
 const std::string& Student::getClassStanding(void) const
 {
-    static const std::string CLASS_STANDING_TABLE[4] = 
-    {"Freshman", "Sophmore", "Junior", "Senior"};
-
-    return CLASS_STANDING_TABLE[static_cast<int>(standing)];
+    return standing_str;
 }
 
 /****************************************************************
@@ -351,5 +356,40 @@ void Student::print(std::ostream& out) const
     << "Gender:         " << gender << "\n"
     << "Class Standing: " << getClassStanding() << "\n"
     << "GPA:            " << gpa << "\n";
+}
+//EOF
+
+void Student::setStudentFromFile(std::istream& in)
+{
+    std::string firstName;  //PROC - get first name from file
+    std::string lastName;   //PROC - get last name from file
+
+    in 
+    >> firstName >> lastName >> studentId >> phoneNumber
+    >> age >> gender >> standing_str >> gpa;
+
+    //set private field name
+    name = firstName + " " + lastName;
+
+    //set standing (enum class)
+    switch (tolower(standing_str.at(0)))
+    {
+        case 'f':
+            standing = ClassStanding::FRESHMAN;
+            break;
+        case 's':
+            if (tolower(standing_str.at(1)) == 'o')
+                standing = ClassStanding::SOPHMORE;
+            else if (tolower(standing_str.at(1)) == 'e')
+                standing = ClassStanding::SENIOR;
+            else
+                standing = ClassStanding::INVALID;
+            break;
+        case 'j':
+            standing = ClassStanding::JUNIOR;
+            break;
+        default:
+            standing = ClassStanding::INVALID;
+    }
 }
 //EOF
