@@ -286,9 +286,17 @@ const std::string& Student::getClassStanding(void) const
  *  POST-CONDITIONS
  *      No return type, we are just changing the private
  *      standing (class standing) field for the Student object.
+ *      This also updates the standing_str.
 ****************************************************************/
 void Student::setClassStanding(ClassStanding Astanding)
-    {standing = Astanding;}
+{
+    static const std::string CLASS_STANDING_TABLE[5] = 
+    {"Freshman", "Sophmore", "Junior", "Senior", "Invalid"};
+
+    standing = Astanding;
+    standing_str = 
+    CLASS_STANDING_TABLE[static_cast<int>(standing)];
+}
 //EOF
 
 /****************************************************************
@@ -359,11 +367,37 @@ void Student::print(std::ostream& out) const
 }
 //EOF
 
-void Student::setStudentFromFile(std::istream& in)
+/****************************************************************
+ * 
+ *  Method setStudentFromFile: Class Student
+ *  //PUBLIC MUTATOR
+ *  //VIRTUAL
+ * --------------------------------------------------------------
+ *  Grabs all the records from a file. Useful if there is a
+ *  large file with all sorts of records that need to be
+ *  input quickly.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call method on an object. The object can be a
+ *      temp, r-value object, or an object with an l-value.
+ * 
+ *      Can optionally pass in any std::istream, by default, 
+ *      uses std::cin to get input.
+ * 
+ *      If comming from file, must include all necessary
+ *      data.
+ * 
+ *  POST-CONDITIONS
+ *      The method will look for trailing new lines at the end
+ *      of input. You don't need to worry about spaces between
+ *      input, as long as there is an obvious seperating
+ *      character between the data fields.
+****************************************************************/
+const Student& Student::setStudentFromFile(std::istream& in)
 {
     std::string firstName;  //PROC - get first name from file
     std::string lastName;   //PROC - get last name from file
-
+    int pushbackchar;       //PROC - just to push last character
     in 
     >> firstName >> lastName >> studentId >> phoneNumber
     >> age >> gender >> standing_str >> gpa;
@@ -391,5 +425,13 @@ void Student::setStudentFromFile(std::istream& in)
         default:
             standing = ClassStanding::INVALID;
     }
+
+    //finish the line
+    while (in && in.get() != '\n')
+        ;
+    while (in && (pushbackchar = in.get()) == '\n')
+        ;
+    in.putback(pushbackchar);
+    return *this;
 }
 //EOF

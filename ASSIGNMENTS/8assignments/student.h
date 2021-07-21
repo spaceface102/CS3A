@@ -32,7 +32,7 @@ public:
     void setGender(const std::string& Agender);
     void setClassStanding(ClassStanding Astanding);
     void setGPA(double Agpa);
-    virtual void setStudentFromFile(std::istream& in = std::cin);
+    virtual const Student& setStudentFromFile(std::istream& in = std::cin);
 
 private:
     std::string name;
