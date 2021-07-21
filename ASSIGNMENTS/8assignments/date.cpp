@@ -649,3 +649,12 @@ long Date::ConvertToDays(void) const
                 + YearsToDays(year);
 }
 //EOF
+
+
+
+//Extra for assignment 8
+std::ostream& operator<<(std::ostream& out, const Date& dt)
+{
+    out << dt.monthName << ' ' << dt.day << ", " << dt.year;
+    return out;
+}

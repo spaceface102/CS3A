@@ -7,6 +7,7 @@
 ****************************************************************/
 
 #include "student.h"
+#include <iostream>
 /****************************************************************
  * 
  *  Method Constructor: Class Student
@@ -320,4 +321,35 @@ double Student::getGPA(void) const
 ****************************************************************/
 void Student::setGPA(double AGPA)
     {gpa = AGPA;}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method print: Class Student
+ *  //PUBLIC ACCESSOR
+ *  //VIRTUAL
+ * --------------------------------------------------------------
+ *  Print all the attributes related to a Student object.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call method on an object.
+ * 
+ *      Can optionally pass in any std::ostream, by default, 
+ *      uses std::cout to display output.
+ * 
+ *  POST-CONDITIONS
+ *      The object's state will remain constant. All private
+ *      fields will have their own line for output.
+****************************************************************/
+void Student::print(std::ostream& out) const
+{
+    out
+    << "Name:           " << name << "\n"
+    << "Student ID:     " << studentId << "\n"
+    << "Phone Number:   " << phoneNumber << "\n"
+    << "Age:            " << age << "\n"
+    << "Gender:         " << gender << "\n"
+    << "Class Standing: " << getClassStanding() << "\n"
+    << "GPA:            " << gpa << "\n";
+}
 //EOF

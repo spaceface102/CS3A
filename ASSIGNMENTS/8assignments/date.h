@@ -21,13 +21,19 @@ public:
     /**************
     ** ACCESSORS **
     **************/
+
     void printNumeric() const;
     void printAlpha() const;
 
     /***************
     **  CREATORS  ** //makes a new object and returns that object
     ***************/
+
     Date addDays(int d) const; //extra credit
+
+    //used for student class (assignment 8)
+
+    friend std::ostream& operator<<(std::ostream& out, const Date& dt);
 private:
     /*********************
     ** HELPER FUNCTIONS **

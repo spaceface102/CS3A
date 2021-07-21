@@ -3,6 +3,7 @@
 
 #include <string>
 #include <cstdint>
+#include <iostream>
 
 class Student
 {
@@ -21,6 +22,7 @@ public:
     const std::string& getGender(void) const;
     const std::string& getClassStanding(void) const;
     double getGPA(void) const;
+    virtual void print(std::ostream& out = std::cout) const;
 
     void setName(const std::string& Aname);
     void setStudentID(uint64_t An_id);
