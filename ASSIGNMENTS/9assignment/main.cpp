@@ -95,12 +95,12 @@ void FillLinkedList(LinkedList<E>& list, int numPasses, int minValue, int maxVal
         switch (rand()%3)
         {
             case 0:
-                list.push_back(rand()%(minValue+1) + 
-                (maxValue - minValue) + rand_tail);
+                list.push_back(rand()%(maxValue - minValue + 1) + 
+                minValue + rand_tail);
                 break;
             case 1:
-                list.push_front(rand()%(minValue+1) 
-                + (maxValue - minValue) + rand_tail);
+                list.push_front(rand()%(maxValue - minValue + 1) 
+                + minValue + rand_tail);
                 break;
             case 2:
                 try
@@ -238,9 +238,25 @@ void FullTest(void)
     //note testing front or back since its a emptylist,
     //and I made the decision 
     std::cout 
-    << "The follwing methods will all be perform on emptylist\n"
+    << "\n\nThe follwing methods will all be perform on emptylist\n"
     << "Testing length(): " << emptylist.length() << "\n"
     << "Testing sum():    " << emptylist.sum() << "\n";
+    //Force to throw exception
+    std::cout << "Testing front():\n";
+    try
+        {emptylist.front();}
+    catch (const ListEmpty& exc)
+        {std::cout << exc.what() << "\n";}
+    std::cout << "Testing back():\n";
+    try
+        {emptylist.back();}
+    catch (const ListEmpty& exc)
+        {std::cout << exc.what() << "\n";}
+    std::cout << "Testing pop_front():\n";
+    try
+        {emptylist.pop_front();}
+    catch (const ListEmpty& exc)
+        {std::cout << exc.what() << "\n";}
 
     LinkedList<E> acopy(listarray[1]);    //TEST - copy constructor
     std::cout << "Testing the copy constructor\n";

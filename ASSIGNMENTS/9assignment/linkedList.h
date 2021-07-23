@@ -63,7 +63,8 @@ private:
     void RemoveNodesAfter(Node<E> *node);
 };
 
-/* NOTE: To be able to use ALL the methods preseneted by this class
+/* NOTE:
+ * To be able to use ALL the methods preseneted by this class
  * the template type used for the LinkedList must have overload
  * defintions for operator=, operator<<, operator+, operator<,
  * operator>=, operator>, operator== all with the same type being
