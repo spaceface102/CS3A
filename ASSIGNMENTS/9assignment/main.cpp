@@ -32,17 +32,139 @@
  *  Just a convince function to fill in a list randomly. Can either
  *  push_front, push_back, or pop_front. Takes in a list by reference,
  *  the number of passes to try to add elements, and a max value for 
- *  the random number inserted.
+ *  the random number inserted. If pop_front gets used on an empty list,
+ *  it also conveniently handles the exception, and continues execution.
+ * 
+ * FullTest
+ *  A function that does the whole range of test on a specified templated
+ *  Linked List type.
 *****************************************************************************/
 template<typename E>
 static void FillLinkedList(LinkedList<E>& list, int numPasses, int maxValue);
+template<typename E>
+static void FullTest(void);
+
+class CustomTest
+{
+public:
+    CustomTest(void)
+    {
+        static int i = 0;
+        std::cout << "Class CustomTest default constructor "
+        << "instance number: " << i++ << "\n";
+    }
+    CustomTest(int)
+    {
+        static int i = 0;
+        std::cout << "Class CustomTest int copy constructor.1"
+        << "instance number: " << i++ << "\n";
+    }
+    CustomTest& operator=(const CustomTest&)
+    {   
+        static int i = 0;
+        std::cout << "operator= instance number: " << i++ << "\n";
+        return *this;
+    }
+    CustomTest operator+(const CustomTest&) const
+    {
+        static int i = 0;
+        std::cout << "operator+ instance number: " << i++ << "\n";
+        return CustomTest();    //just return default constructor.
+    }
+    bool operator<(const CustomTest&) const
+    {
+        srand(time(NULL));
+        static int i = 0;
+        std::cout << "operator< instance number: " << i++ << "\n";
+        return rand()%2;
+    }
+    bool operator>=(const CustomTest&) const
+    {        
+        srand(time(NULL));
+        static int i = 0;
+        std::cout << "operator>= instance number: " << i++ << "\n";
+        return rand()%2;
+    }
+    bool operator>(const CustomTest&) const
+    {
+        srand(time(NULL));
+        static int i = 0;
+        std::cout << "operator> instance number: " << i++ << "\n";
+        return rand()%2;
+    }
+    bool operator==(const CustomTest&) const
+    {
+        srand(time(NULL));
+        static int i = 0;
+        std::cout << "operator== instance number: " << i++ << "\n";
+        return rand()%2;
+    }
+};
+
+//Part of the CustomTest class
+std::ostream& operator<<(std::ostream& out, const CustomTest&)
+{
+    static int i = 0;
+    std::cout << "operator<< instance number: " << i++ << "\n";
+    return out;
+}
 
 int main(void)
 {
-    LinkedList<int> emptylist;      //PROC - just keep an empty list around
-    LinkedList<int> temp;           //PROC - used for temp storage of other lists
-    LinkedList<int> sorted;         //PROC - a sorted list
-    LinkedList<int> listarray[4];   //PROC - 4 sorted lists to play with
+    FullTest<CustomTest>();
+    return 0;
+}
+
+/****************************************************************
+ * 
+ *  FUNCTION: FillLinkedList()
+ *  //Static function
+ * --------------------------------------------------------------
+ *  Fill in a list randomly. Randomly chosen to push_back, or
+ *  push_front, or pop_front. Will also use exceptions in the
+ *  event that pop_front throws an exception.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Can be a filled or empty list.
+ *  POST-CONDITIONS
+ *      The final list is possible to not have any elements if
+ *      you get unlucky and all the cases are just pop_front.
+ *      The more passes, the more you are assured to have
+ *      a list of length > 0.
+ *      
+ *      In the event that pop_front is used on an empty list,
+ *      will handle the exception, and display .what() method.
+****************************************************************/
+template<typename E>
+static void FillLinkedList(LinkedList<E>& list, int numPasses, int maxValue)
+{
+    for (int i = 0; i < numPasses; i++)
+    {
+        switch (rand()%3)
+        {
+            case 0:
+                list.push_back(rand()%(maxValue+1));
+                break;
+            case 1:
+                list.push_front(rand()%(maxValue+1));
+                break;
+            case 2:
+                try
+                    {list.pop_front();}
+                catch (const ListEmpty& empty)
+                    {std::cout << empty.what() << "\n";}
+                break;
+        }
+    }
+}
+
+template<typename E>
+static void FullTest(void)
+{
+    LinkedList<E> emptylist;      //PROC - just keep an empty list around
+    LinkedList<E> temp;           //PROC - used for temp storage of other lists
+    LinkedList<E> sorted;         //PROC - a sorted list
+    LinkedList<E> listarray[4];   //PROC - 4 sorted lists to play with
     time_t currentTime;     //PROC - number used to seed srand.
     
     currentTime = time(NULL);
@@ -95,14 +217,14 @@ int main(void)
     std::cout << "Displaying listarray[0]:\n";
     listarray[0].display(); std::cout << "\n";
     std::cout << "Displaying listarray[0] using Iterator:\n";
-    for (Iterator<int> i = listarray[0].begin();i != listarray[0].end(); ++i)
+    for (Iterator<E> i = listarray[0].begin();i != listarray[0].end(); ++i)
         std::cout << *i << " ";
     std::cout << "\n\n";
 
     std::cout << "Displaying emptylist:\n";
     emptylist.display(); std::cout << "\n";
     std::cout << "Displaying emptylist using Iterator:\n";
-    for (Iterator<int> i = emptylist.begin(); i != emptylist.end(); ++i)
+    for (Iterator<E> i = emptylist.begin(); i != emptylist.end(); ++i)
         std::cout << *i << " ";
     std::cout << "\n\n";
 
@@ -112,7 +234,7 @@ int main(void)
     sorted.display(); std::cout << "\n";
     std::cout << "Changing sorted list, while using Iterator.\n";
     std::cout << "Will insert a number sorted if rand()%2 == 1\n";
-    for (Iterator<int> i = sorted.begin(); i != sorted.end(); ++i)
+    for (Iterator<E> i = sorted.begin(); i != sorted.end(); ++i)
     {
         std::cout << *i << " ";
         if (rand()%2)
@@ -145,10 +267,9 @@ int main(void)
     std::cout 
     << "The follwing methods will all be perform on emptylist\n"
     << "Testing length(): " << emptylist.length() << "\n"
-    << "Testing sum():    " << emptylist.sum() << " (Expected value "
-    << "is " << (int)0x80000000 << ")\n";
+    << "Testing sum():    " << emptylist.sum() << "\n";
 
-    LinkedList<int> acopy(listarray[1]);    //TEST - copy constructor
+    LinkedList<E> acopy(listarray[1]);    //TEST - copy constructor
     std::cout << "Testing the copy constructor\n";
     std::cout << "Displaying copy of listarray[1]\n";
     acopy.display(); std::cout << "\n";
@@ -180,7 +301,7 @@ int main(void)
               << "that we didn't break anything\n";
     //OLD TEST FROM THE PREVIOUS ASSIGNMENT
     using namespace std;
-    LinkedList<int> L1, L2;
+    LinkedList<E> L1, L2;
     
     cout << "Testing display function on empty List\n";
     L1.display();
@@ -212,12 +333,7 @@ int main(void)
     cout << "Testing display function after calling pop_front 5 times\n";
     L1.display();
     cout << endl;
-    
-    //void push_back( int value )
-    //void select_sort()
-    //void insert_sorted( int value )
-    //void remove_duplicates()
-    
+        
     cout << "\nTesting push_back function (by calling it 10 times)\n";
     for (int i = 0; i < 10; i++){
         L1.push_back(rand()%10);
@@ -252,41 +368,5 @@ int main(void)
     cout << endl;
     L2.display();
     cout << endl;
-    return 0;
 }
-
-/****************************************************************
- * 
- *  FUNCTION: FillLinkedList()
- *  //Static function
- * --------------------------------------------------------------
- *  Fill in a list randomly. Randomly chosen to push_back, or
- *  push_front, or pop_front
- * --------------------------------------------------------------
- *  PRE-CONDITIONS
- *      Can be a filled or empty list.
- *  POST-CONDITIONS
- *      The final list is possible to not have any elements if
- *      you get unlucky and all the cases are just pop_front.
- *      The more passes, the more you are assured to have
- *      a list of length > 0.
-****************************************************************/
-template<typename E>
-static void FillLinkedList(LinkedList<E>& list, int numPasses, int maxValue)
-{
-    for (int i = 0; i < numPasses; i++)
-    {
-        switch (rand()%3)
-        {
-            case 0:
-                list.push_back(rand()%(maxValue+1));
-                break;
-            case 1:
-                list.push_front(rand()%(maxValue+1));
-                break;
-            case 2:
-                list.pop_front();
-                break;
-        }
-    }
-}
+//EOF

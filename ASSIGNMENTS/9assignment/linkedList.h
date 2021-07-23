@@ -63,7 +63,15 @@ private:
     void RemoveNodesAfter(Node<E> *node);
 };
 
-#endif //LINKED_LIST_CLASS_H
+/* NOTE: To be able to use ALL the methods preseneted by this class
+ * the template type used for the LinkedList must have overload
+ * defintions for operator=, operator<<, operator+, operator<,
+ * operator>=, operator>, operator== all with the same type being
+ * on the right hand side. Any side affects might be comming from
+ * these definitions not being defined, or not being used as the
+ * author of this lemplate class expects.
+ * You will also need a defined default constructor.
+ */
 
 /****************************************************************
  * 
@@ -168,6 +176,11 @@ LinkedList<E>::LinkedList(const LinkedList<E>& that)
  *  PRE-CONDITIONS
  *      Both the calling list and the passed in list can be
  *      empty, with no nodes, or any amount of nodes.
+ *      
+ *      Have to be able to overload the assignment operator
+ *      for the templated type if need be, with the same type.
+ *      (Watch out for that if experiencing unexpected behavior)
+ * 
  *  POST-CONDITIONS
  *      The length of the calling object's linked list is
  *      assured to be changed if the passed in "that" linked
@@ -277,6 +290,9 @@ LinkedList<E>& LinkedList<E>::operator=(const LinkedList<E> &that)
  * --------------------------------------------------------------
  *  PRE-CONDITIONS
  *      The list can be filled or empty.
+ * 
+ *      Must have overloaded operator<< (std::ostream&, template
+ *      type used for the linked list). Watch out for that.
  *  POST-CONDITIONS
  *      The ouput will be sent to std::cout; all the output is
  *      on one line.
@@ -452,8 +468,9 @@ int LinkedList<E>::RecursiveLength(const Node<E> *node) const
  *      The linked list can be empty, and any other size.
  * 
  *      The type used for the template should be able to overload
- *      the addition operator (operator+ must be defined for
- *      the used linked list type).
+ *      the addition operator (operator+(template type) must be
+ *      defined for the used linked list type). A default
+ *      constructor must also be defined.
  *  POST-CONDITIONS
  *      The linked list is not modified. Will always traverse
  *      through the whole linked list.
@@ -606,8 +623,8 @@ void LinkedList<E>::pop_front(void) throw(ListEmpty)
  *  PRE-CONDITIONS
  *      The list can be filled or empty.
  *      The templated type must be able to overload:
- *          less than operator (operator<)
- *          Assignment operator (operator==)
+ *          less than operator (operator<) with the same type
+ *          Assignment operator (operator=) with the same type
  *  POST-CONDITIONS
  *      If list has at least two nodes head will have the
  *      smallest value, and tail will have the largest value.
@@ -653,8 +670,8 @@ void LinkedList<E>::select_sort(void)
  *      already been sorted, else will not not insert the 
  *      value in a sorted fashion.
  *      The templated type must be able to overload:
- *          operator>=
- *          operator>
+ *          operator>= with the same type
+ *          operator>  with the same type
  *  POST-CONDITIONS
  *      If the value is greater than or equal to tail, new tail
  *      is set. If value is less than or equal to head, new head
@@ -715,7 +732,7 @@ void LinkedList<E>::insert_sorted(const E& value)
  *  PRE-CONDITIONS
  *      The list can be filled or empty.
  *      The template type must be able to overload
- *          operator==
+ *          operator== with the same type
  *          
  *  POST-CONDITIONS
  *      The tail is assured to change if the the node that tail
@@ -862,3 +879,5 @@ void LinkedList<E>::RemoveNodesAfter(Node<E> *node)
     tail->next = nullptr;
 }
 //EOF
+
+#endif //LINKED_LIST_CLASS_H

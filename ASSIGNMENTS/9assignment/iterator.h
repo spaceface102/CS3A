@@ -35,7 +35,7 @@ public:
     //I would probably make another version that
     //is declared as a const method, and I would
     //make this return an int&
-    int operator*(void);
+    const E& operator*(void);
     bool operator==(const Iterator<E>& right) const;
     bool operator!=(const Iterator<E>& right) const;
 };
@@ -67,13 +67,16 @@ Iterator<E>::Iterator(void) : current(nullptr) {}
  * --------------------------------------------------------------
  *  PRE-CONDITIONS
  *      The address should be a valid address of a node
- *      inside the IntListClass.
+ *      inside the class LinkedList.
  *      Must make an object, or call the constructor with no
  *      arguments.
  * 
  *  POST-CONDITIONS
  *      As long as the node that is being pointed to is
  *      valid, derefrencing it should be fine.
+ * 
+ *      No validation on the pointer. Be careful using non
+ *      valid pointers.
 ****************************************************************/
 template <typename E>
 Iterator<E>::Iterator(Node<E>* ptr) : current(ptr) {}
@@ -96,10 +99,8 @@ Iterator<E>::Iterator(Node<E>* ptr) : current(ptr) {}
  *      valid, derefrencing it should be fine.
 ****************************************************************/
 template <typename E>
-int Iterator<E>::operator*(void)
-{
-    return current->data;
-}
+const E& Iterator<E>::operator*(void)
+    {return current->data;}
 //EOF
 
 /****************************************************************
@@ -141,9 +142,7 @@ Iterator<E> Iterator<E>::operator++(void)
 ****************************************************************/
 template <typename E>
 bool Iterator<E>::operator==(const Iterator<E>& right) const
-{
-    return (current == right.current);
-}
+    {return (current == right.current);}
 //EOF
 
 /****************************************************************
@@ -162,9 +161,7 @@ bool Iterator<E>::operator==(const Iterator<E>& right) const
 ****************************************************************/
 template <typename E>
 bool Iterator<E>::operator!=(const Iterator<E>& right) const
-{
-    return !(*this == right);
-}
+    {return !(*this == right);}
 //EOF
 
 #endif //ITERATOR_TEMPLATE_CLASS_H
