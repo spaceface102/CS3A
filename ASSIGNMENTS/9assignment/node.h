@@ -5,8 +5,8 @@ template<typename E>
 struct Node
 {
     E data;
-    Node *next;
-    Node(E data) : data(data), next(nullptr) {}
+    Node<E> *next;
+    Node<E>(E data) : data(data), next(nullptr) {}
 };
 
 #endif

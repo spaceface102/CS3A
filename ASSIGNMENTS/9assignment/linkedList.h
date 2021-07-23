@@ -40,7 +40,7 @@ public:
     Iterator<E> begin(void);
     Iterator<E> end(void);
     int length(void) const;
-    const E& sum(void) const;
+    E sum(void) const;
     bool isEmpty(void);
 
     /*************
@@ -59,7 +59,7 @@ private:
     **  HELPERS  **
     **************/
     int RecursiveLength(const Node<E> *node) const; 
-    const E& RecursiveSum(const Node<E> *node) const;
+    E RecursiveSum(const Node<E> *node) const;
     void RemoveNodesAfter(Node<E> *node);
 };
 
@@ -462,7 +462,7 @@ int LinkedList<E>::RecursiveLength(const Node<E> *node) const
  *      default constructor.
 ****************************************************************/
 template<typename E>
-const E& LinkedList<E>::sum(void) const
+E LinkedList<E>::sum(void) const
 {
     return RecursiveSum(head);
 }
@@ -486,13 +486,301 @@ const E& LinkedList<E>::sum(void) const
  *      constructor for template type.
 ****************************************************************/
 template<typename E>
-const E& LinkedList<E>::RecursiveSum(const Node<E> *node) const
+E LinkedList<E>::RecursiveSum(const Node<E> *node) const
 {
     if (node == nullptr)
         return E();
     
     return node->data + RecursiveSum(node->next);
 }
+
+
+/****************************************************************
+ * 
+ *  Method push_front: Class LinkedList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ *  Adds a new node in front of the head node. 
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The list can be filled or empty.
+ *  POST-CONDITIONS
+ *      If the list is empty, then both the head node and tail
+ *      node are set to the new added node. Else, the a new head
+ *      node is added.
+****************************************************************/
+template<typename E>
+void LinkedList<E>::push_front(const E& value)
+{
+    Node<E> *pastHead;  //PROC - store previous head node pointer
+
+    if (head == nullptr) //its a new list
+        head = tail = new Node<E>(value);
+    else //list already has elements
+    {
+        pastHead = head;
+        head = new Node<E>(value);
+        head->next = pastHead;
+    }
+}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method push_back: Class LinkedList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ *  Adds a new node to the end of the list.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The list can be filled or empty.
+ *  POST-CONDITIONS
+ *      If the list is empty, head and tail will point to the
+ *      same new node. Else, the tail before calling the method
+ *      will now point to a new node. Tail is then set to the
+ *      new node
+****************************************************************/
+template<typename E>
+void LinkedList<E>::push_back(const E& value)
+{
+    if (head == nullptr)    //empty list
+        head = tail = new Node<E>(value);
+    else
+    {
+        tail->next = new Node<E>(value);
+        tail = tail->next;
+    }
+}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method pop_front: Class LinkedList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ *  Deletes the front node.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The list can be filled or empty.
+ *  POST-CONDITIONS
+ *      If the list is empty, exception is thrown. Else
+ *      current head is deleted, and the next node is made
+ *      the new head.
+ *      In the case where only one node in linked list, tail
+ *      is also set to nullptr.
+****************************************************************/
+template<typename E>
+void LinkedList<E>::pop_front(void) throw(ListEmpty)
+{   
+    Node<E> *pastHead;  //PROC - store the current head node that
+                        //will be deleted.
+
+    if (head == nullptr)
+        throw ListEmpty("Can't use LinkedList<E>::pop_front on\n"
+                        "A linked list with no nodes!");
+
+    //no node or single node. (nothing will happen
+    //if we use delete on NULL, delete checks for that)
+    if (head == tail)
+    {
+        delete head;
+        head = tail = nullptr;
+    }
+    else
+    {
+        pastHead = head;
+        head = head->next;
+        delete pastHead;
+    }
+}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method select_sort: Class LinkedList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ *  Sort the list in accending order. Algoirthim used is
+ *  selection sort.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The list can be filled or empty.
+ *      The templated type must be able to overload:
+ *          less than operator (operator<)
+ *          Assignment operator (operator==)
+ *  POST-CONDITIONS
+ *      If list has at least two nodes head will have the
+ *      smallest value, and tail will have the largest value.
+ *      If a new list, or a list with only one node, do nothing.
+****************************************************************/
+template<typename E>
+void LinkedList<E>::select_sort(void)
+{
+    Node<E> *subHead;   //PROC - head of the sub array
+    Node<E> *current;   //PROC - the current node we are inspecting
+    Node<E> *minNode;   //PROC - keep track of the minimum value node
+    E temp;             //PROC - used to swap data
+
+    subHead = head;
+    while (subHead != tail)
+    {
+        minNode = subHead;
+        current = subHead->next;
+        while (current != nullptr)
+        {
+            if (current->data < minNode->data)
+                minNode = current;
+            current = current->next;
+        }
+        temp = subHead->data;
+        subHead->data = minNode->data;
+        minNode->data = temp;
+
+        subHead = subHead->next;
+    }
+}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method insert_sorted: Class LinkedList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ *  Will insert value sorted.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The list can be filled or empty. The list must have
+ *      already been sorted, else will not not insert the 
+ *      value in a sorted fashion.
+ *      The templated type must be able to overload:
+ *          operator>=
+ *          operator>
+ *  POST-CONDITIONS
+ *      If the value is greater than or equal to tail, new tail
+ *      is set. If value is less than or equal to head, new head
+ *      is set. Else, node is just plugged into the list.
+****************************************************************/
+template<typename E>
+void LinkedList<E>::insert_sorted(const E& value)
+{
+    Node<E> **current;  //PROC - indirect_pointer to a node.
+    Node<E> *aNode;     //PROC - pointer to the new inserted node.
+
+    if (head == nullptr)    //list doesn't have any nodes yet.
+    {
+        head = tail = new Node<E>(value);
+        return;
+    }
+
+    //avoid having to traverse through the whole
+    //list. List is sorted, therefore tail will have
+    //the biggest value: if tail->data is less than
+    //or equal to value, define a new tail with the
+    //push_back() method.
+    if (value >= tail->data)
+    {
+        push_back(value);
+        return; //done, we are leaving early!
+    }
+
+    //value is assured to not be placed after tail.
+    //The first if statement resolves that case.
+    current = &head;
+    while (value > (*current)->data)
+        current = &((*current)->next);
+    
+    //value must be less than or equal to (*current)->data
+    //if less than, then new node must go before **current
+    //node, if equal, placement doesn't matter... Just place
+    //everything before **current always to reduce checks.
+    aNode = new Node<E>(value);
+    aNode->next = *current;
+    *current = aNode;
+
+    //make current an indirect pointer to not have a prev
+    //pointer, and also to not have a special case if 
+    //have to insert value before head, and therefore have
+    //to make a new head (change where head points to)
+}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method remove_duplicates: Class LinkedList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ *  Will only keep one instance of value in the list. No
+ *  duplicates.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The list can be filled or empty.
+ *      The template type must be able to overload
+ *          operator==
+ *          
+ *  POST-CONDITIONS
+ *      The tail is assured to change if the the node that tail
+ *      points to is not a unique value. Note, tail may change
+ *      multiple times throughout the method (won't always just
+ *      be the node right before tail). head is assured to stay
+ *      the same, and it's value will NOT change.
+****************************************************************/
+template<typename E>
+void LinkedList<E>::remove_duplicates(void)
+{
+    Node<E> *subHead;   //PROC - shift the head, traverse through the list
+    Node<E> *current;   //PROC - current node pointer.
+    Node<E> *temp;      //PROC - delete past address.
+
+    //main loop condition ensures that both empty and
+    //lists with only one node are not allowed into
+    //the loop.
+    subHead = head;
+    while (subHead != tail)
+    {
+        current = subHead;
+        //condition ensures that when the loop exits
+        //current will point to the node before tail.
+        //useful for when have to delete tail, and
+        //setup current as the new tail.
+        while (current->next != tail)
+        {
+            if (current->next->data == subHead->data)
+            {
+                //current->next is asured to not be tail,
+                //current->next->next might be. 
+                temp = current->next;
+                current->next = current->next->next;
+                delete temp;
+                //since current->next is being changed
+                //to current->next->next, it has the a similar
+                //effect as current = current->next, therefore
+                //no need to increment if inside this if block.
+                //Though what is really nice is the current
+                //can continue pointing to the same node, and 
+                //therefore can still modify the same next pointer
+                //if need be for the next iteration. Aka, current
+                //continues to point to the "previous" node.
+            }
+            else
+                current = current->next;
+        }
+        if (tail->data == subHead->data)
+        {
+            delete tail;
+            tail = current;
+            tail->next = nullptr;
+            
+            //ensure that on the next iteration, subHead
+            //is not pointing to NULL pointer, only doing
+            //this because changing what tail points to
+            //before changing what subHead points to
+            if (subHead == tail) //note same condition as outer loop
+                return; //just end "early"
+        }
+        subHead = subHead->next;
+    }
+}
+//EOF
 
 /****************************************************************
  * 
