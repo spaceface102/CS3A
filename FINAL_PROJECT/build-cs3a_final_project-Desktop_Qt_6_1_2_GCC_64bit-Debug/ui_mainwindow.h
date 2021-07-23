@@ -46,7 +46,7 @@ public:
         radioButton->setGeometry(QRect(310, 320, 100, 22));
         lineEdit = new QLineEdit(centralwidget);
         lineEdit->setObjectName(QString::fromUtf8("lineEdit"));
-        lineEdit->setGeometry(QRect(110, 380, 113, 24));
+        lineEdit->setGeometry(QRect(110, 380, 291, 161));
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
