@@ -71,6 +71,8 @@ private:
  * these definitions not being defined, or not being used as the
  * author of this lemplate class expects.
  * You will also need a defined default constructor.
+ * Most of these methods will also have to be defined as const 
+ * (they need to ensure that they will not modify object state)
  */
 
 /****************************************************************

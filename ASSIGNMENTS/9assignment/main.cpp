@@ -1,9 +1,9 @@
 /****************************************************************
  * AUTHOR           : Osbaldo Gonzalez Jr.
- * ASSIGNMENT 06    : LinkedList Recursive && Iterator
+ * ASSIGNMENT 06    : LinkedList Template
  * CLASS            : CS 3A
  * SECTION          : 71206
- * DUE DATE         : 7/15/2021
+ * DUE DATE         : 7/22/2021
 ****************************************************************/
 
 #include "linkedList.h"
@@ -21,10 +21,7 @@
  *  INPUT:
  *      none
  *  OUTPUT:
- *      LinkedList emptylist   //PROC - a list
- *      LinkedList temp        //PROC - a list
- *      LinkedList sorted      //PROC - a list
- *      LinkedList listarray   //PROC - a list
+ *      none
 *****************************************************************************/
 
 /*****************************************************************************
@@ -40,85 +37,38 @@
  *  Linked List type.
 *****************************************************************************/
 template<typename E>
-static void FillLinkedList(LinkedList<E>& list, int numPasses, int maxValue);
+void FillLinkedList(LinkedList<E>& list, int numPasses, int minValue, int maxValue);
 template<typename E>
-static void FullTest(void);
+void FullTest(void);
 
-class CustomTest
-{
-public:
-    CustomTest(void)
-    {
-        static int i = 0;
-        std::cout << "Class CustomTest default constructor "
-        << "instance number: " << i++ << "\n";
-    }
-    CustomTest(int)
-    {
-        static int i = 0;
-        std::cout << "Class CustomTest int copy constructor.1"
-        << "instance number: " << i++ << "\n";
-    }
-    CustomTest& operator=(const CustomTest&)
-    {   
-        static int i = 0;
-        std::cout << "operator= instance number: " << i++ << "\n";
-        return *this;
-    }
-    CustomTest operator+(const CustomTest&) const
-    {
-        static int i = 0;
-        std::cout << "operator+ instance number: " << i++ << "\n";
-        return CustomTest();    //just return default constructor.
-    }
-    bool operator<(const CustomTest&) const
-    {
-        srand(time(NULL));
-        static int i = 0;
-        std::cout << "operator< instance number: " << i++ << "\n";
-        return rand()%2;
-    }
-    bool operator>=(const CustomTest&) const
-    {        
-        srand(time(NULL));
-        static int i = 0;
-        std::cout << "operator>= instance number: " << i++ << "\n";
-        return rand()%2;
-    }
-    bool operator>(const CustomTest&) const
-    {
-        srand(time(NULL));
-        static int i = 0;
-        std::cout << "operator> instance number: " << i++ << "\n";
-        return rand()%2;
-    }
-    bool operator==(const CustomTest&) const
-    {
-        srand(time(NULL));
-        static int i = 0;
-        std::cout << "operator== instance number: " << i++ << "\n";
-        return rand()%2;
-    }
-};
+//Spefic to CustomTest class (used for extensive LinkeList class testing)
+class CustomTest; //class decleration
+std::ostream& operator<<(std::ostream& out, const CustomTest&);
 
-//Part of the CustomTest class
-std::ostream& operator<<(std::ostream& out, const CustomTest&)
-{
-    static int i = 0;
-    std::cout << "operator<< instance number: " << i++ << "\n";
-    return out;
-}
 
 int main(void)
-{
+{    
+    #ifdef EXTRA_TEST
     FullTest<CustomTest>();
+    std::cout 
+    << "\n\n\n\n\nTHE TEST IS SO LONG SINCE HAVE SO MUCH OUTPUT TEXT\n"
+    << "WITH CustomTest Class. Every time you call any method\n"
+    << "Associated CustomTest class, there is \"logging\" output\n\n\n\n";
+    #else
+    std::cout <<"\n\n\n\n\n\nTesting LinkedList with TYPE: double\n\n\n\n\n\n";
+    FullTest<double>();
+    std::cout <<"\n\n\n\n\n\nTesting LinkedList with TYPE: int\n\n\n\n\n\n\n";
+    FullTest<int>();
+    std::cout <<"\n\n\n\n\n\nTesting LinkedList with TYPE: char\n\n\n\n\n\n\n";
+    FullTest<char>();
+    std::cout <<"\n\n\n\n\n\nTesting LinkedList with TYPE: CustomTest\n\n\n\n";
+    #endif //EXTRA_TEST
     return 0;
 }
 
 /****************************************************************
  * 
  *  FUNCTION: FillLinkedList()
- *  //Static function
  * --------------------------------------------------------------
  *  Fill in a list randomly. Randomly chosen to push_back, or
  *  push_front, or pop_front. Will also use exceptions in the
@@ -136,17 +86,21 @@ int main(void)
  *      will handle the exception, and display .what() method.
 ****************************************************************/
 template<typename E>
-static void FillLinkedList(LinkedList<E>& list, int numPasses, int maxValue)
+void FillLinkedList(LinkedList<E>& list, int numPasses, int minValue, int maxValue)
 {
+    double rand_tail;   //PROC - used to add obvious floating point component
     for (int i = 0; i < numPasses; i++)
     {
+        rand_tail = 1.0/((rand()%10)+1);
         switch (rand()%3)
         {
             case 0:
-                list.push_back(rand()%(maxValue+1));
+                list.push_back(rand()%(minValue+1) + 
+                (maxValue - minValue) + rand_tail);
                 break;
             case 1:
-                list.push_front(rand()%(maxValue+1));
+                list.push_front(rand()%(minValue+1) 
+                + (maxValue - minValue) + rand_tail);
                 break;
             case 2:
                 try
@@ -158,15 +112,32 @@ static void FillLinkedList(LinkedList<E>& list, int numPasses, int maxValue)
     }
 }
 
+/****************************************************************
+ * 
+ *  FUNCTION: FillTest
+ *  //Template
+ * --------------------------------------------------------------
+ *  Run the LinkedList class through it's paces using a wide
+ *  variety of types.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The templated class must have all the required operator
+ *      overloads, described in the linkedlist.h note under class
+ *      definition, in order to full work. Else, will refuse to
+ *      compile.
+ * 
+ *  POST-CONDITIONS
+ *      All exceptions will be caught, and dealt with.
+****************************************************************/
 template<typename E>
-static void FullTest(void)
+void FullTest(void)
 {
     LinkedList<E> emptylist;      //PROC - just keep an empty list around
     LinkedList<E> temp;           //PROC - used for temp storage of other lists
     LinkedList<E> sorted;         //PROC - a sorted list
     LinkedList<E> listarray[4];   //PROC - 4 sorted lists to play with
     time_t currentTime;     //PROC - number used to seed srand.
-    
+
     currentTime = time(NULL);
     srand(currentTime);  //seed random number generator
 
@@ -176,7 +147,9 @@ static void FullTest(void)
 
     //fill each list in listarray with values
     for (int i = 0; i < 4; i++)
-        FillLinkedList(listarray[i], 25, 500);
+        FillLinkedList(listarray[i], 25, ' ', 'z');
+        //min value ' ' and max value 'z' used to ensure
+        //char type also looks printable, with defining chars!
     
     //see what happens with the overloaded "=" operator
     std::cout << "listarray[2] originally:\n";
@@ -228,7 +201,7 @@ static void FullTest(void)
         std::cout << *i << " ";
     std::cout << "\n\n";
 
-    FillLinkedList(sorted, 15, 100);
+    FillLinkedList(sorted, 15, ' ', 'z');
     sorted.select_sort();
     std::cout << "Displaying sorted:\n";
     sorted.display(); std::cout << "\n";
@@ -358,15 +331,70 @@ static void FullTest(void)
     L1.remove_duplicates();
     L1.display();
     cout << endl;
-    
-    cout << "\nTesting push_back() and push_front() function\n";
-    for (int i = 0; i < 10; i++){
-        L2.push_front(i);
-        L2.push_back(i);
-    }
-    
-    cout << endl;
-    L2.display();
-    cout << endl;
 }
 //EOF
+
+class CustomTest
+{
+public:
+    CustomTest(void)
+    {
+        static int i = 0;
+        std::cout << "Class CustomTest default constructor "
+        << "instance number: " << i++ << "\n";
+    }
+    CustomTest(int)
+    {
+        static int i = 0;
+        std::cout << "Class CustomTest int copy constructor "
+        << "instance number: " << i++ << "\n";
+    }
+    CustomTest& operator=(const CustomTest&)
+    {   
+        static int i = 0;
+        std::cout << "operator= instance number: " << i++ << "\n";
+        return *this;
+    }
+    CustomTest operator+(const CustomTest&) const
+    {
+        static int i = 0;
+        std::cout << "operator+ instance number: " << i++ << "\n";
+        return CustomTest();    //just return default constructor.
+    }
+    bool operator<(const CustomTest&) const
+    {
+        srand(time(NULL));
+        static int i = 0;
+        std::cout << "operator< instance number: " << i++ << "\n";
+        return rand()%2;
+    }
+    bool operator>=(const CustomTest&) const
+    {        
+        srand(time(NULL));
+        static int i = 0;
+        std::cout << "operator>= instance number: " << i++ << "\n";
+        return rand()%2;
+    }
+    bool operator>(const CustomTest&) const
+    {
+        srand(time(NULL));
+        static int i = 0;
+        std::cout << "operator> instance number: " << i++ << "\n";
+        return rand()%2;
+    }
+    bool operator==(const CustomTest&) const
+    {
+        srand(time(NULL));
+        static int i = 0;
+        std::cout << "operator== instance number: " << i++ << "\n";
+        return rand()%2;
+    }
+};
+
+//Part of the CustomTest class
+std::ostream& operator<<(std::ostream& out, const CustomTest&)
+{
+    static int i = 0;
+    std::cout << "operator<< instance number: " << i++ << "\n";
+    return out;
+}
