@@ -1,26 +1,20 @@
 #ifndef LINKED_LIST_CLASS_H
 #define LINKED_LIST_CLASS_H
 
+/****************************************************************
+ * AUTHOR           : Osbaldo Gonzalez Jr.
+ * ASSIGNMENT 06    : LinkedList Template
+ * CLASS            : CS 3A
+ * SECTION          : 71206
+ * DUE DATE         : 7/22/2021
+****************************************************************/
+
+#include "node.h"
 #include "listEmpty.h"
-
-//Declerations
-template<typename E>
-struct Node;
-template<typename E>
-class LinkedList;
-template<typename E>
-class Iterator;
-
+#include "iterator.h"
+#include <iostream>
 
 //Definitions
-template<typename E>
-struct Node
-{
-    E data;
-    Node *next;
-    Node(E data) : data(data), next(nullptr) {}
-};
-
 template<typename E>
 class LinkedList
 {
@@ -43,8 +37,8 @@ public:
     void display(void) const;
     const E& front(void) const throw(ListEmpty);
     const E& back(void) const throw(ListEmpty);
-    Iterator begin(void);
-    Iterator end(void);
+    Iterator<E> begin(void);
+    Iterator<E> end(void);
     int length(void) const;
     const E& sum(void) const;
     bool isEmpty(void);
@@ -64,8 +58,9 @@ private:
     /**************
     **  HELPERS  **
     **************/
-    E RecursiveSum(const Node<E>* node) const;
-    void RemoveNodesAfter(Node<E>* node);
+    int RecursiveLength(const Node<E> *node) const; 
+    const E& RecursiveSum(const Node<E> *node) const;
+    void RemoveNodesAfter(Node<E> *node);
 };
 
 #endif //LINKED_LIST_CLASS_H
@@ -299,5 +294,283 @@ void LinkedList<E>::display(void) const
     }
     if (tail != nullptr)
         std::cout << tail->data;
+}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method front: Class LinkedList
+ *  //PUBLIC
+ *  //EXCEPTION
+ * --------------------------------------------------------------
+ * Return the value of associated with the head of the list.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call on a list of at least length 1 (at least one
+ *      node).
+ *  POST-CONDITIONS
+ *      Assuming the calling object at least has one active node
+ *      a copy of the value at the head will be returned. Else
+ *      if list is empty, exception ListEmpty() is throw.
+****************************************************************/
+template<typename E>
+const E& LinkedList<E>::front(void) const throw(ListEmpty)
+{
+    if (head == nullptr)
+        throw ListEmpty("Error in: LinkedList<E>::front\n"
+                        "Can't get first element from EMPTY list");
+    return head->data;
+}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method front: Class LinkedList
+ *  //PUBLIC
+ *  //EXCEPTION
+ * --------------------------------------------------------------
+ * Return the value of associated with the tail of the list.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call on a list of at least length 1 (at least one
+ *      node).
+ *  POST-CONDITIONS
+ *      Assuming the calling object at least has one active node
+ *      a copy of the value at the head will be returned. Else
+ *      if list is empty, exception ListEmpty() is throw.
+****************************************************************/
+template<typename E>
+const E& LinkedList<E>::back(void) const throw(ListEmpty)
+{
+    if (head == nullptr)
+        throw ListEmpty("Error in: LinkedList<E>::back\n"
+                        "Can't get last element from EMPTY list");
+    return tail->data;
+}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method begin: Class LinkedList
+ *  //PUBLIC
+ *  //TEMPLATE
+ * --------------------------------------------------------------
+ * Return an Iterator object that holds the a pointer
+ * to the node head is currently point to.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The calling list can be of any size, and even empty.
+ *  POST-CONDITIONS
+ *      If the size of the list is 0; aka there are no nodes in
+ *      the list, Iterator will be pointing to NULL. If
+ *      you try to dereference that, you are likely to get
+ *      an error.
+****************************************************************/
+template<typename E>
+Iterator<E> LinkedList<E>::begin(void)
+    {return Iterator<E>(head);}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method end: Class LinkedList
+ *  //PUBLIC
+ *  //TEMPLATE
+ * --------------------------------------------------------------
+ * Return an Iterator object that holds the a pointer
+ * to the node head is currently point to.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The calling list can be of any size, and even empty.
+ *  POST-CONDITIONS
+ *      If the size of the list is 0; aka there are no nodes in
+ *      the list, Iterator will be pointing to NULL. If
+ *      you try to dereference that, you are likely to get
+ *      an error.
+****************************************************************/
+template<typename E>
+Iterator<E> LinkedList<E>::end(void)
+    {return Iterator<E>(tail);}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method length: Class LinkedList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ * Return the number of nodes in the singly linked list.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object can have a linked list of any size; it
+ *      can be empty
+ *  POST-CONDITIONS
+ *      If the linked list is empty, will return 0, else
+ *      each node will be counted as 1.
+****************************************************************/
+template<typename E>
+int LinkedList<E>::length(void) const
+{
+    return RecursiveLength(head);
+}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method RecursiveLength: Class LinkedList
+ *  //PRIVATE
+ * --------------------------------------------------------------
+ * Recursively traverse through the linked list, incrementing
+ * the return value by one until reaching/hitting NULL.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The passed in the Node<E>* should be a valid pointer
+ *      to an already existing node.
+ *  POST-CONDITIONS
+ *      If the linked list is empty, will return 0, else
+ *      each node will be counted as 1.
+****************************************************************/
+template<typename E>
+int LinkedList<E>::RecursiveLength(const Node<E> *node) const
+{
+    if (node == nullptr)
+        return 0;
+    
+    return 1 + RecursiveLength(node->next);
+}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method sum: Class LinkedList
+ *  //PUBLIC
+ * --------------------------------------------------------------
+ *  Return the sum of all the nodes in the linked list. Note:
+ *  The default constructor of the type being uses is treated
+ *  as "0".
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The linked list can be empty, and any other size.
+ * 
+ *      The type used for the template should be able to overload
+ *      the addition operator (operator+ must be defined for
+ *      the used linked list type).
+ *  POST-CONDITIONS
+ *      The linked list is not modified. Will always traverse
+ *      through the whole linked list.
+ *      Whatever implentation of the used type for the linked
+ *      list, will always add (only once at the end) the
+ *      default constructor.
+****************************************************************/
+template<typename E>
+const E& LinkedList<E>::sum(void) const
+{
+    return RecursiveSum(head);
+}
+
+/****************************************************************
+ * 
+ *  Method RecursiveSum: Class LinkedList
+ *  //PRIVATE
+ * --------------------------------------------------------------
+ * Recursively traverse through the linked list, incrementing
+ * the return value by the node's data value.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The passed in the Node<E>* should be a valid pointer
+ *      to an already existing node. Or the node can be null,
+ *      in which case just return default constructor.
+ *  POST-CONDITIONS
+ *      The function will not modify any node, just get the
+ *      value at the node.
+ *      If passed in "node" points to NULL, will return default
+ *      constructor for template type.
+****************************************************************/
+template<typename E>
+const E& LinkedList<E>::RecursiveSum(const Node<E> *node) const
+{
+    if (node == nullptr)
+        return E();
+    
+    return node->data + RecursiveSum(node->next);
+}
+
+/****************************************************************
+ * 
+ *  Method clear: Class LinkedList
+ *  //PUBLIC
+ *  //TEMPLATE
+ * --------------------------------------------------------------
+ *  Free all the memory related with the object's linked list.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object can be of any size. No nodes, or many nodes.
+ *  POST-CONDITIONS
+ *      The head and tail pointers are set to NULL.
+****************************************************************/
+template<typename E>
+void LinkedList<E>::clear(void)
+{
+    Node<E> *future;   //PROC - Store node address for next loop
+    Node<E> *current;  //PROC - Delete the current node
+    
+    future = head;
+    while (future != nullptr)
+    {
+        current = future;
+        future = future->next;
+        delete current;
+    }
+
+    head = nullptr;
+    tail = nullptr;
+}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method RemoveNodesAfter: Class LinkedList
+ *  //PRIVATE
+ *  //TEMPLATE
+ * --------------------------------------------------------------
+ *  Free all the nodes after the node passed in. Set the node
+ *  passed in as the new tail.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The passed in node must be part of the object's 
+ *      list. Conforming with that condition, the passed in
+ *      node pointer can point to anything inside the list, 
+ *      including the head, tail, and nullptr.
+ *      The calling object's list can have any number
+ *      of nodes.
+ *  POST-CONDITIONS
+ *      A new tail is set as the current node. All
+ *      the nodes after the passed in node are deleted.
+ *      In the case where the object's list is just one
+ *      node big, or the node pointer passed in is NULL
+ *      then nothing is done.
+****************************************************************/
+template<typename E>
+void LinkedList<E>::RemoveNodesAfter(Node<E> *node)
+{
+    Node<E> *future;    //PROC - store the next node
+    Node<E> *current;   //PROC - track the current node
+
+    //checking if node == tail also ensures if the
+    //current list is only one node, and if head
+    //is passed in, won't do anything.
+    if (node == nullptr || node == tail) //don't do anything.
+        return;
+
+    future = node->next;    //avoid deleteing passed in node.
+    while (future != tail)
+    {
+        current = future;
+        future = future->next;
+        delete current;
+    }
+
+    delete tail;
+    tail = node;
+    tail->next = nullptr;
 }
 //EOF
