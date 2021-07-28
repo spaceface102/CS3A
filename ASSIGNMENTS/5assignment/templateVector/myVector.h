@@ -1,6 +1,7 @@
 #ifndef MYVECTOR_CLASS_H
 #define MYVECTOR_CLASS_H
 
+#include <stdexcept>
 #include <cstdint>
 
 template<typename E>
@@ -26,25 +27,25 @@ public:
     uint64_t size() const;
     uint64_t capacity() const;
     bool empty() const;
-    const E& at(uint64_t index) const;
-    const E& front() const;
-    const E& back() const;
+    const E& at(uint64_t index) const noexcept(false);
+    const E& front() const noexcept(false);
+    const E& back() const noexcept(false);
 
     /*************
     ** MUTATORS **
     *************/
-    void insert(uint64_t index, const E& value);
-    void erase(uint64_t index);
+    void insert(uint64_t index, const E& value) noexcept(false);
+    void erase(uint64_t index) noexcept(false);
     void push_back(const E& value);
-    void pop_back(void);
+    void pop_back(void) noexcept(false);
     void clear(void);
     void resize(uint64_t size);
     void resize(uint64_t size, const E& value);
     void reserve(uint64_t n);
     void assign(uint64_t n, const E& value);
-    E& at(uint64_t index);
-    E& front();
-    E& back();
+    E& at(uint64_t index) noexcept(false);
+    E& front() noexcept(false);
+    E& back() noexcept(false);
 
     //EXTRA to meet rules of 3
     MyVector(const MyVector<E>& obj);
@@ -85,7 +86,7 @@ MyVector<E>::MyVector()
  *  //CONSTRUCTOR
  * --------------------------------------------------------------
  * Takes uint64_t size arg and sets it to both capacity and size.
- * allocate array of int equivalent to size, and set it to all 0s.
+ * allocate array of E equivalent to size, and set it to all 0s.
  * --------------------------------------------------------------
  *  PRE-CONDITIONS
  *      Must make an object, or call the constructor with no
@@ -99,9 +100,7 @@ MyVector<E>::MyVector(uint64_t size)
 {
     sz = size;
     cap = size;
-    data = new int[cap];
-    for (long i = 0; i < sz; i++)
-        data[i] = 0;
+    data = new E[cap]();
 }
 //EOF
 
@@ -111,8 +110,8 @@ MyVector<E>::MyVector(uint64_t size)
  *  //CONSTRUCTOR
  * --------------------------------------------------------------
  * Takes uint64_t size arg and sets it to both capacity and size.
- * allocate array of int equivalent to size. All the array indices
- * are then set to the const E& value passed int.
+ * allocate array of E equivalent to size. All the array indices
+ * are then set to the const E& value passed E.
  * --------------------------------------------------------------
  *  PRE-CONDITIONS
  *      Must make an object, or call the constructor with no
@@ -127,8 +126,8 @@ MyVector<E>::MyVector(uint64_t size, const E& value)
 {
     sz = size;
     cap = size;
-    data = new int[cap];
-    for (long i = 0; i < size; i++)
+    data = new E[cap];
+    for (uint64_t i = 0; i < size; i++)
         data[i] = value;
 }
 //EOF
@@ -226,7 +225,7 @@ bool MyVector<E>::empty() const
  * --------------------------------------------------------------
  *  Returns a const reference to the data associated with the
  *  index passed in. If the index is greater than or equal to 
- *  size, the program will just simply exit, using exit(1).
+ *  size, the method will throw an exception std::out_of_range.
  * --------------------------------------------------------------
  *  PRE-CONDITIONS
  *      Must call method on an object; not a static method.
@@ -239,13 +238,10 @@ bool MyVector<E>::empty() const
  *      is freed and the program exits.
 ****************************************************************/
 template<typename E>
-const E& MyVector<E>::at(uint64_t index) const
+const E& MyVector<E>::at(uint64_t index) const noexcept(false)
 {
     if (index >= sz)
-    {
-        delete [] data; //free memory before exiting
-        exit(1);
-    }
+        throw std::out_of_range("Invalid index! uint64_t index");
 
     return data[index];
 }
@@ -258,7 +254,7 @@ const E& MyVector<E>::at(uint64_t index) const
  * --------------------------------------------------------------
  *  Returns a reference to the data associated with the
  *  index passed in. If the index is greater than or equal to 
- *  size, the program will just simply exit, using exit(1).
+ *  size, the method will throw an exception std::out_of_range.
  * --------------------------------------------------------------
  *  PRE-CONDITIONS
  *      Must call method on an object; not a static method.
@@ -271,13 +267,10 @@ const E& MyVector<E>::at(uint64_t index) const
  *      use the assignment operator on the resulting return value.
 ****************************************************************/
 template<typename E>
-E& MyVector<E>::at(uint64_t index)
+E& MyVector<E>::at(uint64_t index) noexcept(false)
 {
     if (index >= sz)
-    {
-        delete [] data; //free memory before exiting
-        exit(1);
-    }
+        throw std::out_of_range("Invalid index! uint64_t index");
 
     return data[index];
 }
@@ -289,7 +282,9 @@ E& MyVector<E>::at(uint64_t index)
  *  //PUBLIC
  * --------------------------------------------------------------
  *  Returns a const reference of the const E& value at the very front
- *  of the VectorInt object. Equivalent to obj.at(0).
+ *  of the VectorInt object. Equivalent to obj.at(0). Will throw
+ *  std::out_of_range exception in the even trying to be used
+ *  on a vector of size 0.
  * --------------------------------------------------------------
  *  PRE-CONDITIONS
  *      The object's capacity must be > 0! If not, you
@@ -303,8 +298,11 @@ E& MyVector<E>::at(uint64_t index)
  *      modification to any of the private attributes.
 ****************************************************************/
 template<typename E>
-const E& MyVector<E>::front(void) const
+const E& MyVector<E>::front(void) const noexcept(false)
 {
+    if (sz == 0)
+        throw std::out_of_range("Size = 0! No \"front\" element!\n");
+
     return data[0];
 }
 //EOF
@@ -319,6 +317,9 @@ const E& MyVector<E>::front(void) const
  *  Since a reference is returned, you are also allowed to use
  *  the assignment operator to change the value of the of the
  *  front index in the object.
+ *  Will throw
+ *  std::out_of_range exception in the even trying to be used
+ *  on a vector of size 0.
  * --------------------------------------------------------------
  *  PRE-CONDITIONS
  *      The object's capacity must be > 0! If not, you
@@ -333,8 +334,11 @@ const E& MyVector<E>::front(void) const
  *      assignment operator is used on the return of the method.
 ****************************************************************/
 template<typename E>
-E& MyVector<E>::front(void)
+E& MyVector<E>::front(void) noexcept(false)
 {
+    if (sz == 0)
+        throw std::out_of_range("Size = 0! No \"front\" element!\n");
+
     return data[0];
 }
 //EOF
@@ -346,6 +350,9 @@ E& MyVector<E>::front(void)
  * --------------------------------------------------------------
  *  Returns a const reference of the const E& value at the very back
  *  of the VectorInt object. Equivalent to obj.at(obj.size()-1).
+ *  Will throw
+ *  std::out_of_range exception in the even trying to be used
+ *  on a vector of size 0.
  * --------------------------------------------------------------
  *  PRE-CONDITIONS
  *      The object's capacity must be > 0! If not, you
@@ -361,7 +368,10 @@ E& MyVector<E>::front(void)
 template<typename E>
 const E& MyVector<E>::back(void) const
 {
-    return data[sz-1];
+    if (sz == 0)
+        throw std::out_of_range("Size = 0! No \"back\" element!\n");
+
+    return data[sz - 1];
 }
 //EOF
 
@@ -375,6 +385,9 @@ const E& MyVector<E>::back(void) const
  *  Since a reference is returned, you are also allowed to use
  *  the assignment operator to change the value of the of the
  *  back index in the object.
+ *  Will throw
+ *  std::out_of_range exception in the even trying to be used
+ *  on a vector of size 0.
  * --------------------------------------------------------------
  *  PRE-CONDITIONS
  *      The object's capacity must be > 0! If not, you
@@ -389,9 +402,12 @@ const E& MyVector<E>::back(void) const
  *      assignment operator is used on the return of the method.
 ****************************************************************/
 template<typename E>
-E& MyVector<E>::back(void)
+E& MyVector<E>::back(void) noexcept(false)
 {
-    return data[sz-1];
+    if (sz == 0)
+        throw std::out_of_range("Size = 0! No \"back\" element!\n");
+
+    return data[sz - 1];
 }
 //EOF
 
@@ -448,12 +464,12 @@ void MyVector<E>::expand(void)
 template<typename E>
 void MyVector<E>::expand(uint64_t amount)
 {
-    int* temp;  //PROC - store the address of the new array
+    E* temp;  //PROC - store the address of the new array
 
     cap += amount;  //change size of capacity
-    temp = new int[cap];
+    temp = new E[cap];
     //copy all of contents of data to temp
-    for (long i = 0; i < sz; i++)
+    for (uint64_t i = 0; i < sz; i++)
         temp[i] = data[i];
 
     delete [] data; //free the previous memory
@@ -484,18 +500,15 @@ void MyVector<E>::expand(uint64_t amount)
  *      object is done, and the complete program ends (exit(1))
 ****************************************************************/
 template<typename E>
-void MyVector<E>::insert(uint64_t index, const E& value)
+void MyVector<E>::insert(uint64_t index, const E& value) noexcept(false)
 {
     if (index >= sz) //ensure index is valid
-    {
-        delete [] data;
-        exit(1);
-    }
+        throw std::out_of_range("Can't insert value in a invalid index!\n");
     
     if (sz + 1 > cap)
         expand(); //double capacity if new size is bigger
     
-    for (long i = sz - 1; i >= index; i--)
+    for (int64_t i = sz - 1; i >= index; i--)
         data[i+1] = data[i];
     data[index] = value;    //insert value here
     sz += 1; //increase size
@@ -524,16 +537,13 @@ void MyVector<E>::insert(uint64_t index, const E& value)
  *      object is done, and the complete program ends (exit(1))
 ****************************************************************/
 template<typename E>
-void MyVector<E>::erase(uint64_t index)
+void MyVector<E>::erase(uint64_t index) noexcept(false)
 {
-    if (index >= sz)
-    {
-        delete [] data;
-        exit(1);
-    }
+    if (index >= sz) //ensure index is valid
+        throw std::out_of_range("Can't erase a value in a invalid index!\n");
 
     //sz - 1 to not access memory were are not supposed to (data[i+1])
-    for (long i = index; i < (sz - 1); i++)
+    for (uint64_t i = index; i < (sz - 1); i++)
         data[i] = data[i+1];
 
     sz -= 1;    //since we removed an index
@@ -583,14 +593,12 @@ void MyVector<E>::push_back(const E& value)
  *      memory is cleaned up and the whole program exists.
 ****************************************************************/
 template<typename E>
-void MyVector<E>::pop_back(void)
+void MyVector<E>::pop_back(void) noexcept(false)
 {
     //nothing to pop!
     if (sz == 0)
-    {
-        delete [] data;
-        exit(1);
-    }
+        throw std::out_of_range("Nothing to pop!, Size of vector = 0!\n");
+
     sz -= 1;
 }
 //EOF
@@ -684,7 +692,7 @@ void MyVector<E>::resize(uint64_t size, const E& value)
     if (size > cap) //expanding capacity to meet size demands
         (cap*2 >= size) ? expand() : expand(size - cap);
     
-    for (long i = sz; i < size; i++) //set rest of data array to 0
+    for (uint64_t i = sz; i < size; i++) //set rest of data array to 0
         data[i] = value;
     
     sz = size;  //update finnally the size
@@ -727,7 +735,8 @@ void MyVector<E>::reserve(uint64_t n)
  * --------------------------------------------------------------
  *  It assigns a new size to the MyVector object, and fills
  *  up that new size with the new passed in "value". The final
- *  size is set to "n".
+ *  size is set to "n". It acts to fill the whole vector of now
+ *  size n, with the passed in value.
  * --------------------------------------------------------------
  *  PRE-CONDITIONS
  *      The passed in MyVector object can be of any size.
@@ -742,15 +751,15 @@ void MyVector<E>::assign(uint64_t n, const E& value)
 {
     if (n > sz)
     {
-        for (long i = 0; i < sz; i++)
+        for (uint64_t i = 0; i < sz; i++)
             data[i] = value;
-        //this->resize() makes it so sz = n, data and capacity
+        //resize() makes it so sz = n, data and capacity
         //are made bigger accordingly, and the new empty indicies
         //between sz and n (since n is larger) are filled with
         //"value"
         //NOTE: have to call after the above for loop to avoid
         //changing sz to n early, and risking a seg fault.
-        this->resize(n, value);
+        resize(n, value);
     }
     else //n must be less than or equal to sz
     {   
@@ -759,12 +768,13 @@ void MyVector<E>::assign(uint64_t n, const E& value)
         //number of value changes that need to be done on data
         //since n might be smaller than sz
         sz = n;
-        for (long i = 0; i < sz; i++)
+        for (uint64_t i = 0; i < sz; i++)
             data[i] = value;
     }
 
 }
 //EOF
+
 
 //EXTRA to meet rules of 3
 
@@ -790,8 +800,8 @@ MyVector<E>::MyVector(const MyVector& obj)
 {
     sz = obj.sz;
     cap = obj.cap;
-    data = new int[cap];
-    for (long i = 0; i < sz; i++)
+    data = new E[cap];
+    for (uint64_t i = 0; i < sz; i++)
         data[i] = obj.data[i];
 }
 //EOF
@@ -823,18 +833,18 @@ MyVector<E>& MyVector<E>::operator=(const MyVector<E>& obj)
 {
     if (this != &obj) //avoid object assigning to itself
     {
-        sz = obj.sz;
+        sz = obj.sz; //sz is assured to be less than or equal to capacity
         if (cap >= obj.cap)
         {
-            for (long i = 0; i < sz; i++)
+            for (uint64_t i = 0; i < sz; i++)
                 data[i] = obj.data[i];
         }
         else
         {
             cap = obj.cap;
             delete [] data;
-            data = new int[cap];
-            for (long i = 0; i < sz; i++)
+            data = new E[cap];
+            for (uint64_t i = 0; i < sz; i++)
                 data[i] = obj.data[i];
         }
     }
