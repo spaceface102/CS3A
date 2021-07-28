@@ -241,7 +241,10 @@ template<typename E>
 const E& MyVector<E>::at(uint64_t index) const noexcept(false)
 {
     if (index >= sz)
-        throw std::out_of_range("Invalid index! uint64_t index");
+        throw std::out_of_range(
+        "Method: const E& MyVector<E>::at(uint64_t index)\n"
+        "Invalid index! uint64_t index\n"
+        );
 
     return data[index];
 }
@@ -270,7 +273,10 @@ template<typename E>
 E& MyVector<E>::at(uint64_t index) noexcept(false)
 {
     if (index >= sz)
-        throw std::out_of_range("Invalid index! uint64_t index");
+        throw std::out_of_range(
+        "Method: E& MyVector<E>::at(uint64_t index)\n"
+        "Invalid index! uint64_t index\n"
+        );
 
     return data[index];
 }
@@ -301,7 +307,10 @@ template<typename E>
 const E& MyVector<E>::front(void) const noexcept(false)
 {
     if (sz == 0)
-        throw std::out_of_range("Size = 0! No \"front\" element!\n");
+        throw std::out_of_range(
+            "Method: const E& MyVector<E>::front(void)"
+            "Size = 0! No \"front\" element!\n"
+        );
 
     return data[0];
 }
@@ -337,7 +346,10 @@ template<typename E>
 E& MyVector<E>::front(void) noexcept(false)
 {
     if (sz == 0)
-        throw std::out_of_range("Size = 0! No \"front\" element!\n");
+        throw std::out_of_range(
+            "Method: E& MyVector<E>::front(void)"
+            "Size = 0! No \"front\" element!\n"
+        );
 
     return data[0];
 }
@@ -369,7 +381,10 @@ template<typename E>
 const E& MyVector<E>::back(void) const
 {
     if (sz == 0)
-        throw std::out_of_range("Size = 0! No \"back\" element!\n");
+        throw std::out_of_range(
+            "Method: const E& MyVector<E>::back(void)"
+            "Size = 0! No \"back\" element!\n"
+        );
 
     return data[sz - 1];
 }
@@ -405,7 +420,10 @@ template<typename E>
 E& MyVector<E>::back(void) noexcept(false)
 {
     if (sz == 0)
-        throw std::out_of_range("Size = 0! No \"back\" element!\n");
+        throw std::out_of_range(
+            "Method: E& MyVector<E>::back(void)"
+            "Size = 0! No \"back\" element!\n"
+        );
 
     return data[sz - 1];
 }
@@ -503,7 +521,10 @@ template<typename E>
 void MyVector<E>::insert(uint64_t index, const E& value) noexcept(false)
 {
     if (index >= sz) //ensure index is valid
-        throw std::out_of_range("Can't insert value in a invalid index!\n");
+        throw std::out_of_range(
+            "Method void MyVector<E>::insert(uint64_t index, const E& value)\n"
+            "Can't insert value in a invalid index!\n"
+        );
     
     if (sz + 1 > cap)
         expand(); //double capacity if new size is bigger
@@ -540,7 +561,10 @@ template<typename E>
 void MyVector<E>::erase(uint64_t index) noexcept(false)
 {
     if (index >= sz) //ensure index is valid
-        throw std::out_of_range("Can't erase a value in a invalid index!\n");
+        throw std::out_of_range(
+            "Method void MyVector<E>::erase(uint64_t index)\n"
+            "Can't erase a value in a invalid index!\n"
+        );
 
     //sz - 1 to not access memory were are not supposed to (data[i+1])
     for (uint64_t i = index; i < (sz - 1); i++)
@@ -597,7 +621,10 @@ void MyVector<E>::pop_back(void) noexcept(false)
 {
     //nothing to pop!
     if (sz == 0)
-        throw std::out_of_range("Nothing to pop!, Size of vector = 0!\n");
+        throw std::out_of_range(
+            "Method void MyVector<E>::pop_back(void)\n"
+            "Nothing to pop!, Size of vector = 0!\n"
+        );
 
     sz -= 1;
 }
