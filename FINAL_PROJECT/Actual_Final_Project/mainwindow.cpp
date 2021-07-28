@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     //My Init
     ui->int_RadioButton->setChecked(true); //set default radio button
+    ui->currentCopyNum_LCDNumber->setSegmentStyle(QLCDNumber::Flat);
 }
 
 MainWindow::~MainWindow()
@@ -30,13 +31,12 @@ void MainWindow::on_displayList_PushButton_clicked()
 
 void MainWindow::on_pushBack_PushButton_clicked()
 {
-    QRadioButton* currentRadio;  //PROC - pointer to current active button
-
-    currentRadio = ActiveRadioButton();
-    intList.push_back(currentRadio->text().toInt());
+    //First I have to figure out clean way to choose
+    intList.push_back(ui->pushBackInput_LineEdit->text().toInt());
 }
 //EOF
 
+//trying to figure out a cleaner way to handle this
 QRadioButton* MainWindow::ActiveRadioButton(void)
 {
     if (ui->int_RadioButton->isChecked())
@@ -54,3 +54,10 @@ QRadioButton* MainWindow::ActiveRadioButton(void)
     else    //default
         return ui->int_RadioButton;
 }
+
+void MainWindow::on_chooseCopy_PushButton_clicked()
+{
+    static int i = 0;
+    ui->currentCopyNum_LCDNumber->display(++i);
+}
+

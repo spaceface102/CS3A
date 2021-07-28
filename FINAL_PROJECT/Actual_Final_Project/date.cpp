@@ -23,6 +23,7 @@ Date::Date()
     month = 1;
     monthName = "January";
     year = 2000;
+    totalDays = ConvertToDays();
 }
 //EOF
 
@@ -95,6 +96,8 @@ Date::Date(unsigned m, unsigned d, unsigned y)
         printNumeric();
         std::cout << ".\n";
     }
+
+    totalDays = ConvertToDays();
 }
 //EOF
 
@@ -164,6 +167,7 @@ Date::Date(const std::string &mn, unsigned d, unsigned y)
             std::cout << ".\n";
         }
     }
+    totalDays = ConvertToDays();
 }
 //EOF
 
@@ -232,24 +236,24 @@ void Date::printAlpha() const
 ****************************************************************/
 Date Date::addDays(int d) const
 {
-    long totalDays;     //PROC - convert current Date object
+    long tempTotalDays; //PROC - convert current Date object
                         //to a measurement of only days.
     unsigned newYear;   //PROC/OUT - used to create new Date obj, years
     unsigned newMonth;  //PROC/OUT - used to create new Date obj, months
     unsigned newDay;    //PROC/OUT - used to create new Date obj, days
 
-    totalDays = ConvertToDays() + d;
-    newYear = DaysToYears(totalDays);
-    totalDays -= YearsToDays(newYear);   //adjust for next calculations
-    if (totalDays == 0) //we are exactly at the begining of the year!
+    tempTotalDays = ConvertToDays() + d;
+    newYear = DaysToYears(tempTotalDays);
+    tempTotalDays -= YearsToDays(newYear);   //adjust for next calculations
+    if (tempTotalDays == 0) //we are exactly at the begining of the year!
     {
         newMonth = 1;  //Jan.
-        newDay = 31;    //max number of days in Jan.
+        newDay = 1;    //first day
     }
     else
     {
-        newMonth = DaysToMonths(totalDays, newYear);
-        newDay = totalDays - MonthsToDays(newMonth, newYear);
+        newMonth = DaysToMonths(tempTotalDays, newYear);
+        newDay = tempTotalDays - MonthsToDays(newMonth, newYear);
     }
 
     return Date(newMonth, newDay, newYear);
@@ -648,4 +652,95 @@ long Date::ConvertToDays(void) const
     return day  + MonthsToDays(month, year)
                 + YearsToDays(year);
 }
+//EOF
+
+
+
+
+
+
+
+//ADDITIONS FOR FINAL ASSIGNMENT
+/****************************************************************
+ * 
+ *  Method operator<: Class Date       //PUBLIC
+ * --------------------------------------------------------------
+ *  Compare the values of two data classes, specifically the 
+ *  total number of days since 1/1/1 (the date at which all the
+ *  days for this Date class are relative to.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object must have gone through the constructor already.
+ * 
+ *  POST-CONDITIONS
+ *      The calling function will NOT be modified.
+ *      If the totalDays of the calling object is SMALLER than
+ *      that of the passed in Date object, returns TRUE, else
+ *      FALSE.
+****************************************************************/
+bool Date::operator<(const Date& that) const
+    {return totalDays < that.totalDays;}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method operator>=: Class Date       //PUBLIC
+ * --------------------------------------------------------------
+ *  Compare the values of two data classes, specifically the 
+ *  total number of days since 1/1/1 (the date at which all the
+ *  days for this Date class are relative to.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object must have gone through the constructor already.
+ * 
+ *  POST-CONDITIONS
+ *      The calling function will NOT be modified.
+ *      If the totalDays of the calling object is GRATER THAN
+ *      OR EQUAL TO that of the passed in Date object, 
+ *      returns TRUE, else FALSE.
+****************************************************************/
+bool Date::operator>=(const Date& that)const
+    {return totalDays >= that.totalDays;}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method operator>: Class Date       //PUBLIC
+ * --------------------------------------------------------------
+ *  Compare the values of two data classes, specifically the 
+ *  total number of days since 1/1/1 (the date at which all the
+ *  days for this Date class are relative to.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object must have gone through the constructor already.
+ * 
+ *  POST-CONDITIONS
+ *      The calling function will NOT be modified.
+ *      If the totalDays of the calling object is GREATER than
+ *      that of the passed in Date object, returns TRUE, else
+ *      FALSE.
+****************************************************************/
+bool Date::operator>(const Date& that) const
+    {return totalDays > that.totalDays;}
+//EOF
+
+/****************************************************************
+ * 
+ *  Method operator==: Class Date       //PUBLIC
+ * --------------------------------------------------------------
+ *  Compare the values of two data classes, specifically the 
+ *  total number of days since 1/1/1 (the date at which all the
+ *  days for this Date class are relative to.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object must have gone through the constructor already.
+ * 
+ *  POST-CONDITIONS
+ *      The calling function will NOT be modified.
+ *      If the totalDays of the calling object is EQUAL TO
+ *      that of the passed in Date object, returns TRUE, else
+ *      FALSE.
+****************************************************************/
+bool Date::operator==(const Date& that) const
+    {return totalDays == that.totalDays;}
 //EOF

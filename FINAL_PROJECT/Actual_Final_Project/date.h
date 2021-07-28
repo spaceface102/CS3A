@@ -2,6 +2,7 @@
 #define CLASS_DATE_H
 
 #include <string>
+#include <cstdint>
 
 class Date
 {
@@ -10,6 +11,7 @@ private:
     unsigned month;         //IN/OUT - month integer value 1 -> 12
     std::string monthName;  //IN/OUT - month name, January -> December
     unsigned year;          //IN/OUT - year integer value 0 -> 2**32 - 1
+
 public:
     /*****************************
     ** CONSTRUCTOR & DESTRUCTOR **
@@ -28,6 +30,7 @@ public:
     **  CREATORS  ** //makes a new object and returns that object
     ***************/
     Date addDays(int d) const; //extra credit
+
 private:
     /*********************
     ** HELPER FUNCTIONS **
@@ -44,7 +47,21 @@ private:
     long DaysToYears(long d) const;
     unsigned DaysToMonths(long d, unsigned y) const;
     unsigned MonthsToDays(unsigned m, unsigned y) const;
+
     long ConvertToDays(void) const;
+
+//ADDITIONS FOR FINAL ASSIGNMENT
+private: //extra fields
+    uint64_t totalDays; //PROC - set in constructor, stores date
+                        //converted to only days
+
+public: 
+    //necessary overloads for select_sort, insert_sorted and remove
+    //duplicates from the templated LinkedList class (I created)
+    bool operator<(const Date& that) const;
+    bool operator>=(const Date& that)const;
+    bool operator>(const Date& that) const;
+    bool operator==(const Date& that) const;
 };
 
 #endif //CLASS_DATE_H
