@@ -1,8 +1,3 @@
-union AllTypes
-{
-
-};
-
 class RadioButtonHandler
 {
 private:
