@@ -46,7 +46,12 @@ const char* textConvert::toString(const char* text) //no converstion done!
  *      where they can also be more than one seperating characters
  *      back to back.
  *  POST-CONDITIONS
- *      
+ *      The resulting Rational object can either be the default
+ *      object created through the default constructor, a 
+ *      Rational object with a non default defined numerator,
+ *      or a Rational object with user defined numerator and
+ *      denominator. This all just depends on the "correctness"
+ *      of the input.
 ****************************************************************/
 Rational textConvert::toRational(const char* text)
 {
@@ -105,9 +110,84 @@ Date textConvert::toDate(const char* text)
     unsigned month;         //STORE - used to init Date object's month
     std::string monthStr;   //STORE - used in case input is spelled out
     unsigned year;          //STORE - used to init Date object's year
+    long i;                 //PROC - keep last index of text
+    long startOfDaysindex;  //PROC - keep the index of the start of day portion
+    bool foundToken;        //PROC - used to figure out is token was found
 
-    if (text[0] == '\0') //empty string
+    if (text[0] == '\0' || isDateToken(text[0])) //empty string or just a token
         return Date();
+    
+    foundToken = false;
+    //first get month 
+    for (i = 0; text[i] != '\0' && (!foundToken); i++)
+    {
+        if (isDateToken(text[i]))
+            foundToken = true;
+    }
+
+    //if foundToken = false
+        //text[i] = '\0'
+    //if foundToken = true
+        //text[i] is the character after a token, which
+        //also has the possibility to be end of the string
+
+    //is using spelled out month format
+    if (isalpha(text[0]))
+        //copy i characters from text and store in monthStr
+        //i - 1 if token is found, since ensured that i will
+        //be the index of the character after the token.
+        monthStr = std::string(text, i - static_cast<int>(foundToken));
+    else //assume digits, even if not atoi will return 0
+        month = atoi(text);
+
+    //allow for copies of the same token, just skip them
+    while (text[i] != '\0' && isDateToken(text[i]))
+        i += 1;
+    
+    //user only input month
+    if (text[i] == '\0')
+    {
+        if (monthStr.size() > 0)
+            return Date(monthStr, 1, 2000);
+        else
+            return Date(month, 1, 2000);
+    }
+
+
+    //get days
+    foundToken = false;
+    startOfDaysindex = i;
+    for(; text[i] != '\0' && (!foundToken); i++)
+    {
+        if (isDateToken(text[i]))
+            foundToken = true;
+    }
+
+    //always assume day is numerical
+    day = atoi(text + startOfDaysindex);
+
+    //allow for copies of the same token, just skip them
+    while (text[i] != '\0' && isDateToken(text[i]))
+        i += 1;
+    
+    //user only input month and day
+    if (text[i] == '\0')
+    {
+        if (monthStr.size() > 0)
+            return Date(monthStr, day, 2000);
+        else
+            return Date(month, day, 2000);
+    }
+
+
+    //get years
+    year = atoi(text + i);
+
+    //fully successful return
+    if (monthStr.size() > 0)
+        return Date(monthStr, day, year);
+    else
+        return Date(month, day, year);
 }
 //EOF
 
@@ -116,6 +196,8 @@ Complex textConvert::toComplex(const char *text)
     return Complex::ExpressionParser(text);
 }
 //EOF
+
+
 
 //decided not to include these functions in the textConvert
 //namespace just to reduce the api and keep these functions
@@ -128,7 +210,7 @@ static bool isRationalToken(char c)
 
 static bool isDateToken(char c)
 {
-    return  (c == '/') || (c == '\\') || (c == ' ')
-            || (c == ',');
+    return  (c == '/') || (c == ',') || (c == ' ')
+            || (c == '\\');
 }
 //EOF

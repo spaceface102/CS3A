@@ -1,10 +1,10 @@
-#ifndef LINKED_LIST_WRAPPER_H
-#define LINKED_LIST_WRAPPER_H
+#ifndef LINKED_LIST_WRAPPER_CLASS_H
+#define LINKED_LIST_WRAPPER_CLASS_H
 
 #include "currentLinkedList_Handler.h"
-#include "../myVector.h"
-#include "../linkedList.h"
-#include "../listEmpty.h"
+#include "myVector.h"
+#include "linkedList.h"
+#include "listEmpty.h"
 #include <cstdint>
 
 template<typename T>
@@ -55,8 +55,13 @@ unsigned LinkedList_Wrapper<T>::numAvaliableLists(void)const
 template<typename T>
 void LinkedList_Wrapper<T>::makeCopyOfActiveList(void)
 {
-    listVector.push_back(listVector.at(activeListIndex));
-    activeListIndex = listVector.size() - 1;
+    LinkedList<T> copy(listVector.at(activeListIndex));
+
+    //reason for the temp variable is that if the vector needs
+    //to expand, the value at activeIndex is deleted since 
+    //push_back takes a const reference to the variable and
+    //does not make a copy!!! Tricky!
+    listVector.push_back(copy);
 }
 //EOF
 
@@ -108,9 +113,13 @@ template<typename T>
 void LinkedList_Wrapper<T>::popFront(std::ostream& error_output)
 {
     try
+    {
         listVector.at(activeListIndex).pop_front();
+    }
     catch (const ListEmpty& except)
-        error_output << except.what << "\n";
+    {
+        error_output << except.what() << "\n";
+    }
 }
 //EOF
 
@@ -157,7 +166,7 @@ void LinkedList_Wrapper<T>::display(std::ostream& out)
  *      nothing is printed.
  *      There are no new lines added in this method. Final data
  *      output is not trailed by any character. Seperating
- *      between data is ", "
+ *      between data is " "
 ****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::display(std::ostream& out, const char* start,
@@ -184,10 +193,10 @@ void LinkedList_Wrapper<T>::display(std::ostream& out, const char* start,
         ++currNode, ++index;
 
     //endIndex - 1 to ensure to not have trailing ", "
-    for (; currNode != endNode && index < endIndex - 1; ++currNode, ++index)
-        out << *currNode << ", "; //display the node!
+    for (; currNode != endNode && index < endIndex; ++currNode, ++index)
+        out << *currNode << " "; //display the node!
     
-    //if currNode != endNode, then index is assured to be eq. endIndex - 1
+    //if currNode != endNode, then index is assured to be eq. endIndex
     if (currNode != endNode)
         out << *currNode;
 }
@@ -196,8 +205,10 @@ void LinkedList_Wrapper<T>::display(std::ostream& out, const char* start,
 template<typename T>
 void LinkedList_Wrapper<T>::insert(const char* atNode, const char* value)
 {
-
+    listVector.at(activeListIndex).insert(atoi(atNode), 
+        textToType_Converter(value)
+    );
 }
 //EOF
 
-#endif //LINKED_LIST_WRAPPER_H
+#endif //LINKED_LIST_WRAPPER_CLASS_H

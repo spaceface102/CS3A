@@ -1,8 +1,8 @@
 #ifndef CURRENT_LINKED_LIST_HANDLER_CLASS_H
 #define CURRENT_LINKED_LIST_HANDLER_CLASS_H
 
-#include "../linkedList.h"
-#include "../myVector.h"
+#include "linkedList.h"
+#include "myVector.h"
 #include <iostream>
 
 class CurrentLinkedList_Handler

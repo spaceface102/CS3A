@@ -1,9 +1,9 @@
 #ifndef TEXT_TO_TYPE_CONVERT_NAMESPACE_H
 #define TEXT_TO_TYPE_CONVERT_NAMESPACE_H
 
-#include "../rational.h"
-#include "../date.h"
-#include "../complex.h"
+#include "rational.h"
+#include "date.h"
+#include "complex.h"
 
 namespace textConvert
 {
