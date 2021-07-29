@@ -134,8 +134,8 @@ Date::Date(const std::string &mn, unsigned d, unsigned y)
     }
     else
     {
-        monthName = mn;
-        month = number(monthName);
+        month = number(mn);
+        monthName = name(month); //ensure designated name
             //Check year
         if ((int)y < 0) //y (year arg) is negative
         {
@@ -751,3 +751,29 @@ bool Date::operator>(const Date& that) const
 bool Date::operator==(const Date& that) const
     {return totalDays == that.totalDays;}
 //EOF
+
+/****************************************************************
+ * 
+ *  Function operator<<
+ *  //Class Date FRIEND
+ * --------------------------------------------------------------
+ *  Overloads operator<<, displays as printAlpha(). Thats is 
+ *  the only way it will print
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object must have gone through the constructor already.
+ * 
+ *  POST-CONDITIONS
+ *      The Date object stays untouched.
+ *      Output Format as follows:
+ *      monthName <space> day <comma && space> year
+ *      Notice that there is NO new line!
+****************************************************************/
+std::ostream& operator<<(std::ostream& out, const Date obj)
+{
+    //added the extra space at the end just for
+    //formating with LinkedList::display makes 
+    //it look nicer
+    out << obj.monthName << " " << obj.day << ", " << obj.year << " ";
+    return out;
+}

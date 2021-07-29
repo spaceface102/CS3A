@@ -1,6 +1,7 @@
 #ifndef CLASS_RATIONAL_H
 #define CLASS_RATIONAL_H
 
+#include <iostream>
 class Rational
 {
 private:
@@ -26,7 +27,24 @@ public:
     /***************
      ** ACCESSORS **
      ***************/
-    void display() const; 
+    void display() const;
+
+//ADDITIONS FOR FINAL ASSIGNMENT
+private:
+    /**************
+    **  HELPERS  **
+    **************/
+    void euclidGCD(void);
+
+
+public: 
+    //necessary overloads for select_sort, insert_sorted and remove
+    //duplicates from the templated LinkedList class (I created)
+    bool operator<(const Rational& that) const;
+    bool operator>=(const Rational& that)const;
+    bool operator>(const Rational& that) const;
+    bool operator==(const Rational& that) const;
+    friend std::ostream& operator<<(std::ostream& out, const Rational obj);
 }; 
 #endif //CLASS_RATIONAL_H
 

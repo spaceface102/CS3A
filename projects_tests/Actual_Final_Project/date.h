@@ -62,6 +62,7 @@ public:
     bool operator>=(const Date& that)const;
     bool operator>(const Date& that) const;
     bool operator==(const Date& that) const;
+    friend std::ostream& operator<<(std::ostream& out, const Date obj);
 };
 
 #endif //CLASS_DATE_H

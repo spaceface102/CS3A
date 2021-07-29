@@ -55,9 +55,3 @@ void MainWindow::on_makeCopy_PushButton_clicked()
 
 }
 
-/*
-static void updateDisplay(QLCDNumber* lcd, int number)
-{
-    lcd->display(number);
-}
-*/

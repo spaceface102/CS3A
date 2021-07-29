@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QtWidgets/QRadioButton>
 #include "myVector.h"
 #include "linkedList.h"
 #include "date.h"
