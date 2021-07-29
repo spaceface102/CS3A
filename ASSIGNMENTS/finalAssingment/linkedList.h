@@ -885,7 +885,27 @@ void LinkedList<E>::RemoveNodesAfter(Node<E> *node)
 //EOF
 
 
-//added for final
+//added for final project
+/****************************************************************
+ * 
+ *  Method insert: Class LinkedList
+ *  //PUBLIC
+ *  //TEMPLATE
+ * --------------------------------------------------------------
+ *  Insert a value after the passed in NodeNum of passed in
+ *  value. If passed in nodeNum is 0, it is equivalent to
+ *  push_front. The head of the linked list is defined as
+ *  the node number 1.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Must call method on an active object.
+ *      List allowed to be any size
+ *  POST-CONDITIONS
+ *      Depending on the passed in nodeNum, a new tail, or head
+ *      can be defined. It can also be the case that the value
+ *      is just inserted anywhere else in the linked list and the
+ *      head nor the tail are modified.
+****************************************************************/
 template<typename E>
 void LinkedList<E>::insert(unsigned nodeNum, const E& value)
 {

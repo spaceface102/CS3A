@@ -1,3 +1,11 @@
+/****************************************************************
+ * AUTHOR                   : Osbaldo Gonzalez Jr.
+ * ASSIGNMENT 10 (FINAL)    : LinkedList GUI
+ * CLASS                    : CS 3A
+ * SECTION                  : 71206
+ * DUE DATE                 : 7/29/2021
+****************************************************************/
+
 #include "textToTypeConvert.h"
 #include <cstdlib>
 #include <string>
@@ -8,6 +16,18 @@
 static bool isRationalToken(char c);
 static bool isDateToken(char c);
 
+/****************************************************************
+ * 
+ *  Function toInt: Namespace textConvert
+ * --------------------------------------------------------------
+ *  Uses library function, atoi, to convert cstring to an integer.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Nothing to parse, should always work. The only limitations
+ *      are defined by the atoi() function.
+ *  POST-CONDITIONS
+ *      Ready to be used as a int!
+****************************************************************/
 int textConvert::toInt(const char* text)
 {
     //atoi will return 0 if empty string
@@ -17,6 +37,18 @@ int textConvert::toInt(const char* text)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Function toDouble: Namespace textConvert
+ * --------------------------------------------------------------
+ *  Uses library function, atof, to convert cstring to a double.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Nothing to parse, should always work. The only limitations
+ *      are defined by the atof() function.
+ *  POST-CONDITIONS
+ *      Ready to be used as a double!
+****************************************************************/
 double textConvert::toDouble(const char* text)
 {
     return atof(text); //atof will return 0 if empty string
@@ -25,6 +57,19 @@ double textConvert::toDouble(const char* text)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Function toString: Namespace textConvert
+ * --------------------------------------------------------------
+ *  Uses the std::string constructor on a const char* (cstring)
+ *  and returns the output
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Nothing to parse, should always work. The only limitations
+ *      are defined by the std::string Class.
+ *  POST-CONDITIONS
+ *      Ready to be used as a std::string!
+****************************************************************/
 std::string textConvert::toString(const char* text) //no converstion done!
 {
     return std::string(text);
@@ -104,6 +149,28 @@ Rational textConvert::toRational(const char* text)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Function toDate: Namespace textConvert
+ * --------------------------------------------------------------
+ *  This function takes a cstring and parses it for a date. The
+ *  date can have a spelled out month, or a numerical month.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Passed in cstring MUST have a null terminainting
+ *      character.
+ *      Allows for '\\' or '/' or ',' or ' ' as seperating characters,
+ *      where they can also be more than one seperating characters
+ *      back to back.
+ *  POST-CONDITIONS
+ *      The resulting Date object can either be the default
+ *      object created through the default constructor, a 
+ *      Date object with a non default defined month,
+ *      a Date object with user defined month and and day or
+ *      a Date object with user defined month, day, and year.
+ *      This all just depends on the "correctness"
+ *      of the input.
+****************************************************************/
 Date textConvert::toDate(const char* text)
 {
     unsigned day;           //STORE - used to init Date object;s day
@@ -191,6 +258,24 @@ Date textConvert::toDate(const char* text)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Function toComplex: Namespace textConvert
+ * --------------------------------------------------------------
+ *  This function takes a cstring and parses it a complex and
+ *  real portion.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Passed in cstring MUST have a null terminainting
+ *      character.
+ *      Allows for either '\\' or '/' as seperating characters,
+ *      where they can also be more than one seperating characters
+ *      back to back.
+ *  POST-CONDITIONS
+ *      If the input is empty, will return object using
+ *      default constructor. Else will parse with static func
+ *      textConvert::toComplex.
+****************************************************************/
 Complex textConvert::toComplex(const char *text)
 {
     if (text[0] == '\0')
@@ -204,12 +289,38 @@ Complex textConvert::toComplex(const char *text)
 //decided not to include these functions in the textConvert
 //namespace just to reduce the api and keep these functions
 //restrected to this file.
+/****************************************************************
+ * 
+ *  Function isRationalToken
+ * --------------------------------------------------------------
+ *  Returns true if passed in character is any of the predefined
+ *  allowed "rational tokens"
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Passed in character can be anything
+ *  POST-CONDITIONS
+ *      Will only return true if char is forwards slash or
+ *      backwards slash
+****************************************************************/
 static bool isRationalToken(char c)
 {
     return (c == '/') || (c == '\\');
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Function isDateToken
+ * --------------------------------------------------------------
+ *  Returns true if passed in character is any of the predefined
+ *  allowed "date tokens"
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Passed in character can be anything
+ *  POST-CONDITIONS
+ *      Will only return true if char is forwards slash,
+ *      backwards slash, comma, or space.
+****************************************************************/
 static bool isDateToken(char c)
 {
     return  (c == '/') || (c == ',') || (c == ' ')

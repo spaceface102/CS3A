@@ -4,6 +4,20 @@
 #include <cstdlib>
 #include <string>
 
+/****************************************************************
+ * 
+ *  Method Complex: Class Complex   
+ * --------------------------------------------------------------
+ *  This method revives no arguments, it initializes all
+ *  the attributes.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      An object must be instanitated, either a variable or a
+ *      simple Complex() default constructor call.
+ *  POST-CONDITIONS
+ *      The object's attribute will have a default value. 
+ *      real = imaginary = magnitude = 0;
+****************************************************************/
 Complex::Complex(void)
 {
     real = 0;
@@ -12,6 +26,23 @@ Complex::Complex(void)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method Complex: Class Complex   
+ * --------------------------------------------------------------
+ *  This method revives one argument to set
+ *  the realpart, it initializes all
+ *  the attributes.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      An object must be instanitated, either a variable or a
+ *      simple Complex() default constructor call.
+ *  POST-CONDITIONS
+ *      The object's attribute will have a default value. 
+ *      imaginary = 0
+ *      real = passed in realPart
+ *      magnitude is calculated accordinly.    
+****************************************************************/
 Complex::Complex(double realPart)
 {
     real = realPart;
@@ -20,6 +51,23 @@ Complex::Complex(double realPart)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method Complex: Class Complex   
+ * --------------------------------------------------------------
+ *  This method revives two arguments to set
+ *  the realpart, and the imaginary part. It initializes all
+ *  the attributes.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      An object must be instanitated, either a variable or a
+ *      simple Complex() default constructor call.
+ *  POST-CONDITIONS
+ *      The object's attribute will have a default value. 
+ *      imaginary = passed in imaginaryPart
+ *      real = passed in realPart
+ *      magnitude is calculated accordinly.    
+****************************************************************/
 Complex::Complex(double realPart, double imaginaryPart)
 {
     real = realPart;
@@ -28,24 +76,79 @@ Complex::Complex(double realPart, double imaginaryPart)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method operator=: Class Complex 
+ * --------------------------------------------------------------
+ *  Checks for equality (exact same position on the cartisian
+ *  2D imaginary plane). If eq. returns true, else false.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      There must be two objects, lhs (calling) object, and
+ *      a rhs(compared object)
+ *  POST-CONDITIONS
+ *      Neither of the Complex objects will be modified
+****************************************************************/
 bool Complex::operator==(const Complex& obj) const
 {
     return (real == obj.real) && (imaginary == obj.imaginary);
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method operator+: Class Complex   
+ * --------------------------------------------------------------
+ *  Adds to complex numbers together.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      An object must be instanitated, either a variable or a
+ *      simple Complex() default constructor call.
+ * 
+ *  POST-CONDITIONS
+ *      A new object is returned, and the objects used to do
+ *      the summation are assured to not change state.
+****************************************************************/
 Complex Complex::operator+(const Complex& obj) const
 {
     return Complex(real+obj.real, imaginary+obj.imaginary);
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method operator-: Class Complex 
+ * --------------------------------------------------------------
+ *  Subtracts to complex numbers together.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      An object must be instanitated, either a variable or a
+ *      simple Complex() default constructor call.
+ * 
+ *  POST-CONDITIONS
+ *      A new object is returned, and the objects used to do
+ *      the subtraction are assured to not change state.
+****************************************************************/
 Complex Complex::operator-(const Complex& obj) const
 {
     return Complex(real-obj.real, imaginary-obj.imaginary);
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method operator*: Class Complex   
+ * --------------------------------------------------------------
+ *  Multiplies to complex numbers together.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      An object must be instanitated, either a variable or a
+ *      simple Complex() default constructor call.
+ * 
+ *  POST-CONDITIONS
+ *      A new object is returned, and the objects used to do
+ *      the multiplication are assured to not change state.
+****************************************************************/
 Complex Complex::operator*(const Complex& obj) const
 {
     //(a + bi)(c + di) = (ac - db) + (ad + bc)i
@@ -56,18 +159,57 @@ Complex Complex::operator*(const Complex& obj) const
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method GetReal: Class Complex   
+ * --------------------------------------------------------------
+ *  Return the real part of calling Complex object.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      An object must be instanitated, either a variable or a
+ *      simple Complex() default constructor call.
+ * 
+ *  POST-CONDITIONS
+ *      The object's state is assured not change
+****************************************************************/
 double Complex::GetReal(void) const
 {
     return real;
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method GetImaginary: Class Complex   
+ * --------------------------------------------------------------
+ *  Return the imaginary part of calling Complex object.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      An object must be instanitated, either a variable or a
+ *      simple Complex() default constructor call.
+ * 
+ *  POST-CONDITIONS
+ *      The object's state is assured not change
+****************************************************************/
 double Complex::GetImaginary(void) const
 {
     return imaginary;
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method SetReal: Class Complex   
+ * --------------------------------------------------------------
+ *  Change the real part of calling Complex object.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      An object must be instanitated, either a variable or a
+ *      simple Complex() default constructor call.
+ * 
+ *  POST-CONDITIONS
+ *      The object's state is assured to change
+****************************************************************/
 void Complex::SetReal(double realPart)
 {
     real = realPart;
@@ -75,6 +217,19 @@ void Complex::SetReal(double realPart)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method SetImaginary: Class Complex   
+ * --------------------------------------------------------------
+ *  Change the imaginary part of calling Complex object.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      An object must be instanitated, either a variable or a
+ *      simple Complex() default constructor call.
+ * 
+ *  POST-CONDITIONS
+ *      The object's state is assured to change
+****************************************************************/
 void Complex::SetImaginary(double imaginaryPart)
 {
     imaginary = imaginaryPart;
@@ -82,6 +237,19 @@ void Complex::SetImaginary(double imaginaryPart)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method ExpressionParser: Class Complex   
+ * --------------------------------------------------------------
+ *  Takes in a std::string an parses it to create a new
+ *  Complex object.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Is a static method; no preexisting object required.
+ * 
+ *  POST-CONDITIONS
+ *      A whole new object is returned
+****************************************************************/
 Complex Complex::ExpressionParser(const std::string& complexString)
 {
     double realPart;
@@ -173,10 +341,38 @@ void Complex::calculateMagnitude(void)
     magnitude = std::sqrt((real*real) + (imaginary*imaginary));
 }
 
+/****************************************************************
+ * 
+ *  Method operator<: Class Complex   
+ * --------------------------------------------------------------
+ *  Checks if less than (compares magnitude). If 
+ *  calling object's magnitude is smaller returns true.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      There must be two objects, lhs (calling) object, and
+ *      a rhs(compared object)
+ *  POST-CONDITIONS
+ *      Neither of the Complex objects will be modified
+****************************************************************/
 bool Complex::operator<(const Complex& that) const
     {return magnitude < that.magnitude;}
 //EOF
 
+/****************************************************************
+ * 
+ *  Method operator>=: Class Complex   
+ * --------------------------------------------------------------
+ *  Checks if greater than (compares magnitude). If 
+ *  calling object's magnitude is greater return true. It
+ *  also checks if they are the exact same point in the imaginary
+ *  plane, and if so, will also return true.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      There must be two objects, lhs (calling) object, and
+ *      a rhs(compared object)
+ *  POST-CONDITIONS
+ *      Neither of the Complex objects will be modified
+****************************************************************/
 bool Complex::operator>=(const Complex& that) const
 {
     return (magnitude > that.magnitude) ||
@@ -184,6 +380,19 @@ bool Complex::operator>=(const Complex& that) const
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method operator>: Class Complex   
+ * --------------------------------------------------------------
+ *  Checks if greater than (compares magnitude). If 
+ *  calling object's magnitude is greater return true.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      There must be two objects, lhs (calling) object, and
+ *      a rhs(compared object)
+ *  POST-CONDITIONS
+ *      Neither of the Complex objects will be modified
+****************************************************************/
 bool Complex::operator>(const Complex& that) const
     {return magnitude > that.magnitude;}
 //EOF

@@ -53,12 +53,19 @@ private slots:
     void on_displayList_PushButton_clicked();
 
 private:
+    /**************
+    **  HELPERS  **
+    **************/
     Ui::MainWindow *ui;
 
 //MINE FIELDS
 private:
-    CurrentLinkedList_Handler* currentList;
+    CurrentLinkedList_Handler* currentList; //PROC - Interface for all the 
+                                            //LinkedList_Wrapper objects
 
+    //Each different type handled by this program gets its own
+    //LinkedList_Wrapper object, which must define a text 
+    //convertion.
     LinkedList_Wrapper<int>     intList = textConvert::toInt;
     LinkedList_Wrapper<double>  doubleList = textConvert::toDouble;
     LinkedList_Wrapper<std::string> stringList = textConvert::toString;
@@ -66,6 +73,7 @@ private:
     LinkedList_Wrapper<Date>    dateList = textConvert::toDate;
     LinkedList_Wrapper<Complex> complexList = textConvert::toComplex;
 
+private:
     void updateListOutputFull(void);
 };
 #endif // MAINWINDOW_H

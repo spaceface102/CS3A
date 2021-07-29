@@ -32,12 +32,39 @@ public:
                          const char* end) override; //select portion
 
 private:
-    unsigned activeListIndex;
-    MyVector<LinkedList<T>> listVector;
-    T (*textToType_Converter)(const char *text);
+    unsigned activeListIndex;                   //PROC -current index in vector
+MyVector<LinkedList<T>> listVector;             //PROC - list vector
+    T (*textToType_Converter)(const char *text);//PROC - converter from cstring
+                                                //to specific template type
 };
 
+/********************************************************************
+ * LinkedList_Wrapper
+ *  Publicly inherits from the CurrentLinkedList_Handler class,
+ *  where it overrides all the methods in said class. This is a
+ *  templated class, and therefore in theory should work for any
+ *  type, assuming the type defines the necerrary operator overloads
+ *  demanded by the LinkedList methods, and there is a correct
+ *  converted from cstring to the specific type.
+********************************************************************/
+
 //DEFINITIONS
+/****************************************************************
+ * 
+ *  Method LinkedList_Wrapper: Class LinkedList_Wrapper  
+ *  //CONSTRUCTOR
+ * --------------------------------------------------------------
+ *  Takes a function pointer to valid "convertion function".
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The function pointer's return type must be eq. to the
+ *      templated type.
+ * 
+ *  POST-CONDITIONS
+ *      The private vector is of size 1, the index being
+ *      "pointed" at is 0, and the converter is ready to be used.
+ *      Ready for the rest of the methods!
+****************************************************************/
 template<typename T>
 LinkedList_Wrapper<T>::LinkedList_Wrapper(
     T (*textConvertFunction)(const char *text)
@@ -49,11 +76,35 @@ LinkedList_Wrapper<T>::LinkedList_Wrapper(
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method numAvaliableLists: Class LinkedList_Wrapper  
+ * --------------------------------------------------------------
+ *  Returns the size of the private vector of templated lists.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *  POST-CONDITIONS
+ *      Assured to at least be 1. (due to the constructor)
+****************************************************************/
 template<typename T>
 unsigned LinkedList_Wrapper<T>::numAvaliableLists(void)const
     {return listVector.size();}
 //EOF
 
+/****************************************************************
+ * 
+ *  Method makeCopyOfActiveList: Class LinkedList_Wrapper  
+ * --------------------------------------------------------------
+ *  Makes a copy of the "current active list" and pushes it
+ *  back to the private vector of templated lists.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *  POST-CONDITIONS
+ *      The size of the private vector grows by one. The active
+ *      list continues to be the same.
+****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::makeCopyOfActiveList(void)
 {
@@ -67,6 +118,21 @@ void LinkedList_Wrapper<T>::makeCopyOfActiveList(void)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method setActiveList: Class LinkedList_Wrapper  
+ * --------------------------------------------------------------
+ *  Changes the current active list by changing the vector of
+ *  lists active index. Is assured to change to a valid index.
+ *  If invalid index is put, will default to the first (0th)
+ *  index
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *  POST-CONDITIONS
+ *      No changes are made to the vector itself, and all data
+ *      associated with previous active vector is kept safe.
+****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::setActiveList(unsigned listNumber)
 {
@@ -77,11 +143,37 @@ void LinkedList_Wrapper<T>::setActiveList(unsigned listNumber)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method getActiveListNumber: Class LinkedList_Wrapper
+ * --------------------------------------------------------------
+ *  Returns the value of the private field activeListIndex.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *  POST-CONDITIONS
+ *      Assured to be greater than or equal to 0. Will at most
+ *      be equal to LinkedList_Wrapper::numAvaliableList() - 1.
+****************************************************************/
 template<typename T>
 unsigned LinkedList_Wrapper<T>::getActiveListNumber(void) const
     {return activeListIndex;}
 //EOF
 
+/****************************************************************
+ * 
+ *  Method setNextListAsActive: Class LinkedList_Wrapper
+ * --------------------------------------------------------------
+ *  Changes activeListIndex to next valid index. If at the
+ *  end of the private vector's index, will wrap around and
+ *  start from the begenging (like a clock)
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *  POST-CONDITIONS
+ *      State of the previously defined active list is 
+ *      assured not to change.
+****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::setNextListAsActive(void)
 {
@@ -96,7 +188,18 @@ void LinkedList_Wrapper<T>::setNextListAsActive(void)
 
 
 
-
+/****************************************************************
+ * 
+ *  Method sort: Class LinkedList_Wrapper
+ * --------------------------------------------------------------
+ *  Uses select_sort on the currently active linked list in the
+ *  private vector of templated lists
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *  POST-CONDITIONS
+ *      Only the current active linked list gets modified.
+****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::sort(void)
 {
@@ -104,6 +207,18 @@ void LinkedList_Wrapper<T>::sort(void)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method removeDuplicates: Class LinkedList_Wrapper
+ * --------------------------------------------------------------
+ *  Uses remove_duplicates method on the currently active 
+ *  linked list in the private vector of templated lists
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *  POST-CONDITIONS
+ *      Only the current active linked list gets modified.
+****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::removeDuplicates(void)
 {
@@ -111,6 +226,20 @@ void LinkedList_Wrapper<T>::removeDuplicates(void)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method popFront: Class LinkedList_Wrapper
+ * --------------------------------------------------------------
+ *  Uses pop_front method on the currently active 
+ *  linked list in the private vector of templated lists
+ *  Will handle possible exception, and display to error_output
+ *  std::ostream, which by default is std::cerr
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *  POST-CONDITIONS
+ *      Only the current active linked list gets modified.
+****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::popFront(std::ostream& error_output)
 {
@@ -125,6 +254,24 @@ void LinkedList_Wrapper<T>::popFront(std::ostream& error_output)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method pushBack: Class LinkedList_Wrapper
+ * --------------------------------------------------------------
+ *  Uses push_back method on the currently active 
+ *  linked list in the private vector of templated lists.
+ *  Takes in a cstring as input which is converted
+ *  with the passed in function pointer when initially declaring
+ *  and constructing the calling LinkedList_Wrapper object.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *      Very depended on the implentsation of the passed in
+ *      function pointer converter being correct for this
+ *      specific templated class.
+ *  POST-CONDITIONS
+ *      Only the current active linked list gets modified.
+****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::pushBack(const char* text)
 {
@@ -132,6 +279,24 @@ void LinkedList_Wrapper<T>::pushBack(const char* text)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method pushFront: Class LinkedList_Wrapper
+ * --------------------------------------------------------------
+ *  Uses push_front method on the currently active 
+ *  linked list in the private vector of templated lists.
+ *  Takes in a cstring as input which is converted
+ *  with the passed in function pointer when initially declaring
+ *  and constructing the calling LinkedList_Wrapper object.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *      Very depended on the implentation of the passed in
+ *      function pointer converter being correct for this
+ *      specific templated class.
+ *  POST-CONDITIONS
+ *      Only the current active linked list gets modified.
+****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::pushFront(const char* text)
 {
@@ -139,6 +304,24 @@ void LinkedList_Wrapper<T>::pushFront(const char* text)
 }
 //EOF
 
+/****************************************************************
+ * 
+ *  Method insertSorted: Class LinkedList_Wrapper
+ * --------------------------------------------------------------
+ *  Uses insert_sorted method on the currently active 
+ *  linked list in the private vector of templated lists.
+ *  Takes in a cstring as input which is converted
+ *  with the passed in function pointer when initially declaring
+ *  and constructing the calling LinkedList_Wrapper object.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *      Very depended on the implentation of the passed in
+ *      function pointer converter being correct for this
+ *      specific templated class.
+ *  POST-CONDITIONS
+ *      Only the current active linked list gets modified.
+****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::insertSorted(const char* text)
 {
@@ -146,6 +329,22 @@ void LinkedList_Wrapper<T>::insertSorted(const char* text)
 }
 //EOF
 
+
+/****************************************************************
+ * 
+ *  Method display: Class LinkedList_Wrapper
+ * --------------------------------------------------------------
+ *  Uses display method from the templated linked list class.
+ *  Have to pass in a std::ostream& to define where output
+ *  should got to.
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *  POST-CONDITIONS
+ *      Only the current active linked list gets displayed.
+ *      The current active linked list does not change state,
+ *      and stays constants
+****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::display(std::ostream& out)
 {
@@ -211,6 +410,27 @@ void LinkedList_Wrapper<T>::display(std::ostream& out, const char* start,
 }
 //EOF
 
+
+/****************************************************************
+ * 
+ *  Method insert: Class LinkedList_Wrapper
+ * --------------------------------------------------------------
+ *  Uses insert method on the currently active 
+ *  linked list in the private vector of templated lists.
+ *  Takes in a cstring as input which is converted
+ *  with the passed in function pointer when initially declaring
+ *  and constructing the calling LinkedList_Wrapper object.
+ *  The paramter atNode is used to define after what node
+ *  to insert the value ("noting head is node number 1")
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      Only accesible through an object.
+ *      Very depended on the implentation of the passed in
+ *      function pointer converter being correct for this
+ *      specific templated class.
+ *  POST-CONDITIONS
+ *      Only the current active linked list gets modified.
+****************************************************************/
 template<typename T>
 void LinkedList_Wrapper<T>::insert(const char* atNode, const char* value)
 {
