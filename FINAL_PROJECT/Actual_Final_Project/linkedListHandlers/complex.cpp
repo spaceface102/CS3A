@@ -8,6 +8,7 @@ Complex::Complex(void)
 {
     real = 0;
     imaginary = 0;
+    magnitude = 0;
 }
 //EOF
 
@@ -15,6 +16,7 @@ Complex::Complex(double realPart)
 {
     real = realPart;
     imaginary = 0;
+    calculateMagnitude();
 }
 //EOF
 
@@ -22,6 +24,7 @@ Complex::Complex(double realPart, double imaginaryPart)
 {
     real = realPart;
     imaginary = imaginaryPart;
+    calculateMagnitude();
 }
 //EOF
 
@@ -68,12 +71,14 @@ double Complex::GetImaginary(void) const
 void Complex::SetReal(double realPart)
 {
     real = realPart;
+    calculateMagnitude();
 }
 //EOF
 
 void Complex::SetImaginary(double imaginaryPart)
 {
     imaginary = imaginaryPart;
+    calculateMagnitude();
 }
 //EOF
 
@@ -161,4 +166,24 @@ std::istream& operator>>(std::istream& in, Complex& obj)
     obj = Complex::ExpressionParser(complexExpression);
     return in;
 }
+//EOF
+
+void Complex::calculateMagnitude(void)
+{
+    magnitude = std::sqrt((real*real) + (imaginary*imaginary));
+}
+
+bool Complex::operator<(const Complex& that) const
+    {return magnitude < that.magnitude;}
+//EOF
+
+bool Complex::operator>=(const Complex& that) const
+{
+    return (magnitude > that.magnitude) ||
+           ((real == that.real) && (imaginary == that.imaginary));
+}
+//EOF
+
+bool Complex::operator>(const Complex& that) const
+    {return magnitude > that.magnitude;}
 //EOF

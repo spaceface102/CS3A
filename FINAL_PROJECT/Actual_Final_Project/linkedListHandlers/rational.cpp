@@ -70,6 +70,7 @@ Rational::Rational(int numerator,   //IN - numerator to be used for new object
 {
     numer = numerator;
     denom = denominator;
+    euclidGCD();
 }
 //EOF
 
@@ -208,3 +209,48 @@ void Rational::display() const
 {
     std::cout << numer << "/" << denom;
 }
+
+void Rational::euclidGCD(void)
+{
+    int r;  //PROC - remainder
+    int n;  //PROC - dividened
+    int m;  //PROC - divisor
+
+    n = numer;
+    m = denom;
+    r = n%m;
+    while (r != 0)
+    {
+        n = m;
+        m = r;
+        r = n%m;
+    }
+
+    //simplify fraction
+    numer /= m;
+    denom /= m;
+}
+//EOF
+
+bool Rational::operator<(const Rational& that) const
+    {return (numer * that.denom) < (that.numer * denom);}
+//EOF
+
+bool Rational::operator>=(const Rational& that)const
+    {return (numer * that.denom) >= (that.numer * denom);}
+//EOF
+
+bool Rational::operator>(const Rational& that) const
+    {return (numer * that.denom) > (that.numer * denom);}
+//EOF
+
+bool Rational::operator==(const Rational& that) const
+    {return (numer * that.denom) == (that.numer * denom);}
+//EOF
+
+std::ostream& operator<<(std::ostream& out, const Rational obj)
+{
+    out << obj.numer << "/" << obj.denom;
+    return out;
+}
+//EOF

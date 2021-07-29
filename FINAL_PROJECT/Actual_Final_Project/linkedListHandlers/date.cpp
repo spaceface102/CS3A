@@ -751,3 +751,26 @@ bool Date::operator>(const Date& that) const
 bool Date::operator==(const Date& that) const
     {return totalDays == that.totalDays;}
 //EOF
+
+/****************************************************************
+ * 
+ *  Function operator<<
+ *  //Class Date FRIEND
+ * --------------------------------------------------------------
+ *  Overloads operator<<, displays as printAlpha(). Thats is 
+ *  the only way it will print
+ * --------------------------------------------------------------
+ *  PRE-CONDITIONS
+ *      The object must have gone through the constructor already.
+ * 
+ *  POST-CONDITIONS
+ *      The Date object stays untouched.
+ *      Output Format as follows:
+ *      monthName <space> day <comma && space> year
+ *      Notice that there is NO new line!
+****************************************************************/
+std::ostream& operator<<(std::ostream& out, const Date obj)
+{
+    out << obj.monthName << " " << obj.day << ", " << obj.year;
+    return out;
+}
