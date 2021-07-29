@@ -23,6 +23,7 @@ public:
     void removeDuplicates(void) override;
     void popFront(std::ostream& error_output = std::cerr) override;
     void pushBack(const char* text) override;
+    void pushFront(const char* text) override;
     void insertSorted(const char* text) override;
     void insert(const char* atNode, const char* value) override;
     void display(std::ostream& out) override; //normal display full linked list
@@ -58,7 +59,7 @@ void LinkedList_Wrapper<T>::makeCopyOfActiveList(void)
     LinkedList<T> copy(listVector.at(activeListIndex));
 
     //reason for the temp variable is that if the vector needs
-    //to expand, the value at activeIndex is deleted since 
+    //to expand, the value at activeIndex is deleted since
     //push_back takes a const reference to the variable and
     //does not make a copy!!! Tricky!
     listVector.push_back(copy);
@@ -127,6 +128,13 @@ template<typename T>
 void LinkedList_Wrapper<T>::pushBack(const char* text)
 {
     listVector.at(activeListIndex).push_back(textToType_Converter(text));
+}
+//EOF
+
+template<typename T>
+void LinkedList_Wrapper<T>::pushFront(const char* text)
+{
+    listVector.at(activeListIndex).push_front(textToType_Converter(text));
 }
 //EOF
 

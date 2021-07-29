@@ -34,6 +34,7 @@ public:
     virtual void removeDuplicates(void) = 0;
     virtual void popFront(std::ostream& error_output = std::cerr) = 0;
     virtual void pushBack(const char* text) = 0;
+    virtual void pushFront(const char* text) = 0;
     virtual void insertSorted(const char* text) = 0;
     virtual void display(std::ostream& out) = 0;
     virtual void insert(const char* atNode, const char* value) = 0;

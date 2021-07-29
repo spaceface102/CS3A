@@ -14,6 +14,7 @@ int main(void)
     test.makeCopyOfActiveList();
     test.setNextListAsActive();
     test.popFront();
+    test.pushFront("42");
     test.setActiveList(0);
     test.display(std::cout); std::cout << "\n";
     test.setActiveList(1);
