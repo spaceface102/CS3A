@@ -8,22 +8,15 @@
 
 int main(void)
 {
-    LinkedList_Wrapper<Date> test(textConvert::toDate);
+    LinkedList_Wrapper<int> test = textConvert::toInt;
 
-    test.pushBack("");
-    test.pushBack("nov");
-    test.pushBack("febu 29, 2012");
-    test.pushBack("MAY 28, 2020");
-    test.pushBack("july 22, 1999");
-
-    test.makeCopyOfActiveList();
-    test.setNextListAsActive();
-    test.pushBack("november 9 2000");
-
-    test.display(std::cout);
-    std::cout << "\n";
-
-    test.setActiveList(0);
-    test.display(std::cout);
+    test.pushBack("1");
+    test.pushBack("2");
+    test.pushBack("4");
+    test.pushBack("9");
+    test.pushBack("0");
+    test.sort();
+    test.insertSorted("5");
+    test.display(std::cout, "1", "6");
     std::cout << "\n";
 }

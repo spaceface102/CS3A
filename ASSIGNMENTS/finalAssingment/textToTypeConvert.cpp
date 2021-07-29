@@ -25,9 +25,9 @@ double textConvert::toDouble(const char* text)
 }
 //EOF
 
-const char* textConvert::toString(const char* text) //no converstion done!
+std::string textConvert::toString(const char* text) //no converstion done!
 {
-    return text;
+    return std::string(text);
 }
 //EOF
 
@@ -193,6 +193,8 @@ Date textConvert::toDate(const char* text)
 
 Complex textConvert::toComplex(const char *text)
 {
+    if (text[0] == '\0')
+        return Complex();
     return Complex::ExpressionParser(text);
 }
 //EOF

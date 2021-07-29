@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>393</width>
+    <height>512</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,16 +43,16 @@
    <widget class="QGroupBox" name="selectPortion_GroupBox">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>280</y>
-      <width>131</width>
-      <height>91</height>
+      <x>260</x>
+      <y>170</y>
+      <width>121</width>
+      <height>141</height>
      </rect>
     </property>
     <property name="title">
      <string>Select Portion</string>
     </property>
-    <widget class="QLabel" name="start_Label_2">
+    <widget class="QLabel" name="start_Label">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -65,27 +65,27 @@
       <string>Start</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="endInputPortionList_LineEdit_2">
+    <widget class="QLineEdit" name="endInputPortionList_LineEdit">
      <property name="geometry">
       <rect>
        <x>60</x>
        <y>60</y>
-       <width>61</width>
+       <width>51</width>
        <height>24</height>
       </rect>
      </property>
     </widget>
-    <widget class="QLineEdit" name="startInputPortionList_LineEdit_2">
+    <widget class="QLineEdit" name="startInputPortionList_LineEdit">
      <property name="geometry">
       <rect>
        <x>60</x>
        <y>30</y>
-       <width>61</width>
+       <width>51</width>
        <height>24</height>
       </rect>
      </property>
     </widget>
-    <widget class="QLabel" name="end_Label_2">
+    <widget class="QLabel" name="end_Label">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -96,6 +96,19 @@
      </property>
      <property name="text">
       <string>End</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="displayPortion_PushButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>100</y>
+       <width>101</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Display Portion</string>
      </property>
     </widget>
    </widget>
@@ -184,19 +197,19 @@
    <widget class="QGroupBox" name="insert_GroupBox">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>370</y>
-      <width>131</width>
-      <height>81</height>
+      <x>260</x>
+      <y>320</y>
+      <width>121</width>
+      <height>131</height>
      </rect>
     </property>
     <property name="title">
      <string>Insert</string>
     </property>
-    <widget class="QLabel" name="value_Label_2">
+    <widget class="QLabel" name="value_Label">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>70</x>
        <y>30</y>
        <width>41</width>
        <height>16</height>
@@ -206,7 +219,7 @@
       <string>Value</string>
      </property>
     </widget>
-    <widget class="QLabel" name="node_Label_2">
+    <widget class="QLabel" name="node_Label">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -219,17 +232,17 @@
       <string>Node</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="insertValueInput_LineEdit_2">
+    <widget class="QLineEdit" name="insertValueInput_LineEdit">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>70</x>
        <y>50</y>
        <width>41</width>
        <height>24</height>
       </rect>
      </property>
     </widget>
-    <widget class="QLineEdit" name="insertNodeInput_LineEdit_2">
+    <widget class="QLineEdit" name="insertNodeInput_LineEdit">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -237,6 +250,19 @@
        <width>41</width>
        <height>24</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="insert_PushButton">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>101</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Insert</string>
      </property>
     </widget>
    </widget>
@@ -302,8 +328,8 @@
    <widget class="QGroupBox" name="nodeType_GroupBox">
     <property name="geometry">
      <rect>
-      <x>250</x>
-      <y>110</y>
+      <x>260</x>
+      <y>10</y>
       <width>121</width>
       <height>151</height>
      </rect>
@@ -311,7 +337,7 @@
     <property name="title">
      <string>Choose Node Type</string>
     </property>
-    <widget class="QRadioButton" name="complex_RadioButton_2">
+    <widget class="QRadioButton" name="complex_RadioButton">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -324,7 +350,7 @@
       <string>Complex</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="qstring_RadioButton_2">
+    <widget class="QRadioButton" name="string_RadioButton">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -334,10 +360,10 @@
       </rect>
      </property>
      <property name="text">
-      <string>QString</string>
+      <string>String</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="double_RadioButton_2">
+    <widget class="QRadioButton" name="double_RadioButton">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -350,7 +376,7 @@
       <string>Double</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="rational_RadioButton_2">
+    <widget class="QRadioButton" name="rational_RadioButton">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -363,7 +389,7 @@
       <string>Rational</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="int_RadioButton_2">
+    <widget class="QRadioButton" name="int_RadioButton">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -376,7 +402,7 @@
       <string>Int</string>
      </property>
     </widget>
-    <widget class="QRadioButton" name="date_RadioButton_2">
+    <widget class="QRadioButton" name="date_RadioButton">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -396,7 +422,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>393</width>
      <height>21</height>
     </rect>
    </property>

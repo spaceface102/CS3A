@@ -410,7 +410,7 @@ Iterator<E> LinkedList<E>::begin(void)
 ****************************************************************/
 template<typename E>
 Iterator<E> LinkedList<E>::end(void)
-    {return Iterator<E>(tail);}
+    {return Iterator<E>(nullptr);}
 //EOF
 
 /****************************************************************
@@ -890,14 +890,20 @@ template<typename E>
 void LinkedList<E>::insert(unsigned nodeNum, const E& value)
 {
     //inserts a value after the node "index" nodeNum
-    //head = node number 0
-    //note, will never modify head since always inserting after.
+    //head = node number 1
     Node<E> *current;   //PROC - pointer to the current node
     Node<E> *oldNext;   //PROC - store the old next pointer of current node
     long index;         //PROC - store "index" of each node
 
+    //change head
+    if (nodeNum == 0)
+    {
+        push_front(value);
+        return;
+    }
+
     current = head;
-    for (index = 0; current != tail && index < nodeNum; index++, current = current->next)
+    for (index = 1; current != tail && index < nodeNum; index++, current = current->next)
         ;
     
     //linked list is not big enough to have nodeNum nodes

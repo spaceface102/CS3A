@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "linkedList_Wrapper.h"
+#include "textToTypeConvert.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,7 +17,55 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_int_RadioButton_clicked();
+
+    void on_double_RadioButton_clicked();
+
+    void on_string_RadioButton_clicked();
+
+    void on_rational_RadioButton_clicked();
+
+    void on_date_RadioButton_clicked();
+
+    void on_complex_RadioButton_clicked();
+
+    void on_sort_PushButton_clicked();
+
+    void on_removeDuplicates_PushButton_clicked();
+
+    void on_popFront_PushButton_clicked();
+
+    void on_pushBack_PushButton_clicked();
+
+    void on_pushFront_PushButton_clicked();
+
+    void on_insertSorted_PushButton_clicked();
+
+    void on_insert_PushButton_clicked();
+
+    void on_displayPortion_PushButton_clicked();
+
+    void on_makeCopy_PushButton_clicked();
+
+    void on_chooseCopy_PushButton_clicked();
+
+    void on_displayList_PushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
+
+//MINE FIELDS
+private:
+    CurrentLinkedList_Handler* currentList;
+
+    LinkedList_Wrapper<int>     intList = textConvert::toInt;
+    LinkedList_Wrapper<double>  doubleList = textConvert::toDouble;
+    LinkedList_Wrapper<std::string> stringList = textConvert::toString;
+    LinkedList_Wrapper<Rational> rationalList = textConvert::toRational;
+    LinkedList_Wrapper<Date>    dateList = textConvert::toDate;
+    LinkedList_Wrapper<Complex> complexList = textConvert::toComplex;
+
+    void updateListOutputFull(void);
 };
 #endif // MAINWINDOW_H

@@ -87,7 +87,7 @@ Complex Complex::ExpressionParser(const std::string& complexString)
     double realPart;
     double imaginaryPart;
     std::string number;
-    int i;
+    long unsigned int i;
     bool isNegative;
     bool forcedExit;
 

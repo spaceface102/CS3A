@@ -11,6 +11,7 @@ template<typename T>
 class LinkedList_Wrapper : public CurrentLinkedList_Handler
 {
 public:
+    LinkedList_Wrapper(void) = delete; //ensures initialization
     LinkedList_Wrapper(T (*textConvertFunction)(const char *text));
     unsigned numAvaliableLists(void) const override;
     void makeCopyOfActiveList(void) override;
@@ -190,7 +191,7 @@ void LinkedList_Wrapper<T>::display(std::ostream& out, const char* start,
     startIndex = (startIndex <= 0) ? 1 : startIndex; //ensure starting at 1
     endIndex = atol(end);
 
-    if (startIndex >= endIndex)
+    if (startIndex > endIndex)
         return; //nothing to print....
 
     //counts head node as node number 1

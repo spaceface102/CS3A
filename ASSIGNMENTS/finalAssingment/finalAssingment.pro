@@ -9,11 +9,27 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    complex.cpp \
+    date.cpp \
+    listEmpty.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    rational.cpp \
+    textToTypeConvert.cpp
 
 HEADERS += \
-    mainwindow.h
+    complex.h \
+    linkedList_Wrapper.h \
+    currentLinkedList_Handler.h \
+    date.h \
+    iterator.h \
+    linkedList.h \
+    listEmpty.h \
+    mainwindow.h \
+    myVector.h \
+    node.h \
+    rational.h \
+    textToTypeConvert.h
 
 FORMS += \
     mainwindow.ui

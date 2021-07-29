@@ -190,7 +190,7 @@ void LinkedList_Wrapper<T>::display(std::ostream& out, const char* start,
     startIndex = (startIndex <= 0) ? 1 : startIndex; //ensure starting at 1
     endIndex = atol(end);
 
-    if (startIndex >= endIndex)
+    if (startIndex > endIndex)
         return; //nothing to print....
 
     //counts head node as node number 1

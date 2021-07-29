@@ -410,7 +410,7 @@ Iterator<E> LinkedList<E>::begin(void)
 ****************************************************************/
 template<typename E>
 Iterator<E> LinkedList<E>::end(void)
-    {return Iterator<E>(tail);}
+    {return Iterator<E>(nullptr);}
 //EOF
 
 /****************************************************************
