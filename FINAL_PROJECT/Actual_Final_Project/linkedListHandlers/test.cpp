@@ -3,20 +3,26 @@
 #include "textToTypeConvert.h"
 #include <iostream>
 #include <string>
+#include <cstdlib>
+#include <ctime>
 
 int main(void)
 {
-    LinkedList_Wrapper<int> test(textConvert::toInt);
+    CurrentLinkedList_Handler *ptr;
+    LinkedList_Wrapper<int>    list0(textConvert::toInt);
+    LinkedList_Wrapper<double> list1(textConvert::toDouble);
 
+    double tail;
+    srand(time(NULL));
     for (long i = 1; i < 10; i++)
-        test.pushBack(std::to_string(i).c_str());
+    {
+        tail = 1.0/((rand()%10) + 1);
+        list0.pushBack(std::to_string(i).c_str());
+        list1.pushBack(std::to_string(i + tail).c_str());
+    }
 
-    test.makeCopyOfActiveList();
-    test.setNextListAsActive();
-    test.popFront();
-    test.pushFront("42");
-    test.setActiveList(0);
-    test.display(std::cout); std::cout << "\n";
-    test.setActiveList(1);
-    test.display(std::cout); std::cout << "\n";
+    ptr = &list0;
+    ptr->display(std::cout);
+    ptr = &list1;
+    ptr->display(std::cout);
 }
