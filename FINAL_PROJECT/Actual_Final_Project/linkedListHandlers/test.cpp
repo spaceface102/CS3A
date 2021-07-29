@@ -8,21 +8,22 @@
 
 int main(void)
 {
-    CurrentLinkedList_Handler *ptr;
-    LinkedList_Wrapper<int>    list0(textConvert::toInt);
-    LinkedList_Wrapper<double> list1(textConvert::toDouble);
+    LinkedList_Wrapper<Date> test(textConvert::toDate);
 
-    double tail;
-    srand(time(NULL));
-    for (long i = 1; i < 10; i++)
-    {
-        tail = 1.0/((rand()%10) + 1);
-        list0.pushBack(std::to_string(i).c_str());
-        list1.pushBack(std::to_string(i + tail).c_str());
-    }
+    test.pushBack("");
+    test.pushBack("nov");
+    test.pushBack("febu 29, 2012");
+    test.pushBack("MAY 28, 2020");
+    test.pushBack("july 22, 1999");
 
-    ptr = &list0;
-    ptr->display(std::cout);
-    ptr = &list1;
-    ptr->display(std::cout);
+    test.makeCopyOfActiveList();
+    test.setNextListAsActive();
+    test.pushBack("november 9 2000");
+
+    test.display(std::cout);
+    std::cout << "\n";
+
+    test.setActiveList(0);
+    test.display(std::cout);
+    std::cout << "\n";
 }

@@ -134,8 +134,8 @@ Date::Date(const std::string &mn, unsigned d, unsigned y)
     }
     else
     {
-        monthName = mn;
-        month = number(monthName);
+        month = number(mn);
+        monthName = name(month); //ensure designated name
             //Check year
         if ((int)y < 0) //y (year arg) is negative
         {
@@ -771,6 +771,9 @@ bool Date::operator==(const Date& that) const
 ****************************************************************/
 std::ostream& operator<<(std::ostream& out, const Date obj)
 {
-    out << obj.monthName << " " << obj.day << ", " << obj.year;
+    //added the extra space at the end just for
+    //formating with LinkedList::display makes 
+    //it look nicer
+    out << obj.monthName << " " << obj.day << ", " << obj.year << " ";
     return out;
 }
