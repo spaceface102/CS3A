@@ -23,6 +23,7 @@ HEADERS += \
     linkedList.h \
     listEmpty.h \
     mainwindow.h \
+    myVector.h \
     node.h \
     rational.h
 

@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QtWidgets/QRadioButton>
-#include <vector>
+#include "myVector.h"
 #include "linkedList.h"
 #include "date.h"
 #include "rational.h"
@@ -28,24 +28,22 @@ private slots:
 
     void on_chooseCopy_PushButton_clicked();
 
+    void on_int_RadioButton_clicked();
+
+    void on_makeCopy_PushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
 //MINE
-private: //helper constants
-    enum class ActiveRadio {INT, DOUBLE, QSTRING, RATIONAL,
-                            COMPLEX, DATE};
-
 private: //fiedls
-    std::vector<LinkedList<int>> intListVector;
-    std::vector<LinkedList<double>> doubleListVector;
-    std::vector<LinkedList<QString>> qStringListVector;
-    std::vector<LinkedList<Rational>> rationalListVector;
-    std::vector<LinkedList<Complex>> complexListVector;
-    std::vector<LinkedList<Date>> dateListVector;
+    MyVector<LinkedList<int>> intListVector;
+    MyVector<LinkedList<double>> doubleListVector;
+    MyVector<LinkedList<QString>> qStringListVector;
+    MyVector<LinkedList<Rational>> rationalListVector;
+    MyVector<LinkedList<Complex>> complexListVector;
+    MyVector<LinkedList<Date>> dateListVector;
 
-    LinkedList<int> intList;
-private: //helper methods
-    QRadioButton* ActiveRadioButton(void);
+    int listCopyNumber;    //TRACK - which linked list we are using
 };
 #endif // MAINWINDOW_H

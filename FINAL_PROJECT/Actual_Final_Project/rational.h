@@ -12,8 +12,8 @@ public:
      ** CONSTRUCTOR & DESTRUCTOR **
     ******************************/
     Rational();         //default constructor
-    Rational(int);      //constructor, takes in one integer args
-    Rational(int, int); //constructor, takes in two integer args
+    Rational(int);      //constructor, takes in numerator
+    Rational(int, int); //constructor, takes in numerator and denominator
    
     /***************
      ** CREATORS ** //makes a new object and returns that object

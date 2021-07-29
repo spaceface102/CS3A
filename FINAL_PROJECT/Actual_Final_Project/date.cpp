@@ -86,15 +86,15 @@ Date::Date(unsigned m, unsigned d, unsigned y)
     }
     else 
         day = d;
-    
+
 
     monthName = name(month);
     //Final conditional output
     if (invalidDates)
     {
-        std::cout << "Invalid date values: Date corrected to ";
+        std::cerr << "Invalid date values: Date corrected to ";
         printNumeric();
-        std::cout << ".\n";
+        std::cerr << ".\n";
     }
 
     totalDays = ConvertToDays();
@@ -119,7 +119,7 @@ Date::Date(unsigned m, unsigned d, unsigned y)
 Date::Date(const std::string &mn, unsigned d, unsigned y)
 {
     bool invalidDates;  //PROC - Keep track if there are invalid dates
-    
+
     invalidDates = false;   //default value
 
     if (number(mn) == 0)    //check if mn (monthname arg) is recognizable
@@ -128,9 +128,9 @@ Date::Date(const std::string &mn, unsigned d, unsigned y)
         month = 1;
         monthName = "January";
         year = 2000;
-        std::cout << "Invalid month name: the Date was set to ";
+        std::cerr << "Invalid month name: the Date was set to ";
         printNumeric();
-        std::cout << ".\n";
+        std::cerr << ".\n";
     }
     else
     {
