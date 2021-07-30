@@ -9,7 +9,9 @@
         "Tcols",
         "Tdividend",
         "Tdivisor",
+        "atest",
         "mainwindow",
+        "sptr",
         "stod",
         "wachu",
         "ychange"
