@@ -1,6 +1,7 @@
 #ifndef MYVECTOR_CLASS_H
 #define MYVECTOR_CLASS_H
 
+#include <iostream>
 #include <stdexcept>
 #include <cstdint>
 
@@ -520,18 +521,31 @@ void MyVector<E>::expand(uint64_t amount)
 template<typename E>
 void MyVector<E>::insert(uint64_t index, const E& value) noexcept(false)
 {
+    int64_t relativeOffset; //PROC - used for when value inside vector
+
     if (index >= sz) //ensure index is valid
         throw std::out_of_range(
             "Method void MyVector<E>::insert(uint64_t index, const E& value)\n"
             "Can't insert value in a invalid index!\n"
         );
     
+    relativeOffset = -1;
     if (sz + 1 > cap)
-        expand(); //double capacity if new size is bigger
+    {
+        //deal with value being a reference to memory
+        //that will get deleted during expansion since
+        //value is in the vector.
+        if (data <= &value && &value < data + sz)
+            relativeOffset = &value - data;
+
+        expand();
+    }
     
     for (int64_t i = sz - 1; i >= index; i--)
         data[i+1] = data[i];
-    data[index] = value;    //insert value here
+
+    //insert value here
+    data[index] = (relativeOffset != -1) ? (data[relativeOffset]) : value;
     sz += 1; //increase size
 }
 //EOF
@@ -593,11 +607,22 @@ void MyVector<E>::erase(uint64_t index) noexcept(false)
 template<typename E>
 void MyVector<E>::push_back(const E& value)
 {
+    int64_t relativeOffset; //PROC - used for when value inside vector
+
+    relativeOffset = -1; //base value, "non activated" state
     if (sz + 1 > cap)
+    {
+        //deal with value being a reference to memory
+        //that will get deleted during expansion since
+        //value is in the vector.
+        if (data <= &value && &value < data + sz)
+            relativeOffset = &value - data;
+
         expand();
+    }
 
     sz += 1;
-    data[sz - 1] = value;
+    data[sz - 1] = (relativeOffset != -1) ? (data[relativeOffset]) : value;
 }
 //EOF
 
@@ -709,6 +734,8 @@ void MyVector<E>::resize(uint64_t size)
 template<typename E>
 void MyVector<E>::resize(uint64_t size, const E& value)
 {
+    int64_t relativeOffset; //PROC - used for when value inside vector
+
     if (size <= sz)
     {
         sz = size; //either stays the same, or it reduces in value
@@ -716,12 +743,25 @@ void MyVector<E>::resize(uint64_t size, const E& value)
     }
 
     //then size must be greater than sz
+    relativeOffset = -1; //base value, "non activated" state
     if (size > cap) //expanding capacity to meet size demands
+    {
+        //deal with value being a reference to memory
+        //that will get deleted during expansion since
+        //value is in the vector.
+        if (data <= &value && &value < data + sz)
+            relativeOffset = &value - data;
+
         (cap*2 >= size) ? expand() : expand(size - cap);
-    
-    for (uint64_t i = sz; i < size; i++) //set rest of data array to 0
-        data[i] = value;
-    
+    }
+
+    if (relativeOffset != -1)
+        for (uint64_t i = sz; i < size; i++)
+            data[i] = data[relativeOffset];
+    else //value was not originally in the vector
+        for (uint64_t i = sz; i < size; i++)
+            data[i] = value;
+
     sz = size;  //update finnally the size
 }
 //EOF

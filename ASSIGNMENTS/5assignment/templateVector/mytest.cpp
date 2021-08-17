@@ -1,37 +1,24 @@
 #include "myVector.h"
-#include <iostream>
 #include <string>
+#include <iostream>
 
-template<typename E>
-std::ostream& operator<<(std::ostream& out, const MyVector<E>& obj)
+template <typename E>
+std::ostream& operator<<(std::ostream& out, MyVector<E> vector)
 {
-    for (unsigned long i = 0; i < obj.size(); i++)
-    {
-        out << obj.at(i) << ", ";
-    }
+    for (size_t i = 0; i < vector.size() - 1; i++)
+        out << vector.at(i) << " ";
+    out << vector.at(vector.size() - 1);
 
-    out << "\n";
     return out;
 }
 
 int main(void)
 {
-    MyVector<MyVector<MyVector<int>>> test(4);
+    MyVector<int> test(1e9, 42);
 
-    for (long i = 0; i < 4; i++)
-    {
-        for (long k = 0; k < 3; k++)
-        {
-            test.at(i).push_back(MyVector<int>());
-            for (long q = 0; q < 3; q++)
-                test.at(i).at(k).push_back((i*9) + (k*3) + q);
-        }
-    }
+    test.push_back(3);
+    test.push_back(test.at(0));
 
-    std::cout << test;
-
-    std::cout << std::string(5, '\n');
-    MyVector<int> test1(10);
-    std::cout << test1 << "\n";
-
+    std::cout << test.at(test.size() - 1);
+    return 0;
 }
