@@ -704,7 +704,7 @@ void MyVector<E>::clear(void)
 template<typename E>
 void MyVector<E>::resize(uint64_t size)
 {
-    resize(size, 0);
+    resize(size, E());
 }
 //EOF
 
